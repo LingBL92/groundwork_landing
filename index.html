@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- analytics: paste the Apps Script WEB APP url here. It must end in /exec -->
+<!-- analytics: the Apps Script WEB APP url. Must end in /exec -->
 <meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbw_GmWf8e_ArDx8DLRFBmSZVLEWbtuAjOGrqkNsdQ1k63o1kgAPFwwbt03IRlGl0AQ/exec">
 <title>Groundwork — 500 · 50 · 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2366,15 +2366,25 @@ d5(); onAll();
     } catch (e) { return "x" + Date.now().toString(36); }
   })();
 
-  var secs = [].slice.call(document.querySelectorAll(".chapters > section"));
-  function secName(s) {
-    return s.id || s.className.trim().replace(/\s+/g, "-") || "sec";
-  }
+  /* EVERY BLOCK OF THE PAGE, not just the chapters. Tracking only the chapters
+     left the hero, the opening, the scales and the close uncounted, so the
+     per-section seconds quietly failed to add up to the active time. Anything
+     not covered by a named block lands in "other", which makes the columns sum
+     exactly and turns a silent gap into a visible one. */
+  var secs = [];
+  [[".hero", "hero"], ["#open", "opening"], ["#scales", "scales"],
+   [".runlead", "runlead"], [".end", "close"]].forEach(function (t) {
+    var e = document.querySelector(t[0]); if (e) secs.push([e, t[1]]);
+  });
+  [].slice.call(document.querySelectorAll(".chapters > section")).forEach(function (e) {
+    secs.push([e, e.id || e.className.trim().replace(/\s+/g, "-") || "sec"]);
+  });
 
   var ms = { total: 0, active: 0 };
   var scaleMs = { "500": 0, "50": 0, "5": 0 };
   var secMs = {};
-  secs.forEach(function (s) { secMs[secName(s)] = 0; });
+  secs.forEach(function (x) { secMs[x[1]] = 0; });
+  secMs.other = 0;
 
   var clicks = { demo_header: 0, demo_end: 0, opt_frontage: 0, opt_centre: 0, opt_spine: 0 };
   var maxP = 0, maxScroll = 0, cycles = 0, errs = 0, firstErr = "";
@@ -2396,6 +2406,7 @@ d5(); onAll();
      has already put on screen means retuning the page retunes the tracking,
      and there is only ever one answer to "which scale was the reader on". */
   var RSEC = document.getElementById("rsec");
+  var RAIL = document.getElementById("rail");
   var SCALE_OF = { "the parcel": "500", "the block": "50", "the detail": "5" };
   function scaleNow() {
     var w = RSEC && RSEC.textContent.trim().toLowerCase();
@@ -2408,10 +2419,10 @@ d5(); onAll();
   function liveSection() {
     var mid = innerHeight / 2;
     for (var i = 0; i < secs.length; i++) {
-      var r = secs[i].getBoundingClientRect();
-      if (r.top <= mid && r.bottom >= mid) return secName(secs[i]);
+      var r = secs[i][0].getBoundingClientRect();
+      if (r.top <= mid && r.bottom >= mid) return secs[i][1];
     }
-    return null;
+    return "other";
   }
 
   setInterval(function () {
@@ -2420,7 +2431,9 @@ d5(); onAll();
     if (document.visibilityState !== "visible") return;   // tab in the background
     if (now - lastAct > IDLE) return;                     // walked away
     ms.active += dt;
-    scaleMs[scaleNow()] += dt;
+    /* only while the rail is up. Its text says "the parcel" from page load, so
+       counting it unconditionally charged the hero and the opening to the 500 */
+    if (RAIL && RAIL.classList.contains("on")) scaleMs[scaleNow()] += dt;
     var L = liveSection(); if (L) secMs[L] += dt;
     if (P > maxP) maxP = P;
     var d = (scrollY + innerHeight) / Math.max(1, document.body.scrollHeight);
