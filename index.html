@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Groundwork — 500 · 50 · 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--s0:#faf9f7;--s1:#f2f1ed;--s2:#fff;--t:#0b0b0b;--t2:#52514e;--t3:#898781;
+ --b:rgba(11,11,11,.10);--bs:rgba(11,11,11,.20);--ta:#185fa5;--bga:#e6f1fb;
+ --warn:#C64C31;--gr:#8aa87c;--r:8px;--pg:#faf9f7}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;--t2:#c3c2b7;--t3:#8a8880;
+ --b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);--ta:#7db2e8;--bga:#16293c;
+ --warn:#e8836a;--pg:#121211}}
+:root[data-theme="dark"]{--s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;
+ --t2:#c3c2b7;--t3:#8a8880;--b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);
+ --ta:#7db2e8;--bga:#16293c;--warn:#e8836a;--pg:#121211}
+*{box-sizing:border-box}
+body{margin:0;padding-top:47px;background:var(--s0);color:var(--t);font-size:15px;line-height:1.6;
+ font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+.mockbar{background:var(--warn);color:#fff;font-size:11px;letter-spacing:.06em;
+ text-transform:uppercase;text-align:center;padding:4px;font-weight:600}
+/* THE HEADER. Slim, present from the first screen, so a reader who is already
+   convinced has somewhere to go. It carries the page's ground with it: dark
+   over the argument, paper over the site, switched at the fade. */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;
+ justify-content:space-between;gap:16px;padding:9px 22px;
+ background:color-mix(in oklab,#121211 82%,transparent);backdrop-filter:blur(10px);
+ border-bottom:.5px solid rgba(240,239,236,.10);transition:background .4s,border-color .4s}
+.hdr.lit{background:color-mix(in oklab,#faf9f7 86%,transparent);
+ border-bottom-color:rgba(11,11,11,.10)}
+.hdr .hw{font-size:14px;font-weight:700;letter-spacing:-.01em;color:#f0efec;transition:color .4s}
+.hdr .hw small{font-weight:500;opacity:.6;margin-left:3px}
+.hdr.lit .hw{color:#0b0b0b}
+.hdr a.try{font-size:12.5px;font-weight:600;text-decoration:none;border-radius:20px;
+ padding:6px 14px;border:1px solid rgba(240,239,236,.35);color:#f0efec;transition:.3s}
+.hdr a.try:hover{background:#f0efec;color:#121211}
+.hdr.lit a.try{border-color:rgba(11,11,11,.35);color:#0b0b0b}
+.hdr.lit a.try:hover{background:#0b0b0b;color:#faf9f7}
+/* ONE SWITCH, AT THE GROUND. The argument — the claim, the tensions, the four
+   kinds of suggestion — is dark; the site is paper. The page turns light at the
+   moment the zoom lands on a real parcel, and never changes again: a single
+   change of scene, not a colour per section, because the zoom is one
+   continuous drawing and a colour change inside it would say three things.
+   Only TOKENS are redefined here, so every component inside inherits the dark
+   set without a rule of its own. Text-carrying accents use the lighter steps
+   (blue 8.4:1, terracotta 7.0:1); the route green is the validated mark step. */
+.dk{background:var(--s0);color:var(--t);
+ --s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;--t2:#c3c2b7;--t3:#8a8880;
+ --b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);
+ --ta:#7db2e8;--bga:#16293c;--warn:#e8836a;--gr:#679152}
+/* a reader already in dark mode would see no switch at all, so for them the
+   argument goes a step deeper than the rest of the page */
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .dk{
+ --s0:#0a0a09;--s1:#141413;--s2:#1a1a19}}
+:root[data-theme="dark"] .dk{--s0:#0a0a09;--s1:#141413;--s2:#1a1a19}
+/* THE FADE. A straight sRGB blend from near-black to paper goes muddy grey in
+   the middle; interpolating in OKLab keeps the midpoint perceptually even, and
+   the stops ease the curve so most of the travel happens where the eye is least
+   sensitive. The band is empty on purpose — the claim overlay is off by the
+   time it arrives, so no light-set text ever sits on a half-dark ground. */
+.dkfade{height:58svh;background:linear-gradient(to bottom,var(--s0),var(--pg));
+ background:linear-gradient(in oklab to bottom,var(--s0) 0%,var(--s0) 8%,
+   color-mix(in oklab,var(--s0) 78%,var(--pg)) 32%,
+   color-mix(in oklab,var(--s0) 40%,var(--pg)) 58%,
+   color-mix(in oklab,var(--s0) 12%,var(--pg)) 82%,var(--pg) 100%)}
+/* THE HERO: the claim beside the sweep. The picture is the product's own
+   output — every way across one parcel, drawing itself in — not a render or a
+   city aerial, which would say "this designs buildings" and contradict the line
+   next to it. Sample geometry until the real export lands (HERO_SWEEP_REQUEST.md). */
+.hero{max-width:1100px;margin:0 auto;padding:44px 22px;min-height:calc(100svh - 65px);
+ --hl1:#7db2e8;--hl2:#e8836a;--hl3:#93c07e;--hl4:#e0b45a;
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.hh{font-size:clamp(28px,5vw,44px);line-height:1.12;letter-spacing:-.026em;font-weight:600;
+ margin:0 0 18px;text-wrap:balance}
+/* the word that travels: it leaves the hero and becomes the claim's subject */
+.hwrap{display:inline-block}
+#hword{display:inline-block;font-weight:700;position:relative;z-index:7;transform-origin:0 0;
+ will-change:transform}
+.hart{position:relative}
+.hart svg{display:block;width:100%;height:auto;aspect-ratio:1;overflow:visible}
+.hcap{font-size:11px;color:var(--t3);letter-spacing:.04em;margin-top:6px;text-align:center;transition:opacity .25s}
+.sweep .r{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.5s cubic-bezier(.3,.6,.2,1) forwards}
+.sweep .pc0{opacity:0;animation:fadein .8s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* THE NOTES. After the sweep draws, three suggestions land on it like notes on
+   trace — paper-coloured, slightly off-square, each pinned to the place it is
+   about. Then they settle into one concept: the other routes fall away, one
+   spine stays, and the notes become the reasons under its name. */
+.nt{position:absolute;width:min(44%,190px);background:#f1ead3;color:#1b1a17;border-radius:3px;
+ padding:8px 10px 9px;font-size:12px;line-height:1.35;box-shadow:0 8px 22px rgba(0,0,0,.45);
+ opacity:0;transform:translateY(10px) scale(.92) rotate(var(--rot));
+ transition:opacity .45s,transform .55s cubic-bezier(.2,1.4,.4,1);pointer-events:none;z-index:2}
+.nt.on{opacity:1;transform:translateY(0) scale(1) rotate(var(--rot))}
+.nt small{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+ font-weight:800;margin-bottom:3px}
+.nt b{font-weight:700}
+.nt.k1 small{color:#185fa5} .nt.k2 small{color:#b3422a} .nt.k3 small{color:#4f7d3f}
+.nt.k4 small{color:#94650c}
+/* THE FOUR KINDS, lit as they land. One colour per kind, shared by the note
+   label and the phrase in the paragraph, so the reader links "a conflict" to
+   the note that just appeared. Amber for the gap: it reads as "missing, look
+   here" and is unlike any route colour. Text-weight versions for the dark
+   ground; the note labels use the darker paper-side steps. */
+.hl{border-radius:3px;padding:0 3px;margin:0 -3px;background-repeat:no-repeat;
+ background-size:0% 100%;transition:background-size .55s cubic-bezier(.3,.7,.2,1),color .35s}
+.hl.k1{background-image:linear-gradient(color-mix(in srgb,var(--hl1) 26%,transparent),color-mix(in srgb,var(--hl1) 26%,transparent))}
+.hl.k2{background-image:linear-gradient(color-mix(in srgb,var(--hl2) 26%,transparent),color-mix(in srgb,var(--hl2) 26%,transparent))}
+.hl.k3{background-image:linear-gradient(color-mix(in srgb,var(--hl3) 26%,transparent),color-mix(in srgb,var(--hl3) 26%,transparent))}
+.hl.k4{background-image:linear-gradient(color-mix(in srgb,var(--hl4) 26%,transparent),color-mix(in srgb,var(--hl4) 26%,transparent))}
+.hl.on{background-size:100% 100%}
+.hl.k1.on{color:var(--hl1)} .hl.k2.on{color:var(--hl2)} .hl.k3.on{color:var(--hl3)} .hl.k4.on{color:var(--hl4)}
+.cc .why span.open{border-style:dashed}
+.hart.settle .nt{opacity:0;transform:translateY(16px) scale(.85) rotate(0deg);transition-duration:.5s}
+.pin{transition:opacity .4s} .pin circle{fill:#f1ead3}
+.sweep .r,.sweep .pc0{transition:opacity 1s}
+.hart.settle .sweep .r:not(.keep){opacity:.05}
+.spine{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.2s cubic-bezier(.3,.6,.2,1)}
+.hart.settle .spine{stroke-dashoffset:0}
+.cc{position:absolute;left:-4%;width:47%;bottom:4%;background:var(--s2);border:1px solid var(--ta);
+ border-radius:8px;padding:12px 14px;opacity:0;transform:translateY(12px);
+ transition:opacity .6s .5s,transform .6s .5s;z-index:3}
+.hart.settle .cc{opacity:1;transform:none}
+.hart svg,.hart .hcap{transition:opacity .5s}
+.hart.reset svg,.hart.reset .cc,.hart.reset .hcap{opacity:0!important;transition:opacity .5s!important}
+.cc small{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+ font-weight:800;color:var(--ta);margin-bottom:2px}
+.cc b{display:block;font-size:16px;letter-spacing:-.01em;color:var(--t)}
+.cc p{margin:4px 0 8px;font-size:12px;line-height:1.45;color:var(--t2)}
+.cc .why{display:flex;gap:6px;flex-wrap:wrap}
+.cc .why span{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+ border-radius:9px;padding:1px 7px;border:1px solid}
+@keyframes fadein{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.sweep .r{animation:none;stroke-dashoffset:0}
+ .nt,.cc,.spine,.sweep .r{transition:none!important}
+ .sweep .pc0{animation:none;opacity:1}}
+.hero p{font-size:clamp(15.5px,2vw,18px);color:var(--t2);margin:0 0 15px;max-width:60ch}
+.hero p.lead{color:var(--t)}
+.cue{font-size:11.5px;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;
+ margin-top:34px;display:flex;align-items:center;gap:8px}
+.cue span{width:26px;height:.5px;background:var(--bs)}
+/* ---- THE OPENING: one sentence, told on its own words ----
+   No background drawing. "design" splits into six pairs, each drawn as two
+   elevations on one ground line; it closes again and the twelve ideas are
+   laid out as a board, and the later claims are shown by what they do to
+   that board. The change always means something, or it is wallpaper. */
+.open{position:relative}
+.obeats{position:relative;z-index:2}
+.obeat{min-height:68svh}
+.obeat.t{min-height:52svh}   /* a tension is a glance, not a chapter */
+.obeat.short{min-height:8svh}   /* "design", before it splits: half a tension */
+.oclaim{position:fixed;left:0;right:0;top:0;height:100svh;z-index:3;
+ --ico:clamp(58px,7vw,92px);
+ display:flex;align-items:center;pointer-events:none;opacity:0;transition:opacity .3s}
+.oclaim.on{opacity:1}
+.oinner{max-width:1000px;margin:0 auto;padding:0 22px;width:100%}
+.claim{display:flex;flex-wrap:wrap;gap:4px 30px;align-items:baseline;
+ font-size:clamp(24px,4.2vw,40px);line-height:1.24;letter-spacing:-.028em;
+ font-weight:600;margin:0}
+.subj{flex:none;font-weight:700;color:var(--t)}
+/* TWO LINES, NOT FIVE. Five at once is a list of capabilities; two is a
+   sentence — "Groundwork surfaces trade-offs AND names the conflicts inside
+   them" — and a sentence is what a reader carries away. The window slides
+   as you scroll, so each claim is read once against the one before it.
+   Rows animate 0fr -> 1fr, which handles a line that wraps on a phone;
+   a fixed max-height would clip it. */
+.preds{display:grid;grid-template-rows:1fr 0fr 0fr 0fr 0fr;min-width:0;
+ transition:grid-template-rows .42s cubic-bezier(.2,.8,.3,1)}
+.p{font-weight:500;color:var(--t3);opacity:0;overflow:hidden;min-height:0;
+ transition:opacity .35s,color .35s,padding .65s cubic-bezier(.2,.8,.3,1)}
+/* while the pair is open the line makes room for its elevation above and its
+   figures below; the block stays centred, so the words rise by half the room */
+.p.split{padding:calc(var(--ico) + 30px) 0 0}
+.p.seen{opacity:.5}
+.p.live{opacity:1;color:var(--t);overflow:visible}
+.p.last.live{color:var(--ta)}
+/* THE SLOT. "design" is the vague word in the line, so it splits open into
+   the tensions the engine actually computes, and closes back into "design".
+   Every pair has to be something the tool measures, or the line is a claim
+   the product cannot answer. NOTHING HERE IS ENVIRONMENTAL OR CODE: those are
+   Forma's ground and a regulator's, and this tool does neither. */
+.p em{font-style:normal;color:var(--ta)}
+/* THE SPLIT. "design" and the pair sit in ONE grid cell, on top of each other,
+   and the slot's width is set in pixels from JS and transitioned. Animating
+   fr tracks inside an inline grid doesn't work — the grid sizes itself to
+   both columns at once, so "trade-offs" jumped straight to its end place.
+   An explicit width is the thing that actually slides. Both layers stay
+   centred in the slot, so the pair closes in on "design" from both ends.
+   clip-path clips sideways only; the open slot's inset reaches out so a
+   figure label wider than its word isn't cut. */
+.sw2{display:inline-grid;grid-template-columns:minmax(0,1fr);justify-items:center;
+ clip-path:inset(-400px 0);
+ transition:width .7s cubic-bezier(.2,.8,.3,1)}
+.sw2.open{clip-path:inset(-400px -160px)}
+.sw2>span{grid-area:1/1;white-space:nowrap;transition:opacity .45s}
+.sw2.open>.c1,.sw2:not(.open)>.c2{opacity:0}
+.sw2:not(.open)>.c2{transition-duration:.3s}
+.pair{position:relative;display:inline-block;transition:opacity .16s}
+.pair.swp{opacity:0}
+.side{position:relative;display:inline-block}
+.side.a{color:var(--ta)} .side.b{color:var(--warn)}
+.p .side em{color:inherit}
+.vs{color:var(--t3);font-weight:400;font-size:.55em;margin:0 .45em;vertical-align:.2em}
+/* THE GROUND LINE. One long line from one idea to the other, and both
+   drawings are ELEVATIONS standing on it — the same ground, pulled two ways.
+   It is coloured from one end's colour to the other's, and the dot on it
+   travels as the reader scrolls: where the weight sits right now. */
+.gl{position:absolute;left:-14px;right:-14px;bottom:calc(100% + 16px);height:2px;
+ border-radius:2px;background:linear-gradient(to right,var(--ta),var(--warn));opacity:.85}
+.gl i{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;
+ background:var(--t);box-shadow:0 0 0 3px var(--s0);transform:translate(-50%,-50%)}
+.ico{position:absolute;left:50%;bottom:calc(100% + 18px);width:calc(var(--ico)*1.5);
+ height:var(--ico);transform:translateX(-50%);transform-origin:50% 100%}
+/* distance vs openness is drawn as two wide scenes rather than single objects,
+   so it reads a size up. The modifier is .wide, NOT .big — .big is already a
+   layout class further down (display:flex;margin:12px 0), and its margin was
+   lifting the scenes 12 px off the ground line while its display quietly ate
+   the scale. Origin is the bottom centre, so growing keeps the feet on the
+   line. The per-frame lean in JS multiplies this factor rather than
+   replacing it, or the inline transform would win and the scale vanish. */
+.ico.wide{transform:translateX(-50%) scale(1.55)}
+.ico svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* once the first line steps back, its (already invisible) drawings and
+   figures leave the layout, so they don't pad the row it is measured by */
+.p:not(.live) .ico,.p:not(.live) .gl{display:none}
+/* FOLDS. The note and the grid enter by growing a grid row from 0fr, so the
+   centred block makes room smoothly and the sentence rises instead of jumping */
+.fold{display:grid;grid-template-rows:0fr;opacity:0;
+ transition:grid-template-rows .6s cubic-bezier(.2,.8,.3,1),opacity .45s}
+.fold.on{grid-template-rows:1fr;opacity:1}
+.fold>div{overflow:hidden;min-height:0}
+
+/* THE LINE OF SIX. Three pairs, six elevations, one ground: each pair shares
+   a stretch of line coloured from one end to the other, with the dot that
+   says where the weight sits. Three was enough to show the range; six
+   drawings is what fits on one line without shrinking to pictograms. The
+   claims after it are told on this line — the conflict lights a pair and
+   greys the rest, the checks mark what holds, the gap is an empty frame, and
+   the suggestions move each dot and print what the move buys and costs. */
+.gg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;padding-top:30px}
+.pc{display:grid;grid-template-columns:1fr 1fr;column-gap:10px;align-content:start;
+ grid-template-areas:"t t" "ia ib" "l l" "wa wb" "fa fb" "g g";
+ padding:10px 10px 12px;border-radius:10px;border:1px solid transparent;
+ transition:opacity .45s,border-color .4s}
+.pc svg{display:block;width:100%;height:auto;aspect-ratio:100/64;overflow:visible;
+ max-height:96px;transition:opacity .4s}
+.pc .ia{grid-area:ia;color:var(--ta)} .pc .ib{grid-area:ib;color:var(--warn)}
+.pgl{grid-area:l;position:relative;height:2px;margin:1px -6px 0;border-radius:2px;
+ background:linear-gradient(to right,var(--ta),var(--warn))}
+.pgl i{position:absolute;top:50%;left:50%;width:10px;height:10px;border-radius:50%;
+ background:var(--t);box-shadow:0 0 0 3px var(--s0);transform:translate(-50%,-50%);
+ transition:left .8s cubic-bezier(.2,.8,.3,1)}
+.pc .w{font-size:13px;font-weight:600;letter-spacing:-.01em;margin-top:7px}
+.pc .wa{grid-area:wa;color:var(--ta)} .pc .wb{grid-area:wb;color:var(--warn)}
+/* the suggestion: a named move above the pair, set large — the move is the
+   message; the dot sliding to the side it favours says which way it leans */
+.sgt,.pc .tg{max-height:0;opacity:0;overflow:hidden;
+ transition:max-height .55s cubic-bezier(.2,.8,.3,1),opacity .45s}
+.sgt{grid-area:t;font-size:clamp(17px,1.9vw,21px);font-weight:600;letter-spacing:-.01em;color:var(--t);
+ line-height:1.3}
+.sgt small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--t3);font-weight:600;margin-bottom:2px}
+.gg.figs .sgt{max-height:90px;opacity:1;margin-bottom:12px;min-height:calc(2.6em + 16px)}
+.pc .tg{grid-area:g;font-size:11.5px;line-height:1.4;color:var(--t2)}
+/* "etc." — the three on the line are examples, not the list. It names the
+   other measured pairs, so the "and more" is backed rather than hand-waved */
+.etc{font-size:13px;color:var(--t3);margin:14px 10px 0;font-style:italic;text-align:right;max-height:0;opacity:0;
+ overflow:hidden;transition:max-height .5s,opacity .45s}
+.etc.on{max-height:60px;opacity:1}
+.pc.dim{opacity:.2}
+.pc.cf{border-color:var(--warn)} .pc.cf .tg{color:var(--warn)}
+.pc.ok{border-color:var(--gr)}   .pc.ok .tg{color:var(--gr)}
+.pc.cf .tg,.pc.ok .tg,.pc.gp .tg{max-height:60px;opacity:1;margin-top:9px}
+.pc .gapf{border-radius:6px;outline:1px dashed transparent;outline-offset:3px;
+ transition:outline-color .4s}
+.pc.gp .gapf.on{outline-color:var(--t2)}
+/* the gap is shown by what the frame holds: the framed side stays at full
+   strength, the other side of the pair steps back */
+.pc.gp .gapf:not(.on) svg{opacity:.15}
+.pc.gp:has(.ia.gapf.on) .wb,.pc.gp:has(.ib.gapf.on) .wa{opacity:.3}
+.pc.gp .tl:not(.gap){opacity:.3}
+.zoom{position:relative}
+.stage{position:sticky;top:0;height:100svh;display:flex;align-items:center;
+ justify-content:center;pointer-events:none;padding-left:132px}
+svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-origin:50% 50%}
+/* the ring's own lettering: the compass the tool draws, and the two words that
+   replace a sentence about what is beyond each edge */
+#world text{font-family:inherit}
+#world text.cmp{font-size:9px;fill:var(--t3);opacity:.55;text-anchor:middle;
+ letter-spacing:.14em;dominant-baseline:central}
+#world text.scl{font-size:6.4px;letter-spacing:.06em;opacity:.75}
+#world text.anno{font-size:7px;fill:var(--warn);text-anchor:middle;font-weight:650;
+ letter-spacing:.015em}
+/* the viewBox is the same on a phone but drawn at half the pixels, so the
+   lettering is given back in user units or it arrives at 8 px */
+@media(max-width:760px){
+ #world text.cmp{font-size:13px} #world text.scl{font-size:9.5px}
+ #world text.anno{font-size:11px}
+}
+/* no padding: the dial has to sit on the drawing's own centre, and 5svh of it
+   put the two parcels 22 px apart at the exact moment they traded places */
+.toolshot{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ pointer-events:none}
+/* the line, across the page, while the screenshot is still whole */
+.runlead{max-width:1000px;margin:0 auto;padding:0 22px 10svh}
+.runlead h2{font-size:clamp(26px,4.2vw,40px);line-height:1.15;letter-spacing:-.028em;
+ font-weight:700;margin:0 0 8px}
+.runlead p{color:var(--t2);max-width:52ch;margin:0;font-size:clamp(15px,1.8vw,17.5px)}
+/* the dial is a circle on paper, so it carries no card frame — a rectangle
+   around it would fight the one shape the whole handoff is built on */
+.toolshot img{width:min(84vw,min(82svh,760px));height:auto;
+ transform-origin:50% 50%;will-change:transform,opacity}
+/* THE RAIL. The numeral is the scale AND the wordmark — 500 is masterplan,
+   50 is building, 5 is detail — so one element does the job a floating
+   "500 m" caption was doing badly, and it carries the app's own top-left
+   identity through the whole page. */
+/* ONE TOOL, THREE SCALES. The first thing on paper, after the fade: the three
+   numerals the rail will count down, each with the scale it stands for. Then
+   the 500 lifts off and flies into the rail, so the numeral in the corner is
+   one the reader has already been introduced to. */
+.scales{max-width:1000px;margin:0 auto;padding:10svh 22px 16svh}
+.scales h2{font-size:clamp(26px,4.2vw,40px);line-height:1.15;letter-spacing:-.028em;
+ font-weight:700;margin:0 0 12px}
+.scales p{font-size:clamp(15px,1.8vw,17.5px);color:var(--t2);max-width:52ch;margin:0}
+.srow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:48px}
+.sn{font-size:clamp(58px,10vw,124px);font-weight:600;letter-spacing:-.03em;line-height:1;
+ font-variant-numeric:tabular-nums}
+.sn span{display:inline-block;transform-origin:0 0;will-change:transform}
+.sl{font-size:15px;font-weight:600;margin-top:12px;padding-top:10px;border-top:1.5px solid var(--t)}
+.st{display:inline-block;margin-top:9px;font-size:9.5px;letter-spacing:.09em;
+ text-transform:uppercase;font-weight:700;border-radius:9px;padding:1px 7px;
+ border:1px solid var(--bs);color:var(--t3)}
+.st.live{border-color:var(--gr);color:var(--gr)}
+.st.early{border-color:var(--ta);color:var(--ta)}
+.scol{transition:opacity .2s}
+/* each scale's trade-offs, grouped — a list, not drawings: the opening already
+   drew three of them, this is the breadth behind each numeral */
+.tl3{margin-top:22px}
+.tl3 small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+ font-weight:700;color:var(--t3);margin-bottom:6px}
+.tl3 ul{margin:0;padding:0 0 0 1.1em}
+.tl3 li{font-size:14px;line-height:1.65;color:var(--t)}
+.rail{position:fixed;left:0;top:0;bottom:0;width:132px;z-index:6;display:flex;
+ flex-direction:column;justify-content:center;padding-left:24px;pointer-events:none;
+ opacity:0;transition:opacity .4s}
+.rail.on{opacity:1}
+.rwm{font-size:11.5px;letter-spacing:.03em;font-weight:600;color:var(--t2)}
+/* A ZERO FALLS AWAY, it does not crossfade. Each step down is a factor of
+   ten, and losing a zero is what dividing by ten looks like. */
+.rnum{display:flex;align-items:flex-start;font-size:54px;font-weight:600;
+ letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;margin:3px 0 0}
+.rnum span{display:inline-block;overflow:hidden}
+.rsec{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);
+ font-weight:600;margin-top:9px;transition:color .3s}
+.rtick{width:20px;height:.5px;background:var(--bs);margin-top:11px}
+.chapters{position:relative;z-index:2}
+.ch{min-height:112svh;display:flex;align-items:center;padding:0 22px 0 154px}
+/* the first card belongs to the screenshot behind it, so it arrives at once */
+.chin{max-width:420px;background:var(--s0);border:.5px solid var(--b);border-radius:var(--r);
+ padding:19px 21px;box-shadow:0 6px 30px rgba(0,0,0,.07);pointer-events:auto;
+ opacity:.14;transform:translateY(14px);transition:opacity .45s,transform .45s}
+.ch.on .chin{opacity:1;transform:none}
+.ch.right{justify-content:flex-end}
+.tag{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ta);
+ font-weight:600;margin-bottom:5px}
+.chin h2{font-size:22px;line-height:1.2;letter-spacing:-.015em;margin:0 0 9px;font-weight:600}
+.chin p{font-size:14px;margin:0 0 10px;color:var(--t2)}
+.chin p:last-child{margin-bottom:0}
+.chin b{color:var(--t);font-weight:600}
+.thin{font-size:12.5px;color:var(--t3)}
+.big{display:flex;gap:22px;margin:12px 0}
+.big div{flex:1}
+.bn{font-size:27px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.bl{font-size:10.5px;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.wip{display:inline-block;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+ color:var(--warn);border:.5px solid var(--warn);border-radius:20px;padding:0 7px;
+ margin-left:6px;vertical-align:2px;font-weight:600}
+.pick{display:flex;gap:6px;margin-top:12px}
+.pick button{flex:1;font:inherit;font-size:12px;padding:7px 6px;border-radius:6px;
+ border:.5px solid var(--bs);background:var(--s2);color:var(--t2);cursor:pointer;line-height:1.3}
+.pick button.on{border-color:var(--t);border-width:1.5px;color:var(--t);font-weight:600;padding:6.5px 5.5px}
+.chin.wide{max-width:380px}
+/* THE ARCHIVE FIGURE. Three beats in one small drawing, driven by its own
+   card's scroll so the block plan behind it stays put. The tiles are RECORD
+   MARKS, never plans: the page shows the count and what was measured off it,
+   and not one line of anyone's architecture. The tiles do not move while they
+   are measured — that absence is the ownership beat, so nothing is drawn to
+   say it. The fourth skeleton is the one that earns the figure: you watch the
+   measurements refuse something instead of being told they would. */
+.afig{margin:15px 0 5px}
+.afig svg{display:block;width:100%;height:auto;overflow:visible}
+.afig text{font-family:inherit}
+.afig .al{font-size:6.6px;fill:var(--t2)}
+.afig .an{font-size:6.6px;fill:var(--ta);font-weight:700}
+/* THE CIRCUIT. Two feeds reach the block 1.1 s apart and its outline swells as
+   each one lands, so the flash is the arrival rather than a loose heartbeat.
+   A travelling head runs each wire; the dashed one is the link that is not
+   built yet, and it still carries a pulse because it is what the link will do. */
+.afig .cl1{font-size:5.8px;fill:var(--t2)}
+/* THE PAYLOADS LEFT THE DRAWING. Set inside a 225-unit viewBox they rendered
+   at about 8 px, because they were competing with the diagram for the card's
+   width. As ordinary text under it they sit at the card's own size, and the
+   drawing is free to carry only the shape of the thing. The dot ties each
+   line to its wire. */
+/* each payload is set beside the box it belongs to — above the masterplan,
+   under the door, out by the detail — so nothing has to be matched back to a
+   legend, and the boxes themselves say who is supplying what. */
+.cap{font-size:12.5px;color:var(--t2);line-height:1.5;margin:0}
+.cap em{font-style:normal;color:var(--ta);font-weight:600}
+/* the masterplan's payload sits in the gap the drawing leaves between the two
+   source boxes, so it reads as that box's contents rather than as a subtitle
+   for the card. Placed over the figure, so it stays at the card's own size. */
+.afig{position:relative}
+.c500{position:absolute;left:0;top:38.9%;width:32%;text-align:center;
+ white-space:nowrap}
+.capy{width:32%;text-align:center;white-space:nowrap}
+.capy{margin-top:0}
+.afig .cn{font-size:13px;font-weight:700} .afig .cy{font-size:10px;font-weight:700} .afig .cs{font-size:5.2px;letter-spacing:.09em;font-weight:700}
+/* the block lights in the colour of whatever just reached it: ink for the
+   door you use today, blue for the masterplan. A stroke-width jump on its own
+   reads as a rendering wobble at this size, so the glow carries the arrival
+   and the line weight only nudges behind it. */
+@keyframes iflash{0%,100%{stroke-width:2.4}9%,41%{stroke-width:1.5}
+ 50%{stroke-width:2.4}59%,91%{stroke-width:1.5}}
+@keyframes iglowA{0%,100%{opacity:.6}12%,88%{opacity:0}}
+@keyframes iglowB{0%,38%{opacity:0}50%{opacity:.62}62%,100%{opacity:0}}
+#ifig .blk{animation:iflash 2.2s linear infinite}
+#ifig .gA{animation:iglowA 2.2s linear infinite}
+#ifig .gB{animation:iglowB 2.2s linear infinite}
+@media(prefers-reduced-motion:reduce){#ifig .blk,#ifig .gA,#ifig .gB{animation:none}
+ #ifig .gA,#ifig .gB{opacity:0}}
+.afig .ah{font-size:6px;fill:var(--t3);letter-spacing:.11em;font-weight:700}
+/* SCREENSHOTS. Crops, not whole screens: a chapter card is about 440 px wide
+   and the tool's own type would be unreadable shrunk into it. The whole
+   interface is shown once, full width, just before the close. */
+.shot{margin:14px 0 0;border:1px solid var(--b);border-radius:8px;overflow:hidden;
+ background:var(--s1)}
+.shot img{display:block;width:100%;height:auto;max-height:230px;object-fit:cover;
+ object-position:top center}
+.shot figcaption{font-size:10.5px;color:var(--t3);padding:6px 9px;background:var(--s0);
+ border-top:1px solid var(--b)}
+/* THE THREE PANELS. The tool's own cards, in a column of their own on the
+   right, with the drawing on the left and nothing overlapping: these are
+   dense and they are the reason the chapter exists. Cards arrive one at a
+   time and stay, because the derivation is cumulative — by the time you
+   read "2 contested" you still need the 8 above it. */
+.panel{min-height:132svh;display:flex;align-items:flex-start;justify-content:flex-end;
+ padding:0 26px 0 154px}
+/* the column holds its place for the length of its panel: without this the
+   cards drift off the top and leave a screen of nothing between panels */
+.pcol{width:min(330px,33vw);pointer-events:auto;position:sticky;top:13svh}
+.phd{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);
+ font-weight:600;padding-bottom:7px;border-bottom:.5px solid var(--b);margin-bottom:11px}
+.card{background:var(--s0);border:.5px solid var(--b);border-radius:11px;padding:13px 16px;
+ margin-bottom:9px;box-shadow:0 5px 22px rgba(0,0,0,.05);opacity:.1;
+ transform:translateY(10px);transition:opacity .5s,transform .5s}
+.card.lit{opacity:1;transform:none}
+/* THE CARD THE PLAN IS ANSWERING IS A POST-IT. The tool works in notes, so
+   the live card takes the app's own note colour and the others step back —
+   one aspect lit on the card and one lit on the plan, never three at once.
+   It carries its own ink: the paper section still flips to dark for a reader
+   in dark mode, and light-set text on cream would be unreadable. */
+.card.act{background:#f2ead2;border-color:#ddd2b0;color:#1b1a17;
+ box-shadow:0 9px 26px rgba(0,0,0,.11);
+ /* a note is a piece of paper: it keeps the light set even where the page
+    around it has gone dark, so the icons and chips on it stay legible */
+ --t2:#52514e;--t3:#8a8880;--ta:#185fa5;--warn:#C64C31;--bga:#e6dcbb}
+.card.act .cf,.card.act .ct,.card.act .rank li.top,.card.act .rank b{color:#1b1a17}
+.card.act .cl,.card.act .cs,.card.act .cf small,.card.act .ct em,
+.card.act .rank li{color:#6b6350}
+.card.act .rank li.off,.card.act .rank li.off b{color:#948c76}
+.card.act .chip{color:#5c5442}
+.panel.cyc .card.lit:not(.act){opacity:.42}
+.panel.gone .card.lit{opacity:.1}
+/* the aspects only ease while the panel is reading itself; during a scroll
+   they follow the scroll exactly, so no transition is allowed to lag them */
+svg#world.cyc .asp{transition:opacity .55s}
+/* a card holding a number and four words has no business being 400 px wide */
+#pA .card{width:min(250px,100%)} #pB .card{width:min(276px,100%)}
+/* the number is the claim and the icon says which kind: the drawing carries
+   the rest, so the card does not have to describe what it is showing */
+.cnum{display:flex;align-items:center;gap:11px}
+.cl{font-size:11px;color:var(--t2);letter-spacing:.01em;margin-top:1px}
+.gly svg{display:block;overflow:visible}
+.gly{flex:0 0 auto;width:64px;display:flex;justify-content:center}
+/* a panel that has said its piece steps back rather than stacking on the next */
+.panel.gone .card,.panel.gone .pcol>.cs{opacity:.1}
+/* the note under a panel belongs to its last card, not to the panel */
+.pcol>.cs{opacity:.08;transition:opacity .5s} .pcol>.cs.lit{opacity:1}
+.ct{font-size:13px;font-weight:600;margin-bottom:5px;display:flex;align-items:baseline;gap:8px}
+.ct em{font-style:normal;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+ color:var(--t3);font-weight:600;margin-left:auto}
+.cf{font-size:25px;font-weight:600;letter-spacing:-.025em;line-height:1.05;
+ font-variant-numeric:tabular-nums}
+.cf small{font-size:12.5px;font-weight:500;color:var(--t2);letter-spacing:0;margin-left:5px}
+.cs{font-size:12.5px;color:var(--t2);margin:6px 0 0;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{font-size:10.5px;color:var(--ta);background:var(--bga);border-radius:20px;padding:2.5px 8px}
+/* the ranking, stated rather than drawn: the order is the answer */
+.rank{margin:2px 0 0;padding-left:19px;font-size:12.5px;color:var(--t2)}
+.rank li{margin:0 0 4px;line-height:1.4}
+.rank li.top{font-size:15.5px;font-weight:600;color:var(--t);margin:2px 0 7px}
+.rank li.top .dot{width:8px;height:8px} .rank b{color:var(--t);font-weight:600;
+ font-variant-numeric:tabular-nums;margin-left:4px}
+.rank li.off{color:var(--t3)} .rank li.off b{color:var(--t3);font-weight:500}
+.dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;
+ vertical-align:0}
+.opts{display:flex;gap:11px;margin:1px 0 10px;flex-wrap:wrap;align-items:center}
+.opts button{font:inherit;font-size:11.5px;padding:2px 0 3px;border:0;border-bottom:1.5px solid transparent;
+ background:none;color:var(--t3);cursor:pointer}
+.opts button.on{color:var(--t);font-weight:600;border-bottom-color:var(--t)}
+.rzh{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+ color:var(--t3);margin:11px 0 5px}
+.rz{margin:0;padding-left:15px;font-size:12.5px;color:var(--t2)}
+.rz li{margin:0 0 4px;line-height:1.45}
+.rz.bad{color:var(--warn)} .rz.bad li{color:var(--warn)}
+.hold{font-size:8.8px;letter-spacing:.05em;text-transform:uppercase;color:var(--ta);
+ border:.5px solid var(--ta);border-radius:20px;padding:1px 6px;font-weight:600;
+ white-space:nowrap;margin-left:-5px}
+.borrow{margin-top:10px;padding-top:10px;border-top:.5px solid var(--b);
+ font-size:12.5px;color:var(--t2);line-height:1.45}
+.borrow b{color:var(--t)}
+@media(max-width:1060px){
+  .panel{justify-content:center;padding:0 22px 0 150px}
+  .pcol{width:min(430px,100%)}}
+.end{max-width:1000px;margin:0 auto;padding:80px 22px 40px}
+.end h2{font-size:clamp(24px,3.6vw,34px);line-height:1.15;letter-spacing:-.02em;
+ margin:0 0 14px;font-weight:600}
+.end p{color:var(--t2);max-width:60ch;margin:0 0 20px}
+.end .scales-h{font-size:clamp(26px,4.2vw,40px);font-weight:700;letter-spacing:-.028em;margin:0}
+.endrow{margin:36px 0 64px}
+.end .try{margin-top:0}
+.cta{display:inline-flex;align-items:center;gap:9px;background:var(--t);color:var(--s0);
+ text-decoration:none;font-weight:600;font-size:15px;padding:13px 22px;border-radius:26px}
+.cta:hover{opacity:.87}
+.cta small{font-weight:400;opacity:.65;font-size:12.5px}
+.foot{max-width:1000px;margin:0 auto;padding:0 22px 60px;font-size:11.5px;color:var(--t3);
+ line-height:1.65;border-top:.5px solid var(--b);padding-top:16px}
+@media(prefers-reduced-motion:reduce){
+  .oclaim{position:relative;height:auto;opacity:1}
+  .obeat{min-height:0}
+  .p{opacity:1} .preds{grid-template-rows:1fr 1fr 1fr 1fr 1fr;transition:none}
+  .stage{position:relative;height:auto;padding:26px 0}
+  .rail{position:static;flex-direction:row;align-items:baseline;gap:9px;width:auto;
+    opacity:1;padding:14px 22px 0}
+  .rnum{font-size:30px;margin:0} .rtick{display:none}
+  .ch{min-height:0;padding:22px;display:block}
+  .chin{opacity:1;transform:none;max-width:none;transition:none}
+  .zoom{display:flex;flex-direction:column}}
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;gap:18px;padding-top:34px;min-height:0}
+  .hart{order:-1;width:min(100%,46svh);margin:0 auto}
+  .nt{font-size:10.5px;padding:6px 8px 7px;width:48%} .nt small{font-size:8.5px}
+  #nt4{left:50%!important;top:34%!important}
+  .cc{padding:7px 9px;bottom:9%;left:-2%;width:48%} .cc b{font-size:13px} .cc p{font-size:10px;margin:2px 0 5px}
+  .cc .why span{font-size:8px;padding:0 5px}
+  .srow{gap:12px;margin-top:34px} .sl{font-size:13px}
+  /* with lists under them the three scales need full width on a phone */
+  #scales .srow{grid-template-columns:1fr;gap:34px}
+  #scales .sn{font-size:56px} #scales .srow{gap:26px} .tl3{margin-top:14px}
+  /* the status tag sits beside its numeral, not under the label */
+  #scales .scol{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:end}
+  #scales .scol>.sn{grid-column:1;grid-row:1}
+  #scales .scol>.st{grid-column:2;grid-row:1;justify-self:start;margin:0 0 9px}
+  #scales .scol>.sl{grid-column:1/-1;grid-row:2}
+  #scales .scol>.tl3{grid-column:1/-1;grid-row:3}
+  .sn{font-size:clamp(38px,12vw,58px)} .st{white-space:normal;font-size:8.5px;padding:2px 6px;border-radius:7px;line-height:1.35}
+  .cta small{display:none}
+  .chin{max-width:none;width:100%} .ch.right{justify-content:flex-start}
+  .ch{min-height:94svh;padding:0 16px} svg#world{height:min(50svh,470px)}
+  /* the column becomes a stack, and a stack of three cards would bury the
+     drawing on a 390 px screen — so a phone shows the card it is on, one at
+     a time, sitting under the ring rather than over it */
+  .panel{min-height:112svh;padding:0 16px;align-items:flex-start}
+  /* the card sticks below the ring for the length of its panel, so the
+     drawing stays answering while the card it answers changes */
+  .pcol{width:100%;position:sticky;top:58svh}
+  .card{padding:12px 14px;margin-bottom:0} .cf{font-size:22px}
+  .opts button .op{font-size:11px}
+  .cap{font-size:11.5px}
+  .panel .card{display:none} .panel .card.now{display:block}
+  .panel.cyc .card{display:none} .panel.cyc .card.act{display:block}
+  .panel .pcol>.cs{font-size:11.5px;margin-top:9px}
+  .stage{padding:44px 0 0}
+  /* clear of the fixed header */
+  .rail{top:58px;bottom:auto;width:auto;flex-direction:row;align-items:baseline;
+    gap:8px;padding-left:16px}
+  .obeat{min-height:60svh}
+  .claim{font-size:clamp(21px,6vw,30px)}
+  /* clear of the rail, which runs across the top on a phone */
+  /* the rail runs across the top on a phone, so the lead starts below it */
+  .runlead{padding:9svh 22px 7svh}
+  /* on a phone "trade-offs" would wrap into the figures, so while the pair is
+     open it takes its own line under them */
+  /* on a phone "trade-offs" keeps a line of its own, and the figures open a
+     gap above it rather than wrapping into it */
+  .tail{display:block;transition:margin-top .65s cubic-bezier(.2,.8,.3,1)}
+  .p.split{padding-bottom:0}
+  /* a phone keeps the line per pair: three short grounds, stacked */
+  .gg{grid-template-columns:1fr;gap:4px;padding-top:18px}
+  .pc{padding:6px 8px 8px} .pc svg{max-height:58px} .pc .w{font-size:12px;margin-top:4px}
+  .pc svg{max-height:48px} .gg.figs .sgt{margin-bottom:6px;min-height:0} .sgt{font-size:16px}
+  .rnum{font-size:26px;margin:0}
+  .rsec{margin:0} .rtick{display:none}}
+</style></head><body>
+<header class="hdr" id="hdr">
+  <span class="hw">Groundwork<small>500 · 50 · 5</small></span>
+  <a class="try" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">Try the demo</a>
+</header>
+<div class="mockbar">Mockup — schematic geometry, measured figures</div>
+
+<div class="dk">
+<section class="hero">
+ <div class="htext">
+  <h1 class="hh"><span class="hwrap"><span id="hword">Groundwork</span></span><span class="hfade"> suggests,<br>you design.</span></h1>
+  <p class="lead hfade">Groundwork reads the problem, works through what it allows, and
+  hands the designer suggestions: <b><span class="hl k1" id="hl1">a trade-off</span>, <span class="hl k2" id="hl2">a
+  conflict</span>, <span class="hl k3" id="hl3">a stress test</span>, <span class="hl k4" id="hl4">a gap</span>.</b> The design stays theirs.</p>
+  <p class="hfade">Every suggestion comes with its reasons — what it costs, what it buys, where it was
+  measured — and every reason can be checked.</p>
+  <div class="cue hfade"><span></span>scroll</div>
+ </div>
+ <div class="hart hfade"><svg id="sweep" class="sweep" viewBox="22 18 264 264" role="img"
+   aria-label="129 ways across one parcel, drawn over each other"></svg>
+   <div class="nt k1" id="nt1" style="--rot:-2deg;left:-6%;top:44%"><small>trade-off</small>
+     <b>More carpark decks</b> — shorter walks, less open ground.</div>
+   <div class="nt k2" id="nt2" style="--rot:1.6deg;left:52%;top:-3%"><small>conflict</small>
+     <b>The busiest edge</b> is also the best one to wall.</div>
+   <div class="nt k3" id="nt3" style="--rot:-1deg;left:54%;top:62%"><small>stress test</small>
+     <b>Building height holds</b> however many decks.</div>
+   <div class="nt k4" id="nt4" style="--rot:1.2deg;left:62%;top:31%"><small>gap</small>
+     <b>No route reaches</b> the park edge.</div>
+   <div class="cc" id="cc"><small>concept</small><b>The station walk</b>
+     <p>North–south, from the station.</p>
+     <div class="why"><span style="color:var(--ta)">trade-off</span><span style="color:var(--warn)">conflict</span><span style="color:var(--hl3)">stress test</span><span class="open" style="color:var(--hl4)">gap · still open</span></div></div>
+   <div class="hcap" id="hcap">129 ways across one parcel</div></div>
+</section>
+
+<div class="open" id="open">
+  <div class="oclaim" id="oclaim"><div class="oinner">
+    <h1 class="claim">
+      <span class="subj" id="subj">Groundwork</span>
+      <span class="preds">
+        <span class="p">surfaces <span class="sw2" id="split"><span class="c1"><em id="wdes">design</em></span><span class="c2"><span class="pair" id="pair"><span class="gl"><i id="gdot"></i></span><span class="side a" id="sa"><span class="ico" id="icoA"></span><em id="wa">distance</em></span><span class="vs">vs</span><span class="side b" id="sb"><span class="ico" id="icoB"></span><em id="wb">openness</em></span></span></span></span> <span class="tail">trade-offs</span></span>
+        <span class="p">names the conflicts inside them</span>
+        <span class="p">checks what holds up</span>
+        <span class="p">finds the gaps</span>
+        <span class="p last">and gives you suggestions with reasons you can check</span>
+      </span>
+    </h1>
+    <div class="fold" id="gfold"><div><div class="gg" id="gg"></div><p class="etc" id="etc"></p></div></div>
+  </div></div>
+  <div class="obeats">
+    <div class="obeat short"></div>
+    <div class="obeat t"></div><div class="obeat t"></div><div class="obeat t"></div>
+    <div class="obeat"></div>
+    <div class="obeat"></div><div class="obeat"></div><div class="obeat"></div>
+    <div class="obeat"></div>
+  </div>
+</div>
+<div class="dkfade" aria-hidden="true"></div>
+</div><!-- /.dk — the page turns to paper here, as the site arrives -->
+
+<section class="scales" id="scales">
+  <h2>One tool, three scales.</h2>
+  <p>The suggestions follow you from the masterplan to the block to the detail; and vice versa.</p>
+  <div class="srow">
+    <div class="scol"><div class="sn"><span id="big500">500</span></div>
+      <div class="sl">masterplan</div>
+      <span class="st live">live</span>
+      <div class="tl3"><small>design trade-offs</small><ul><li>space planning</li><li>efficiency</li><li>edges &amp; outlook</li></ul></div></div>
+    <div class="scol" id="s50"><div class="sn">50</div>
+      <div class="sl">block</div>
+      <span class="st early">early access · on request</span>
+      <div class="tl3"><small>design trade-offs</small><ul><li>circulation</li><li>efficiency</li><li>daylight &amp; wind</li></ul></div></div>
+    <div class="scol" id="s5"><div class="sn">5</div>
+      <div class="sl">detail</div>
+      <span class="st">in development</span>
+      <div class="tl3"><small>design trade-offs</small><ul><li>shading</li><li>glare &amp; view</li><li>buildability &amp; expression</li></ul></div></div>
+  </div>
+</section>
+
+<div class="rail" id="rail" role="status" aria-live="polite" aria-label="Groundwork 500">
+  <div class="rwm">Groundwork</div>
+  <div class="rnum" aria-hidden="true"><span>5</span><span id="z1">0</span><span id="z2">0</span></div>
+  <div class="rtick"></div>
+  <div class="rsec" id="rsec">the parcel</div>
+</div>
+
+<section class="runlead">
+  <h2>Here it is, running.</h2>
+</section>
+
+<div class="zoom" id="zoom">
+  <div class="stage">
+    <!-- the tool, then the drawing: the screenshot scales up around its own
+         ring and dissolves into the schematic parcel at the same size, so the
+         zoom starts inside the real thing. The line sits across the page while
+         the 500 is still flying to the rail. -->
+    <div class="toolshot" id="toolshot"><img src="frames/dial.jpg"
+      alt="Groundwork 500 running on the Ubi Avenue parcel — the site inside the tool's ring"></div>
+    <svg id="world" viewBox="0 0 300 300" role="img"
+      aria-label="one site, drawn from parcel to louvre"></svg>
+  </div>
+  <div class="chapters">
+
+    <!-- THE DERIVATION, IN THE TOOL'S OWN THREE HEADINGS. Every figure here
+         is from a run; the cards are rendered from CARDS below so a new run
+         is a data edit, not a markup edit. -->
+    <section class="panel" id="pA"><div class="pcol">
+      <div class="phd">What the site has</div>
+      <div class="card"><div class="cnum"><span class="gly"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--t2)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--t2)" stroke-width="2.4"/><g transform="translate(-10.00,-10.00) scale(0.5)"><path d="M83.14,84.66h-30.28s-.04,4.04-.04,4.04c-.01,1.03-.9,2.09-1.97,2.09h-8.01c-1.3,0-2.12-1.09-2.12-2.34v-17.97c0-1.49.28-2.7.77-4.17l-2.42-.08c-.33-.01-.95-.28-1.13-.52s-.31-.92-.21-1.22l.68-2.11c.89-2.78,3.27-2.14,5.28-2.35l4.33-12.12c.49-1.36,1.36-2.48,2.61-3.22,2.54-1.51,5.27-2.29,8.26-2.57,6.09-.57,12.07-.58,18.16,0,3.4.32,9.31,1.59,10.61,5.19l4.61,12.75,2.78.11c1.08.04,2.13,1,2.45,2l.74,2.28c.28.86-.33,1.76-1.21,1.79l-2.54.09c.42,1.29.78,2.4.78,3.73v18.4c0,1.45-.98,2.36-2.38,2.36l-7.57-.02c-1.2,0-2.08-.92-2.15-2.1l-.02-4.03ZM87.67,60.94c-1.09-4.33-2.42-8.3-4.08-12.36-1.25-.93-2.8-1.24-4.32-1.6-4.42-.66-8.76-.78-13.27-.73-3.72.05-7.22.26-10.85.98-.87.42-2.39.58-2.83,1.53-1.86,3.92-3,7.95-4.06,12.18,3.02.83,5.84,1.34,8.93,1.67,9.13.95,21.48.86,30.48-1.67ZM54.24,75.52c1.02-.06,1.63-.76,1.71-1.57.06-.56-.33-1.43-.99-1.79-2.29-1.22-4.59-2.2-7.07-3.06-1.29-.45-4.01-.55-4.09,1.25-.05,1.21-.22,2.49.12,3.6.68,2.18,8.19,1.69,10.31,1.57ZM92.03,74.03c.38-1.18.23-2.49.12-3.72-.17-1.92-3-1.61-4.26-1.15-2.41.87-4.67,1.83-6.89,3.01-.76.41-1.09,1.3-.93,2.07.13.63.91,1.24,1.74,1.28,1.9.09,9.54.57,10.22-1.5Z" fill="currentColor"></path></g></g></svg></span>
+        <div><div class="cf">5</div><div class="cl">possible vehicle gates</div></div></div></div>
+      <div class="card"><div class="cnum"><span class="gly"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--ta)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--ta)" stroke-width="2.4"/><g transform="translate(-78.02,-10.00) scale(0.5)"><path d="M207.31,51c0-.07.03-.19,0-.25-.06-.11-.18-.05-.35-.06-3.78-.33-6.5-3.6-6.31-7.3.19-3.66,3.25-6.58,6.93-6.58s6.75,2.93,6.94,6.58-2.46,6.88-6.18,7.29c-.16.02-.28,0-.33.08-.04.06-.02.17-.01.24h-.68Z" fill="currentColor"></path><path d="M210.35,82.53l-7.65-8.07-1.61,9.06c-.13.75-.43,1.31-.92,1.88l-10.09,11.9c-1.13,1.33-3.03,1.35-4.27.32s-1.62-3-.49-4.34l8.43-10.01,2.66-15.35,2.18-10.16-2.5,1.4-4.44,8.45c-.68,1.3-2.23,1.76-3.48,1.12s-1.87-2.14-1.2-3.44l4.76-9.11c.29-.56.71-.97,1.26-1.28l9.61-5.46c3.07-1.74,6.9.12,8.26,2.84l5.28,10.57,7.71,1.52c.89.17,1.56.72,1.84,1.56.4.92.37,1.89-.28,2.66-.58.69-1.5,1.13-2.52.93l-9.19-1.81c-.71-.23-1.27-.57-1.6-1.23l-2.45-4.87-1.66,7.83,7.57,8.04c.6.64,1.04,1.36,1.04,2.28l-.02,16.45c0,1.72-1.55,2.99-3.11,2.99-1.67,0-3.12-1.36-3.12-3.11v-13.55Z" fill="currentColor"></path></g></g></svg></span>
+        <div><div class="cf">8</div><div class="cl">possible walk entrances</div></div></div></div>
+      <div class="card"><div class="cnum"><span class="gly"><svg width="62" height="34" viewBox="0 -8 98 56" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--warn)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--warn)" stroke-width="2.4"/><g transform="translate(-78.02,-10.00) scale(0.5)"><path d="M207.31,51c0-.07.03-.19,0-.25-.06-.11-.18-.05-.35-.06-3.78-.33-6.5-3.6-6.31-7.3.19-3.66,3.25-6.58,6.93-6.58s6.75,2.93,6.94,6.58-2.46,6.88-6.18,7.29c-.16.02-.28,0-.33.08-.04.06-.02.17-.01.24h-.68Z" fill="currentColor"></path><path d="M210.35,82.53l-7.65-8.07-1.61,9.06c-.13.75-.43,1.31-.92,1.88l-10.09,11.9c-1.13,1.33-3.03,1.35-4.27.32s-1.62-3-.49-4.34l8.43-10.01,2.66-15.35,2.18-10.16-2.5,1.4-4.44,8.45c-.68,1.3-2.23,1.76-3.48,1.12s-1.87-2.14-1.2-3.44l4.76-9.11c.29-.56.71-.97,1.26-1.28l9.61-5.46c3.07-1.74,6.9.12,8.26,2.84l5.28,10.57,7.71,1.52c.89.17,1.56.72,1.84,1.56.4.92.37,1.89-.28,2.66-.58.69-1.5,1.13-2.52.93l-9.19-1.81c-.71-.23-1.27-.57-1.6-1.23l-2.45-4.87-1.66,7.83,7.57,8.04c.6.64,1.04,1.36,1.04,2.28l-.02,16.45c0,1.72-1.55,2.99-3.11,2.99-1.67,0-3.12-1.36-3.12-3.11v-13.55Z" fill="currentColor"></path></g></g><g transform="translate(47.3,0)" style="color:var(--warn)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--warn)" stroke-width="2.4"/><g transform="translate(-10.00,-10.00) scale(0.5)"><path d="M83.14,84.66h-30.28s-.04,4.04-.04,4.04c-.01,1.03-.9,2.09-1.97,2.09h-8.01c-1.3,0-2.12-1.09-2.12-2.34v-17.97c0-1.49.28-2.7.77-4.17l-2.42-.08c-.33-.01-.95-.28-1.13-.52s-.31-.92-.21-1.22l.68-2.11c.89-2.78,3.27-2.14,5.28-2.35l4.33-12.12c.49-1.36,1.36-2.48,2.61-3.22,2.54-1.51,5.27-2.29,8.26-2.57,6.09-.57,12.07-.58,18.16,0,3.4.32,9.31,1.59,10.61,5.19l4.61,12.75,2.78.11c1.08.04,2.13,1,2.45,2l.74,2.28c.28.86-.33,1.76-1.21,1.79l-2.54.09c.42,1.29.78,2.4.78,3.73v18.4c0,1.45-.98,2.36-2.38,2.36l-7.57-.02c-1.2,0-2.08-.92-2.15-2.1l-.02-4.03ZM87.67,60.94c-1.09-4.33-2.42-8.3-4.08-12.36-1.25-.93-2.8-1.24-4.32-1.6-4.42-.66-8.76-.78-13.27-.73-3.72.05-7.22.26-10.85.98-.87.42-2.39.58-2.83,1.53-1.86,3.92-3,7.95-4.06,12.18,3.02.83,5.84,1.34,8.93,1.67,9.13.95,21.48.86,30.48-1.67ZM54.24,75.52c1.02-.06,1.63-.76,1.71-1.57.06-.56-.33-1.43-.99-1.79-2.29-1.22-4.59-2.2-7.07-3.06-1.29-.45-4.01-.55-4.09,1.25-.05,1.21-.22,2.49.12,3.6.68,2.18,8.19,1.69,10.31,1.57ZM92.03,74.03c.38-1.18.23-2.49.12-3.72-.17-1.92-3-1.61-4.26-1.15-2.41.87-4.67,1.83-6.89,3.01-.76.41-1.09,1.3-.93,2.07.13.63.91,1.24,1.74,1.28,1.9.09,9.54.57,10.22-1.5Z" fill="currentColor"></path></g></g><g style="color:var(--warn)" transform="translate(-146.00,-10.02) scale(0.5)"><path d="M386.59,37.33c-.18-3.83,0-7.75-.72-11.48.34-1.87-.26-3.78-.19-5.63.08-2.05.09-3.99-.28-6.01-.25-1.35.24-2.95.08-4.33.82-.17,2.68-.91,3.07.47.35,1.22.3,2.8.23,3.81-.14,2.01-.64,4.04-.21,6.05-.76,1.7-.2,3.7-.43,5.52-.25,2.05-.3,4.04-.3,6.1,0,1.82-.59,3.65-.19,5.48-.05.64-.57,1.5-.43,2.23h-.46c.02-.65-.14-1.53-.18-2.21Z" fill="currentColor"></path><path d="M394.57,32.31c2.03-3.7,3.47-7.89,4.96-11.95.33-.91,1.04-1.67,1.04-2.75.54.08,1.12.11,1.66.46.57.37.72,1.27.62,2.06-1.3,1.33-2.17,3.28-2.81,5.16-1.98,2.78-3.54,6.05-5.05,9.23-.42,0-.79-.34-.7-.65.16-.57.08-1.2.28-1.56Z" fill="currentColor"></path><path d="M371.11,19.85c0-.56.26-1.18.18-1.75,3.01-2.34,3.42,5.53,5.75,8.13.36,2.08,1.2,4.1,2.29,5.77-.05.68.46,1.24.02,2.24-3.16-3.82-5.15-10.23-8.23-14.39Z" fill="currentColor"></path></g></svg></span>
+        <div><div class="cf">2</div><div class="cl">contested</div></div></div></div>
+      <p class="cs">Another parcel returns a different set.</p>
+    </div></section>
+
+    <section class="panel" id="pB"><div class="pcol">
+      <div class="phd">What it calls for</div>
+      <div class="card"><div class="ct">Public front<em>layers 1–2</em></div>
+        <div class="cf">NE 100<small>m</small></div></div>
+      <div class="card"><div class="ct">Fenced sides</div>
+        <div class="cf">670<small>m</small></div>
+        <div class="cl">of the 1,201 m boundary acts like the back — the school east,
+        the whole west side</div>
+        <div class="chips"><span class="chip">sides good for carparks</span></div></div>
+      <div class="card"><div class="ct">Suggested approach<em>layer 3</em></div>
+        <ol class="rank" id="rank"></ol></div>
+    </div></section>
+
+    <section class="panel" id="pC"><div class="pcol">
+      <div class="phd">Recommendation</div>
+      <div class="card"><div class="ct" id="ohead">Frontage on NE</div>
+        <div class="opts" id="opts"></div>
+        <div id="ozone"></div>
+        <p class="borrow" id="oborrow"></p>
+        <p class="cs" style="color:var(--t3);margin-top:9px">Shaded on the plan: how far
+        the public front reaches in from the <b>NE 70 m</b> and <b>N 30 m</b>.</p></div>
+    </div></section>
+
+    <section class="ch" id="ways"><div class="chin wide">
+      <div class="tag">the block<span class="wip">early access</span></div>
+      <h2>Start from a footprint</h2>
+      <div class="afig"><svg id="ifig" viewBox="0 0 190 113" role="img"
+        aria-label="the masterplan feeds the block and the block feeds the detail;
+        a footprint and a unit mix of your own enter the block directly"></svg>
+        <p class="cap c500">footprint · unit mix<br><em>frontage · storeys</em></p></div>
+      <p class="cap capy">footprint · unit mix</p>
+    </div></section>
+
+    <section class="ch" id="arch"><div class="chin wide">
+      <div class="tag">the block<span class="wip">early access</span></div>
+      <h2>Curate your reference</h2>
+      <p>Designers select plans that capture preferences, and these create new plans.</p>
+      <div class="afig"><svg id="afig" viewBox="0 0 225 100" role="img"
+        aria-label="a curated reference of plans, and the four design features
+        measured off it"></svg></div>
+    </div></section>
+
+    <!-- THE 50's LAST PANEL. Objective, constraint, move: the bend buys
+         footprint, the cores decide the ground, and the section follows from
+         both. Every figure is measured off the drawing beside it. -->
+    <section class="panel" id="pD"><div class="pcol">
+      <div class="phd">What it suggests</div>
+      <div class="card"><div class="ct">How far it can run<em>the bend</em></div>
+        <div class="cf">138<small>m</small></div>
+        <div class="cl">of footprint across a site 116 m wide — <b>356 m²</b> more on
+        every floor, and <b>128 m</b> of it turned to the park</div></div>
+      <div class="card"><div class="ct">What has to land<em>the ground</em></div>
+        <div class="cf">2<small>cores</small></div>
+        <div class="cl">a refuse chamber each, and <b>378 m²</b> of public face where
+        the lifts reach the ground</div></div>
+      <div class="card"><div class="ct">So it steps<em>the section</em></div>
+        <div class="cf">19 · 5 · 26</div>
+        <div class="cl">storeys, left to right — <b>30,000 m²</b>, the floor area the
+        zone itself would hold. The tall end is the one with nothing standing within
+        <b>130 m</b>; the low end faces two 12 m blocks <b>76 m</b> away</div></div>
+      <p class="cs">20 of the 200 frontage samples read PARK — 120 m of the 1,201 m
+      boundary. The bend is turned at it.</p>
+    </div></section>
+
+    <section class="ch right" id="detail"><div class="chin">
+      <div class="tag">the detail<span class="wip">in progress</span></div>
+      <h2 id="d5h">What shades this façade</h2>
+      <p id="d5p"></p>
+      <p class="thin">Scroll back up and change the spine. The louvre changes, because the
+      façade did.</p>
+    </div></section>
+  </div>
+</div>
+
+<section class="end">
+  <!-- the close repeats the three scales: the reader has now SEEN each one,
+       so the same three numerals mean something they didn't the first time -->
+  <h2 class="scales-h">One tool, three scales.</h2>
+  <div class="srow endrow">
+    <div><div class="sn">500</div><div class="sl">masterplan</div>
+      <span class="st live">live</span></div>
+    <div><div class="sn">50</div><div class="sl">block</div>
+      <span class="st early">early access · on request</span></div>
+    <div><div class="sn">5</div><div class="sl">detail</div>
+      <span class="st">in development</span></div>
+  </div>
+  <h2 class="try">The tool is live. Try it.</h2>
+  <p>Groundwork 500 runs today on Singapore parcels: pick a site, watch the sweep, read the
+  concepts it finds and the ones it cannot name. 50 is in early access on request, and 5 is
+  being built behind it.</p>
+  <a class="cta" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">
+    Open the demo <small>groundwork-lilac.vercel.app</small></a>
+</section>
+
+<p class="foot">
+  One drawing, one <code>viewBox</code>, animated against scroll — not an image sequence, so
+  detail resolves rather than being revealed. Geometry is schematic and stands in for real
+  exports. Figures are measured: parcel numbers from the Ubi sweep, footprint numbers from a
+  single real 100 × 78 m case. No archive plan geometry is shown.
+</p>
+
+<script>
+
+/* ---- THE SIX TENSIONS ----
+   Every pair is something the engine computes, with the figures it computed.
+   That is the bar: the breadth is the differentiator, so a pair the tool
+   cannot answer would be the one claim a sceptic tests first. */
+const TEN=[
+ {n:"distance vs openness", a:["walk to the furthest home","249 m","108 m"],
+  b:["ground left open","6,140 m²","3,232 m²"],
+  note:"one carpark deck to three — and the building stays 8 levels either way"},
+ {n:"provision vs proximity", a:["spaces built","4","9"],
+  b:["worst walk to one","132 m","249 m"],
+  note:"capacity and walk are asked separately; where capacity wants more than walk\nallows, the ones built serve more people"},
+ {n:"height vs footprint", a:["storeys","11","6"],
+  b:["footprint for homes","23%","42%"],
+  note:"plot ratio 2.5 is fixed by URA, so footprint × storeys is fixed with it —\nonly two of the three are ever free"},
+ {n:"enclosure vs exposure", a:["convexity · Hillier & Hanson","high","low"],
+  b:["edge · Gehl","low","high"],
+  note:"maximum convexity wants a circle, and a circle has the least edge of any\nshape — they pull apart by construction"},
+ {n:"prospect vs refuge", a:["worth looking at","—","−1"],
+  b:["worth walling","3","—"],
+  note:"a school scores both ways at once; 362 of 694 candidate positions stand in\nfront of something with a negative outlook"},
+ {n:"frontage vs buffer", a:["pull — how arrived-at","0.77","0.31"],
+  b:["wall — worth turning from","2.54","2.90"],
+  note:"the busiest edge is also the best thing on site to turn your back on,\nand that conflict recurs on every parcel measured"}
+];
+
+/* THE ELEVATIONS. Every drawing is a side view standing on the ground line —
+   one convention for all twelve, so the eye compares ideas, not drawing
+   styles. Each is a 100 x 64 box whose bottom edge IS the ground. The left
+   end of a pair and the right end are drawn to be read together, across the
+   one line. First drafts, meant to be improved in place. */
+/* ART REDRAWN IN ILLUSTRATOR, dropped in whole. Each primitive keeps the
+   proportions it was drawn at; PK is one shared scale so every stroke in
+   the set lands at the same weight. Fills are mapped to currentColor, so
+   the icons flip with the dark section instead of being locked to black. */
+const PK=0.485;
+const PRIM={
+  walk:{w:29.83,h:54.00,x:-0.01,y:60.74,m:`<g>
+    <path d="M20.01,111.66c-2.45-13.89-11.07-16.79-11.18-23.77l-.12-7.88c-1.75,2.16-2.65,4.78-2.67,7.5l-.03,3.64c-.01,1.57-1.2,2.81-2.64,2.98s-3.06-.72-3.23-2.34c-.61-5.94.53-11.64,4.63-16.09,4.77-5.17,10.86-4.78,16.89-2.26l-1.36-2.51c-.67-1.24.09-2.85,1.13-3.55s2.89-.86,3.73.3c1.46,1.99,2.65,4.09,3.85,6.27.51.94.79,2.16.81,3.19.05,2.25-1.72,3.83-3.95,3.89s-4.27-.7-6.59-1.5l-.07,7.22c-.01,1.34-.39,2.61-.78,3.92,4.59,5.72,7.65,12.4,8.51,19.66.26,2.22-.67,3.99-2.89,4.36-1.91.32-3.68-.93-4.06-3.04Z" fill="currentColor"></path>
+    <path d="M.29,112.6c-.61-1.47-.05-2.88.86-3.96,3.9-4.64,6.87-9.85,8.03-16l5.63,7.7c-1.87,5.04-4.78,9.65-8.66,13.43-.85.83-2.15,1.06-3.18.92s-2.18-.9-2.68-2.1Z" fill="currentColor"></path>
+    <path d="M13.74,70.41c-2.06-.66-3.29-2.57-3.35-4.49s1.06-3.89,2.94-4.75c2.06-.95,4.34-.24,5.66,1.35,1.42,1.71,1.55,4.05.43,5.83s-3.41,2.78-5.68,2.06Z" fill="currentColor"></path>
+  </g>`},
+  house:{w:60.24,h:58.35,x:142.88,y:55.65,m:`<g>
+    <path d="M178.35,95.96h-10.62c-.37.02-.96.41-.96.81v17.23s-13.98,0-13.98,0c-.62-.06-1-.51-.95-1.17v-28.45s20.46-19.69,20.46-19.69c.5-.38,1.05-.33,1.48.12l20.37,19.77v28.46c-.11.56-.46.91-.97.96h-13.98s0-17,0-17c0-.51-.34-.93-.87-1.05Z" fill="currentColor"></path>
+    <path d="M146.09,85.53c-.95.91-1.99.78-2.68.1-.79-.77-.65-1.96.12-2.69l6.48-6.15v-14.08s9.03-.02,9.03-.02l.13,5.38,12.51-11.85c.68-.64,1.77-.83,2.54-.1l28.34,26.91c.74.7.72,1.75.13,2.48-.43.53-1.66,1.08-2.47.31l-27.23-25.84-26.91,25.54Z" fill="currentColor"></path>
+  </g>`},
+  towers:{w:102.69,h:132.12,x:38.55,y:141.98,m:`<path d="M38.55,274v-131.94s56.74-.08,56.74-.08v131.92M100.21,274.02v-91.88s41.03.06,41.03.06v91.83M84.99,161.96l-.02-10.24-4.91.03-.03,10.18,4.96.04ZM69.38,161.93v-10.22s-4.88-.04-4.88-.04l-.03,10.27h4.91ZM53.77,161.98l.05-10.27-4.92-.06-.05,10.26,4.92.07ZM84.96,181.45l.02-10.22h-4.93s-.02,10.22-.02,10.22h4.92ZM69.38,181.45v-10.23s-4.88,0-4.88,0l-.02,10.24h4.9ZM53.81,181.43v-10.2s-4.9-.01-4.9-.01l-.03,10.24,4.93-.02ZM84.97,200.95v-10.3s-4.89,0-4.89,0l-.05,10.3h4.94ZM69.37,200.93v-10.27s-4.89,0-4.89,0v10.37s4.89-.09,4.89-.09ZM53.81,200.93v-10.26s-4.9,0-4.9,0l-.03,10.27h4.94ZM130.99,202.99v-10.26s-4.93,0-4.93,0l-.03,10.24,4.95.02ZM115.4,202.95l.02-10.23-4.94-.02-.02,10.28,4.94-.03ZM84.97,220.44l.02-10.32h-4.98s.02,10.23.02,10.23l4.94.08ZM69.42,220.38v-10.22s-4.9.01-4.9.01l.02,10.21h4.88ZM53.89,220.36l-.08-10.22-4.94.03-.23,10.15,5.25.04ZM130.96,222.49l.06-10.28-4.96-.05-.08,10.2,4.98.13ZM115.47,222.36l-.06-10.18-4.94.02-.05,10.21,5.05-.04ZM53.83,239.88l-.06-10.32-4.9.13v10.19s4.96,0,4.96,0ZM84.96,239.91l.02-10.26-4.94.02-.02,10.24h4.93ZM69.38,239.96l.02-10.28-4.91-.03v10.22s4.9.09,4.9.09ZM130.97,241.92l.04-10.22-4.94-.05-.04,10.23,4.94.04ZM115.39,241.92l.04-10.19-4.94-.09-.06,10.28h4.96ZM130.97,261.38l.03-10.24h-4.95s.02,10.24.02,10.24h4.9ZM115.4,261.4l.02-10.24-4.97-.03v10.29s4.95-.02,4.95-.02ZM73.68,257.83l.03,16.12,4.92.03v-21.12s-23.42-.02-23.42-.02l-.03,21.11,4.89.15.04-16.19,13.57-.06Z" fill="currentColor"></path>`},
+  block:{w:136.81,h:102.10,x:440.28,y:330.71,m:`<path d="M440.28,432.76v-79.81c0-2.12,1.72-3.54,3.57-3.55l10.58-.06.04-15.31c0-1.65,1.74-3.32,3.48-3.32h41.07c1.59.01,3.24,1.71,3.24,3.21v15.45s71.49,0,71.49,0c1.46,0,3.32,1.58,3.32,3.07l.02,80.37M495.96,387.03l-.05-49.96h-35.09s-.03,49.99-.03,49.99l35.16-.03ZM553.49,373.52c.79,0,2.14-1.41,2.1-2.16s-1.47-2.04-2.25-2.04l-43.74-.04c-1.02,0-2.41,1.28-2.37,2.09.05.95,1.28,2.17,2.34,2.17l43.93-.03ZM488.99,432.44v-22.92s-24.32.07-24.32.07l.03,22.93,24.29-.08ZM519.67,432.51l-.13-22.97h-24.2s-.09,22.98-.09,22.98h24.42ZM550.26,432.43v-22.91s-24.33.03-24.33.03l.07,22.96,24.26-.08Z" fill="currentColor"></path>`},
+  sceneDistance:{w:203.14,h:59.09,x:-0.01,y:55.65,m:`<g>
+    <path d="M20.01,111.66c-2.45-13.89-11.07-16.79-11.18-23.77l-.12-7.88c-1.75,2.16-2.65,4.78-2.67,7.5l-.03,3.64c-.01,1.57-1.2,2.81-2.64,2.98s-3.06-.72-3.23-2.34c-.61-5.94.53-11.64,4.63-16.09,4.77-5.17,10.86-4.78,16.89-2.26l-1.36-2.51c-.67-1.24.09-2.85,1.13-3.55s2.89-.86,3.73.3c1.46,1.99,2.65,4.09,3.85,6.27.51.94.79,2.16.81,3.19.05,2.25-1.72,3.83-3.95,3.89s-4.27-.7-6.59-1.5l-.07,7.22c-.01,1.34-.39,2.61-.78,3.92,4.59,5.72,7.65,12.4,8.51,19.66.26,2.22-.67,3.99-2.89,4.36-1.91.32-3.68-.93-4.06-3.04Z" fill="currentColor"></path>
+    <path d="M.29,112.6c-.61-1.47-.05-2.88.86-3.96,3.9-4.64,6.87-9.85,8.03-16l5.63,7.7c-1.87,5.04-4.78,9.65-8.66,13.43-.85.83-2.15,1.06-3.18.92s-2.18-.9-2.68-2.1Z" fill="currentColor"></path>
+    <path d="M13.74,70.41c-2.06-.66-3.29-2.57-3.35-4.49s1.06-3.89,2.94-4.75c2.06-.95,4.34-.24,5.66,1.35,1.42,1.71,1.55,4.05.43,5.83s-3.41,2.78-5.68,2.06Z" fill="currentColor"></path>
+  </g><path d="M34.69,106h112" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" stroke-dasharray="2 10"></path><g>
+    <path d="M178.35,95.96h-10.62c-.37.02-.96.41-.96.81v17.23s-13.98,0-13.98,0c-.62-.06-1-.51-.95-1.17v-28.45s20.46-19.69,20.46-19.69c.5-.38,1.05-.33,1.48.12l20.37,19.77v28.46c-.11.56-.46.91-.97.96h-13.98s0-17,0-17c0-.51-.34-.93-.87-1.05Z" fill="currentColor"></path>
+    <path d="M146.09,85.53c-.95.91-1.99.78-2.68.1-.79-.77-.65-1.96.12-2.69l6.48-6.15v-14.08s9.03-.02,9.03-.02l.13,5.38,12.51-11.85c.68-.64,1.77-.83,2.54-.1l28.34,26.91c.74.7.72,1.75.13,2.48-.43.53-1.66,1.08-2.47.31l-27.23-25.84-26.91,25.54Z" fill="currentColor"></path>
+  </g>`},
+  sceneOpen:{w:152.10,h:106.43,x:246.52,y:7.58,m:`<path d="M274.35,103l-.24-4.81-22.2-.03-.24,5.24c-.9.02-2.27,0-2.33-.47-.08-.53-.17-1.58-.17-2.17l.03-2.09c0-.4-.88-.39-1.92-.62l.15-5.15h31.15c.26,1.39.28,3.73,0,4.8-.08.31-1.33.52-1.64.57l-.14,4.53c-.02.63-2.42.83-2.45.19Z" fill="currentColor"></path><path d="M274.2,106.79l-22.28-.07-.18,6.61c-.02.77-2.42.84-2.45.06l-.25-6.58-2.25-.27c-.42-.05-.24-1.37-.18-2.4l32.7-.02.13,2.13c.03.53-1.59.46-2.47.61l-.19,6.58c-.02.58-2.22.71-2.51.2l-.08-6.86Z" fill="currentColor"></path><path d="M309.23,113.62l.02-21.26c7.16,2.51,13.17,3.05,17.8-.53-8.59-6.01-13.34-13.29-14.51-21.86-1.25-9.2,3.32-17.57,9.51-25.01-2.72-9.19-14.2-11.08-21.59-9.67-11.56,2.21-10.53,13.35-15.39,20.45-5.72,8.36-15.67,14.95-9.92,26.54,4.94,9.97,15.15,15.81,27.45,9.83l.32,21.79" fill="currentColor" fill-opacity=".14"></path><path d="M341.1,113.7l-4.37-10.5-5.3,2.46-6.36-7.13c-4.75,4.18-5.81,8.87-6.33,15.42" fill="currentColor"></path><path d="M360.69,113.53l.18-27.02c13.6,7.48,28.43,3.08,34.73-9.3,6.89-13.55-.58-28.58-14.72-33.38,1.3-14.92-9.47-25.87-22.87-26.34-13.69-.49-24.94,11.02-24.14,26.44-13.8,4.93-21,19-15.09,32.08,6.03,13.35,21.19,18.36,35.35,10.21l.07,27.79" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path><path d="M377.01,113.61c-.5-3.75-1.55-7.57-4.83-10.62-2.12,3.28-3.34,6.43-4.93,11.01" fill="currentColor"></path><circle cx="391.51" cy="14.69" r="7.11" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></circle>`},
+  sceneBuffer:{w:204.42,h:99.83,x:661.33,y:333.35,m:`<path d="M689.46,431.6v-16.7c5.64,1.97,10.36,2.4,14-.42-6.75-4.72-10.48-10.44-11.4-17.17-.98-7.23,2.6-13.8,7.47-19.65-2.14-7.22-11.15-8.7-16.96-7.59-9.08,1.73-8.27,10.49-12.09,16.06-4.5,6.57-12.31,11.74-7.79,20.85,3.88,7.83,11.9,12.42,21.56,7.72l.25,17.11" fill="currentColor"></path><path d="M729.87,431.53l.14-21.22c10.69,5.87,22.33,2.42,27.27-7.3,5.41-10.64-.46-22.45-11.56-26.22,1.02-11.72-7.44-20.32-17.96-20.69s-19.59,8.66-18.96,20.76c-10.84,3.87-16.49,14.92-11.86,25.19,4.73,10.49,16.64,14.42,27.77,8.02l.05,21.83" fill="currentColor"></path><g>
+    <g>
+      <path d="M823.37,402.31h-18.16c-.63.03-1.64.7-1.64,1.38v29.48s-23.91.01-23.91.01c-1.06-.1-1.71-.88-1.63-2.01v-48.67s35-33.67,35-33.67c.85-.66,1.79-.56,2.54.21l34.85,33.82.02,48.68c-.22.96-.81,1.56-1.69,1.64l-23.91-.02v-29.06c0-.87-.58-1.59-1.48-1.79Z" fill="currentColor" fill-opacity=".14"></path>
+      <path d="M823.37,402.31h-18.16c-.63.03-1.64.7-1.64,1.38v29.48s-23.91.01-23.91.01c-1.06-.1-1.71-.88-1.63-2.01v-48.67s35-33.67,35-33.67c.85-.66,1.79-.56,2.54.21l34.85,33.82.02,48.68c-.22.96-.81,1.56-1.69,1.64l-23.91-.02v-29.06c0-.87-.58-1.59-1.48-1.79Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+    </g>
+    <g>
+      <path d="M768.18,384.46c-1.63,1.55-3.4,1.33-4.59.17-1.36-1.32-1.11-3.35.21-4.61l11.09-10.52v-24.09s15.44-.04,15.44-.04l.23,9.21,21.4-20.26c1.16-1.1,3.03-1.41,4.34-.18l48.48,46.03c1.26,1.2,1.24,3,.23,4.25-.74.91-2.84,1.84-4.22.54l-46.57-44.2-46.02,43.69Z" fill="currentColor" fill-opacity=".14"></path>
+      <path d="M768.18,384.46c-1.63,1.55-3.4,1.33-4.59.17-1.36-1.32-1.11-3.35.21-4.61l11.09-10.52v-24.09s15.44-.04,15.44-.04l.23,9.21,21.4-20.26c1.16-1.1,3.03-1.41,4.34-.18l48.48,46.03c1.26,1.2,1.24,3,.23,4.25-.74.91-2.84,1.84-4.22.54l-46.57-44.2-46.02,43.69Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+    </g>
+  </g>`},
+  longbld:{w:187.91,h:54.09,x:218.69,y:220.00,m:`<path fill-rule="evenodd" fill="currentColor" d="M 218.69 220 L 406.6 220 L 406.6 274.09 L 331.45 274.09 L 331.45 247.05 L 290.69 247.05 L 290.69 274.09 L 218.69 274.09 L 218.69 220 Z M 296.76 252.84 H 324.95 V 274.01 H 296.76 Z M 258.91 247.05 H 263.88 V 257.34 H 258.91 Z M 274.49 247.05 H 279.46 V 257.34 H 274.49 Z M 227.74 247.05 H 232.71 V 257.34 H 227.74 Z M 243.32 247.05 H 248.29 V 257.34 H 243.32 Z M 375.43 247.05 H 380.4 V 257.34 H 375.43 Z M 391.01 247.05 H 395.98 V 257.34 H 391.01 Z M 344.26 247.05 H 349.23 V 257.34 H 344.26 Z M 359.84 247.05 H 364.81 V 257.34 H 359.84 Z M 258.91 226.98 H 263.88 V 237.27 H 258.91 Z M 274.49 226.98 H 279.46 V 237.27 H 274.49 Z M 227.74 226.98 H 232.71 V 237.27 H 227.74 Z M 243.32 226.98 H 248.29 V 237.27 H 243.32 Z M 308.38 226.98 H 313.35 V 237.27 H 308.38 Z M 323.96 226.98 H 328.93 V 237.27 H 323.96 Z M 292.79 226.98 H 297.76 V 237.27 H 292.79 Z M 375.43 226.98 H 380.4 V 237.27 H 375.43 Z M 391.01 226.98 H 395.98 V 237.27 H 391.01 Z M 344.26 226.98 H 349.23 V 237.27 H 344.26 Z M 359.84 226.98 H 364.81 V 237.27 H 359.84 Z"></path>`},
+  eCar:{w:60.61,h:49.13,x:37.70,y:41.69,m:`<path d="M83.14,84.66h-30.28s-.04,4.04-.04,4.04c-.01,1.03-.9,2.09-1.97,2.09h-8.01c-1.3,0-2.12-1.09-2.12-2.34v-17.97c0-1.49.28-2.7.77-4.17l-2.42-.08c-.33-.01-.95-.28-1.13-.52s-.31-.92-.21-1.22l.68-2.11c.89-2.78,3.27-2.14,5.28-2.35l4.33-12.12c.49-1.36,1.36-2.48,2.61-3.22,2.54-1.51,5.27-2.29,8.26-2.57,6.09-.57,12.07-.58,18.16,0,3.4.32,9.31,1.59,10.61,5.19l4.61,12.75,2.78.11c1.08.04,2.13,1,2.45,2l.74,2.28c.28.86-.33,1.76-1.21,1.79l-2.54.09c.42,1.29.78,2.4.78,3.73v18.4c0,1.45-.98,2.36-2.38,2.36l-7.57-.02c-1.2,0-2.08-.92-2.15-2.1l-.02-4.03ZM87.67,60.94c-1.09-4.33-2.42-8.3-4.08-12.36-1.25-.93-2.8-1.24-4.32-1.6-4.42-.66-8.76-.78-13.27-.73-3.72.05-7.22.26-10.85.98-.87.42-2.39.58-2.83,1.53-1.86,3.92-3,7.95-4.06,12.18,3.02.83,5.84,1.34,8.93,1.67,9.13.95,21.48.86,30.48-1.67ZM54.24,75.52c1.02-.06,1.63-.76,1.71-1.57.06-.56-.33-1.43-.99-1.79-2.29-1.22-4.59-2.2-7.07-3.06-1.29-.45-4.01-.55-4.09,1.25-.05,1.21-.22,2.49.12,3.6.68,2.18,8.19,1.69,10.31,1.57ZM92.03,74.03c.38-1.18.23-2.49.12-3.72-.17-1.92-3-1.61-4.26-1.15-2.41.87-4.67,1.83-6.89,3.01-.76.41-1.09,1.3-.93,2.07.13.63.91,1.24,1.74,1.28,1.9.09,9.54.57,10.22-1.5Z" fill="currentColor"></path>`},
+  eWalk:{w:41.31,h:62.39,x:184.65,y:36.81,m:`<path d="M207.31,51c0-.07.03-.19,0-.25-.06-.11-.18-.05-.35-.06-3.78-.33-6.5-3.6-6.31-7.3.19-3.66,3.25-6.58,6.93-6.58s6.75,2.93,6.94,6.58-2.46,6.88-6.18,7.29c-.16.02-.28,0-.33.08-.04.06-.02.17-.01.24h-.68Z" fill="currentColor"></path><path d="M210.35,82.53l-7.65-8.07-1.61,9.06c-.13.75-.43,1.31-.92,1.88l-10.09,11.9c-1.13,1.33-3.03,1.35-4.27.32s-1.62-3-.49-4.34l8.43-10.01,2.66-15.35,2.18-10.16-2.5,1.4-4.44,8.45c-.68,1.3-2.23,1.76-3.48,1.12s-1.87-2.14-1.2-3.44l4.76-9.11c.29-.56.71-.97,1.26-1.28l9.61-5.46c3.07-1.74,6.9.12,8.26,2.84l5.28,10.57,7.71,1.52c.89.17,1.56.72,1.84,1.56.4.92.37,1.89-.28,2.66-.58.69-1.5,1.13-2.52.93l-9.19-1.81c-.71-.23-1.27-.57-1.6-1.23l-2.45-4.87-1.66,7.83,7.57,8.04c.6.64,1.04,1.36,1.04,2.28l-.02,16.45c0,1.72-1.55,2.99-3.11,2.99-1.67,0-3.12-1.36-3.12-3.11v-13.55Z" fill="currentColor"></path>`},
+  eBurst:{w:31.77,h:30.01,x:371.11,y:9.53,m:`<path d="M386.59,37.33c-.18-3.83,0-7.75-.72-11.48.34-1.87-.26-3.78-.19-5.63.08-2.05.09-3.99-.28-6.01-.25-1.35.24-2.95.08-4.33.82-.17,2.68-.91,3.07.47.35,1.22.3,2.8.23,3.81-.14,2.01-.64,4.04-.21,6.05-.76,1.7-.2,3.7-.43,5.52-.25,2.05-.3,4.04-.3,6.1,0,1.82-.59,3.65-.19,5.48-.05.64-.57,1.5-.43,2.23h-.46c.02-.65-.14-1.53-.18-2.21Z" fill="currentColor"></path><path d="M394.57,32.31c2.03-3.7,3.47-7.89,4.96-11.95.33-.91,1.04-1.67,1.04-2.75.54.08,1.12.11,1.66.46.57.37.72,1.27.62,2.06-1.3,1.33-2.17,3.28-2.81,5.16-1.98,2.78-3.54,6.05-5.05,9.23-.42,0-.79-.34-.7-.65.16-.57.08-1.2.28-1.56Z" fill="currentColor"></path><path d="M371.11,19.85c0-.56.26-1.18.18-1.75,3.01-2.34,3.42,5.53,5.75,8.13.36,2.08,1.2,4.1,2.29,5.77-.05.68.46,1.24.02,2.24-3.16-3.82-5.15-10.23-8.23-14.39Z" fill="currentColor"></path>`},
+};
+/* place one: centred on x, its base sitting on `foot`, at a given height or
+   the shared scale */
+function art(n,x,foot,h){
+  const p=PRIM[n]; if(!p) return "";
+  const k=h?h/p.h:PK, tx=x-(p.x+p.w/2)*k, ty=(foot==null?64:foot)-(p.y+p.h)*k;
+  return `<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(4)})">${p.m}</g>`;
+}
+const artW=(n,h)=>PRIM[n].w*(h?h/PRIM[n].h:PK);
+const TINT=c=>`fill="${c}" fill-opacity=".14"`;
+const ICONS=[
+ // distance / openness — drawn whole in Illustrator, placed as they came
+ [ c=>art("sceneDistance",50,64),
+   c=>art("sceneOpen",50,64) ],
+ // provision: three of them / proximity: one, right beside you
+ [ c=>art("house",18,64)+art("house",50,64)+art("house",82,64),
+   c=>art("house",30,64)+art("walk",72,64) ],
+ // height: the tower / footprint: low and spread
+ [ c=>art("towers",50,64,64),
+   c=>art("longbld",50,64) ],
+ // enclosure: held between two walls / exposure: one low wall, and the open side
+ [ c=>`<rect x="4" y="14" width="24" height="50" ${TINT(c)}/>
+     <rect x="72" y="14" width="24" height="50" ${TINT(c)}/>`+art("walk",50,64,30),
+   c=>`<rect x="4" y="44" width="10" height="20" ${TINT(c)}/>`+art("walk",34,64,30)
+     +`<path d="M 54 26 L 96 26 M 58 36 L 96 36 M 52 16 L 90 16" stroke-dasharray="3 4"/>` ],
+ // prospect: up high, looking out / refuge: under cover, back to a wall
+ [ c=>`<rect x="4" y="34" width="32" height="30" ${TINT(c)}/>`+art("walk",20,34,24)
+     +`<path d="M 30 16 L 96 30 M 30 16 L 96 46 M 30 16 L 92 60" stroke-dasharray="2 4"/>`,
+   c=>`<rect x="10" y="8" width="9" height="56" ${TINT(c)}/>
+     <rect x="10" y="8" width="70" height="7" ${TINT(c)}/>`+art("walk",48,64,28) ],
+ // frontage: the door on the street / buffer: trees and a wall, drawn whole
+ [ c=>art("block",50,64),
+   c=>art("sceneBuffer",50,64) ]
+];
+const icoSvg=fn=>`<svg viewBox="0 0 100 64" preserveAspectRatio="xMidYMax meet"
+  aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"
+  stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">${
+  fn("currentColor")}</g></svg>`;
+
+/* ---- THREE, NOT SIX. Three pairs are shown: one about walking, one about
+   massing, one about edges — the range in as few steps as it takes. The other
+   three are measured too and can be swapped in by index. */
+const SHOW=[0,2,5];
+/* each shown pair as a suggestion: the move, and which end it buys */
+const SUG=[
+  {t:"Three carpark decks, not one", buy:"a"},
+  {t:"Six storeys, not eleven",      buy:"a"},
+  {t:"Turn the front off the busiest edge", buy:"b"}
+];
+/* what each later claim does to the line — every tag is a finding already
+   on the page, not a new one */
+const BOARD={
+  conflict:{cf:{2:"the busiest edge is also the best edge to wall"}},
+  holds:{ok:{0:"carpark is always 8 storeys",
+             1:"plot ratio works with the current height limit"}},
+  gaps:{gp:{2:"use greenery as a buffer"}, gapTile:[2,"b"]}
+};
+const GG=document.getElementById("gg");
+GG.innerHTML=SHOW.map((ti,j)=>{
+  const T=TEN[ti], [l,r]=T.n.split(" vs "), S=SUG[j];
+  return `<div class="pc" data-i="${j}">
+    <div class="sgt"><small>suggestion</small>${S.t}</div>
+    <div class="ia gapf" data-s="a">${icoSvg(ICONS[ti][0])}</div>
+    <div class="ib gapf" data-s="b">${icoSvg(ICONS[ti][1])}</div>
+    <div class="pgl"><i></i></div>
+    <div class="w wa">${l}</div><div class="w wb">${r}</div>
+    <div class="tg"></div></div>`;
+}).join("");
+const PC=[...GG.querySelectorAll(".pc")];
+const ETC=document.getElementById("etc");
+ETC.textContent="…and more";
+function board(state){
+  const B=BOARD[state]||{}, lit={...(B.cf||{}),...(B.ok||{}),...(B.gp||{})};
+  const any=Object.keys(lit).length>0, sug=state==="reasons";
+  PC.forEach((el,i)=>{
+    const tag=lit[i];
+    el.classList.toggle("dim", any && tag===undefined);
+    el.classList.toggle("cf", !!(B.cf&&B.cf[i]));
+    el.classList.toggle("ok", !!(B.ok&&B.ok[i]));
+    el.classList.toggle("gp", !!(B.gp&&B.gp[i]));
+    if(tag!==undefined) el.querySelector(".tg").textContent=tag;
+    el.querySelectorAll(".gapf").forEach(t=>t.classList.toggle("on",
+      !!(B.gapTile && B.gapTile[0]===i && t.dataset.s===B.gapTile[1])));
+    // a suggestion is a position on the line: the dot moves to the end it buys
+    el.querySelector(".pgl i").style.left = sug ? (SUG[i].buy==="a"?"14%":"86%") : "50%";
+  });
+  GG.classList.toggle("figs", sug);
+  ETC.classList.toggle("on", state==="all");
+}
+
+const OCL=document.getElementById("oclaim");
+const PRED=[...document.querySelectorAll(".p")], PREDS=document.querySelector(".preds");
+const $=id=>document.getElementById(id);
+const SPLIT=$("split"), PAIR=$("pair"), SA=$("sa"), SB=$("sb"), GDOT=$("gdot"),
+      WA=$("wa"), WB=$("wb"), IA=$("icoA"), IB=$("icoB"),
+      WDES=$("wdes"), GFOLD=$("gfold");
+function setTension(i){
+  const T=TEN[i], [l,r]=T.n.split(" vs ");
+  WA.textContent=l; WB.textContent=r;
+  IA.innerHTML=icoSvg(ICONS[i][0]); IB.innerHTML=icoSvg(ICONS[i][1]);
+  IA.classList.toggle("wide", i===0); IB.classList.toggle("wide", i===0);
+  // hand the size back to the class rule, or the last frame's inline scale
+  // would follow the new pair around
+  IA.style.transform=""; IB.style.transform="";
+}
+// the slot's width is the width of whichever layer is showing
+function sizeSlot(){
+  const el = SPLIT.classList.contains("open") ? PAIR : WDES;
+  SPLIT.style.width = el.getBoundingClientRect().width.toFixed(1)+"px";
+}
+setTension(SHOW[0]);
+let TSHOWN=0;
+/* "design" first; it splits into three pairs; it closes back into "design"
+   and the six drawings are laid out on one ground line; the last four claims are told on it */
+const NB=9;
+const BSTATE=[null,null,null,null,"all","conflict","holds","gaps","reasons"];
+let OBEAT=-1;
+const OBEATS=[...document.querySelectorAll(".obeat")];
+function beatStops(){
+  const hs=OBEATS.map(e=>e.offsetHeight), tot=hs.reduce((a,x)=>a+x,0)||1;
+  const c=[0]; hs.forEach(h=>c.push(c[c.length-1]+h/tot)); return c;
+}
+function opening(){
+  const o=document.getElementById("open"), r=o.getBoundingClientRect();
+  const span=Math.max(1,o.offsetHeight-innerHeight);
+  // each beat lasts as long as its own block is tall, so one beat can be
+  // shorter than the rest (the plain "design" line is half a tension's length)
+  // the beats start counting a little before the section reaches the top:
+  // "surfaces design trade-offs" is already on screen from the moment the word
+  // lands, so without this lead-in it lingered for four scroll steps, not two
+  const lead=innerHeight*.22;
+  const p=clamp((-r.top+lead)/(span+lead),0,1), CUM=beatStops();
+  let b=NB-1; for(let i=0;i<NB;i++){ if(p<CUM[i+1]){ b=i; break; } }
+  if(RM.matches) b=NB-1;
+  const f=clamp((p-CUM[b])/Math.max(1e-6,CUM[b+1]-CUM[b]),0,1);
+  OCL.classList.toggle("on", (r.top<innerHeight*.5 || WQ>=.8) && r.bottom>innerHeight*.5);
+  // the first five beats belong to the first line: "design", three pairs, and
+  // "design" again with the board
+  const line = b<5 ? 0 : b-4;
+  // the window is the claim being made and the one before it
+  const lo=Math.max(0,line-1);
+  PRED.forEach((el,i)=>{
+    el.classList.toggle("live", i===line);
+    el.classList.toggle("seen", i>=lo && i<line);
+  });
+  if(!RM.matches && PREDS)
+    // fr rows share one height, so a one-line claim above a two-line one was
+    // stretched to match it; past the first line (whose padding animates) the
+    // rows are sized to their own content in pixels, which still transitions
+    PREDS.style.gridTemplateRows=PRED.map((el,i)=>(i>=lo&&i<=line)
+      ? (line>0 ? el.scrollHeight+"px" : "1fr") : (line>0 ? "0px" : "0fr")).join(" ");
+
+  const ti = (b>=1 && b<=3) ? b-1 : -1;
+  if(ti>=0){
+    // the weight moves along the ground line as the reader scrolls
+    const k=ease(clamp(f,0,1));
+    GDOT.style.left=(8+84*k).toFixed(2)+"%";
+    SA.style.opacity=(1-.45*k).toFixed(3); SB.style.opacity=(.55+.45*k).toFixed(3);
+    const bg=IA.classList.contains("wide")?1.55:1;
+    IA.style.transform=`translateX(-50%) scale(${(bg*(1-.18*k)).toFixed(3)})`;
+    IB.style.transform=`translateX(-50%) scale(${(bg*(.82+.18*k)).toFixed(3)})`;
+  } else if(IA.style.transform){ IA.style.transform=""; IB.style.transform=""; }
+  if(b===OBEAT) return;
+  OBEAT=b;
+  const wasOpen=SPLIT.classList.contains("open");
+  SPLIT.classList.toggle("open", ti>=0); PRED[0].classList.toggle("split", ti>=0);
+  if(ti>=0 && ti!==TSHOWN && wasOpen){
+    // change pairs at the bottom of a quick fade, then let the slot re-size
+    PAIR.classList.add("swp");
+    const want=ti; TSHOWN=ti;
+    setTimeout(()=>{ setTension(SHOW[want]); PAIR.classList.remove("swp"); sizeSlot(); },170);
+  } else if(ti>=0 && ti!==TSHOWN){ TSHOWN=ti; setTension(SHOW[ti]); }
+  sizeSlot();
+  const st=BSTATE[b];
+  GFOLD.classList.toggle("on", !!st);
+  if(st) board(st);
+}
+addEventListener("resize",()=>sizeSlot());
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>sizeSlot());
+
+/* ======================================================================
+   ONE DRAWING, AND IT STARTS EMPTY.
+
+   The page claims the suggestions are DERIVED. The cheapest way to make
+   that visible is to show the derivation happen: a boundary, then what is
+   around it, then where anyone could enter, then what the site can do. By
+   the time a spine appears the reader knows what a door is, and nothing
+   has had to be explained.
+
+   So layers fade by SCROLL POSITION in the first act and by SCALE in the
+   last — accretion, then zoom, on the same geometry.
+   ====================================================================== */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const seg=(t,a,b)=>clamp((t-a)/(b-a),0,1);
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const RM=matchMedia("(prefers-reduced-motion: reduce)");
+/* A PHONE HAS LESS SCROLL TO SPEND. The chapter card rises over the whole
+   screen, so the handoff and the ring's two labels have to be done with
+   before it arrives; on a wide screen the card sits beside the drawing and
+   everything can take its time. */
+const MOB=matchMedia("(max-width:760px)");
+const AT=(a,b)=>MOB.matches?a:b;
+
+/* FOUR CHAPTERS, NOT SEVEN. The opening now carries the claims, so the zoom
+   stops re-arguing them and does the one thing nothing else on the page can:
+   the same site at three scales, each deciding the next. */
+const N=8;
+const BAY={ns:{x:198,y:86,w:9,h:9}, ew:{x:170,y:92,w:9,h:9}};
+/* three panels are held at the site, then the block, then the bay: the
+   held run has to cover all three or the zoom starts under a live card */
+/* THE THREE HELD VIEWS AT THE BLOCK, FITTED. They were 150 units centred on a
+   box rather than on anything drawn, so the zone sat small and off to one side.
+   The first is the plan, centred on the zone itself; the second and third are
+   the axonometric, centred on the union of what is drawn there — the slab and
+   the building it becomes, which land within ten units of each other, so the
+   one dissolves into the other in place instead of jumping. 104 units fills
+   about seventy per cent either way. */
+const KEY=[null,null,null,null,{x:133,y:43,w:104,h:104},{x:127.9,y:25.2,w:104,h:104},
+           {x:127.9,y:25.2,w:104,h:104},"bay"];
+/* the held view leaves a margin outside the ring for the ring's own lettering
+   and the two labels — the parcel gives up a fifth of its size and buys back
+   a place to put words that used to be a paragraph */
+/* THE HELD VIEW IS FITTED, NOT FIXED. It used to be a constant 330 units, so
+   the drawn parcel came out about a quarter larger than the parcel inside the
+   screenshot and the screenshot had to grow to meet it — which the reader saw
+   as the ring swelling just before the swap. The held view is now solved from
+   the two measurements instead: whatever makes the DRAWN parcel exactly the
+   size of the one in the picture, so the screenshot scales by 1.0 and the
+   handoff is a pure dissolve. Centred on the parcel's own centre, not the
+   box's, so there is no drift either. */
+const HELD={x:-15,y:-15,w:330,h:330};
+function heldFit(){
+  const R=svg.getBoundingClientRect(), iw=TSIMG.offsetWidth;
+  if(!R.width||!R.height||!iw) return;
+  const px=iw*SHOTP.w/176.6;                    // px per unit that matches
+  const w=clamp(Math.min(R.width,R.height)/px,240,620);
+  HELD.w=HELD.h=w; HELD.x=150-w/2; HELD.y=152-w/2;
+}
+const SEC=["the parcel","the block","the detail"];
+let SPINE="ns", P=0;
+/* every spotlightable drawing group at its scrolled weight, and when the page
+   was last scrolled — see cycle() */
+let GBASE={}, ASCROLL=0;
+/* which drawing groups each card of a panel owns — the third card of "what it
+   calls for" owns two, the zone and the line on its edge. Declared up here
+   because the frame loop starts before cycle() is reached. */
+const CYCS=[
+  {id:"pA", groups:[["ent0"],["ent1"],["ent2"]]},
+  {id:"pB", groups:[["asp0"],["asp1"],["asp2","asp3"]]},
+  {id:"pD", groups:[["sug0"],["sug1"],["sug2"]]}
+];
+const CYCST={};
+
+/* THE SURROUNDINGS ARE REAL. These are the building footprints the run
+   itself carries (ubi_live.json → ctx), put through the same metres→page
+   transform as the parcel: x = 150+(m+7)·0.690, y = 152+(m−7)·0.690. Only
+   the twenty whose box reaches the ring are kept; the ring clip cuts the
+   rest, so the ones on the edge are cut the way a real disc cuts them.
+   Nothing here is drawn by hand. */
+const CTX=[
+ "167.2,283.8 180.4,281.7 181.7,290.0 123.1,302.4 101.0,306.6 99.6,297.6 110.7,292.8 112.1,292.1 112.7,294.8 165.9,284.5 165.2,281.7 167.2,281.7",
+ "-81.8,119.6 -77.7,129.2 36.2,83.0 32.7,73.3",
+ "78.9,9.2 78.9,9.9 69.3,12.6 63.1,14.0 57.5,13.3 54.1,11.2 46.5,-19.8 64.4,-26.7 68.6,-16.4 81.7,-21.2 90.7,5.0",
+ "260.4,265.9 262.5,274.8 263.9,284.5 265.2,283.8 265.9,287.2 264.5,287.9 277.0,303.8 275.6,298.3 277.6,298.3 272.1,269.3 270.1,270.0 269.4,264.5",
+ "348.0,246.5 361.1,243.8 363.2,252.7 298.4,267.9 283.2,271.4 281.1,262.4 291.4,257.6 293.5,256.9 294.2,259.6 346.6,247.2 346.0,245.1 347.3,244.5",
+ "284.5,276.9 287.3,290.7 281.8,292.1 283.9,301.7 299.7,298.3 294.2,274.8",
+ "199.0,277.6 252.1,267.2 254.2,276.2 187.9,289.3 185.9,280.3 196.9,278.3 196.9,275.5 198.3,275.5",
+ "282.5,-0.5 290.1,-28.1 277.6,-43.3 258.3,-31.5 225.2,-5.3 222.4,-5.3 219.0,17.5 220.4,19.5 244.5,27.1 245.9,24.4 254.9,16.1 280.4,0.9",
+ "301.8,58.2 309.4,38.2 308.0,36.1 297.7,18.1 288.0,7.1 274.2,22.3 265.9,42.3 266.6,45.1 274.2,54.0 275.6,58.2 285.2,69.9 300.4,60.9",
+ "-18.4,257.6 -14.2,266.5 -14.2,276.2 -10.1,285.2 -1.8,288.6 7.9,287.9 14.8,281.7 16.1,276.9 14.8,267.9 7.9,261.0 -4.6,224.4 -43.2,266.5",
+ "3.0,137.5 41.7,124.4 45.1,134.1 48.6,143.0 9.2,156.1",
+ "26.5,194.1 53.4,189.3 56.9,212.7 31.3,217.6",
+ "34.1,225.8 65.8,221.0 73.4,273.4 42.4,278.3",
+ "9.2,167.9 46.5,152.7 51.3,155.4 54.8,177.5 42.4,178.9 41.0,172.0 14.8,183.7",
+ "95.5,15.4 85.8,19.5 86.5,22.3 96.9,18.1",
+ "79.6,21.6 60.3,29.9 61.0,32.6 81.0,25.0",
+ "136.9,41.6 136.2,39.5 141.7,38.8 142.4,43.0 137.6,44.4",
+ "184.5,3.7 159.7,14.0 162.4,20.9 187.3,9.9",
+ "179.0,31.9 183.8,31.3 184.5,36.1 179.7,36.8",
+ "260.4,128.5 235.6,134.1 241.8,163.0 266.6,157.5"];
+/* GATES ON THE REAL BOUNDARY. Five vehicle positions and eight walk ones,
+   spaced along the measured perimeter rather than placed by hand. Which
+   fractions they sit at is schematic until the run exports the positions;
+   the counts and the contested pair are from the run. */
+let _PER=null;
+function perim(){ if(_PER) return _PER;
+  const L=[]; let t=0;
+  for(let i=0;i<PARC.length;i++){ const a=PARC[i],b=PARC[(i+1)%PARC.length];
+    const d=Math.hypot(b[0]-a[0],b[1]-a[1]); L.push(d); t+=d; }
+  return _PER={L,t}; }
+function onEdge(f){ const R=perim(); let x=(((f%1)+1)%1)*R.t;
+  for(let i=0;i<R.L.length;i++){
+    if(x<=R.L[i]){ const a=PARC[i],b=PARC[(i+1)%PARC.length],k=x/R.L[i];
+      return [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k]; }
+    x-=R.L[i]; }
+  return PARC[0].slice(); }
+/* the stretch of boundary that stands apart: NE 70 m, then N 30 m */
+function edgeRun(deg,metres){
+  const t=deg*Math.PI/180; let best=0,bd=9e9;
+  for(let i=0;i<360;i++){ const f=i/360,p=onEdge(f);
+    const a=Math.atan2(p[1]-152,p[0]-150);
+    const d=Math.abs(((a-t+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI);
+    if(d<bd){ bd=d; best=f; } }
+  const half=(metres/1.449)/perim().t/2, pts=[];
+  for(let i=0;i<=14;i++) pts.push(onEdge(best-half+(2*half)*i/14));
+  return pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" "); }
+/* PARC is declared further down, so everything above is computed on first
+   use rather than at load: five vehicle positions and eight walk ones,
+   spaced along the measured perimeter. The counts and the contested pair
+   are from the run; which fractions they sit at is schematic until the
+   export carries the real positions. */
+let _G=null;
+function gset(){ if(_G) return _G;
+  return _G={ v:[.055,.235,.435,.625,.835].map(onEdge),
+              w:[.015,.135,.295,.375,.495,.655,.745,.905].map(onEdge),
+              ne:edgeRun(-45,70), n:edgeRun(-90,30) }; }
+/* THE BACK, MEASURED, ON BOTH SIDES. Of the 200 frontage samples the run
+   takes round the boundary, 122–162 come back EDUCATIONAL INSTITUTION — one
+   unbroken stretch of 41 samples at 6.01 m each, the 246 m facing the school.
+   The west is not labelled that way: 53 of its samples come back ROAD, because
+   what stands immediately across the boundary is a road. So it is taken
+   geometrically instead — samples 20–89, the whole west side including the
+   notch, 70 samples = 420 m. The notch is the place of worship (17 of those
+   samples); the business park stands beyond the road at the top of the run and
+   housing at the foot. 246 + 420 = 666 m, which the card rounds to 670. Both stretches go
+   through the same metres-to-page transform as the parcel, simplified to draw. */
+const FENCE=["222.7,239.6 210.7,178.6 238.0,172.2 226.0,111.3 231.4,100.5",
+             "65.5,61.1 62.3,68.6 62.2,76.9 73.4,129.1 110.0,121.9 112.5,128.8 "
+            +"122.3,181.7 86.7,189.6 84.7,191.8 98.8,256.4 101.8,264.1"];
+const CONTESTED=[1,5];          // the two a vehicle gate wants within 40 m
+/* ONE ICON SET, TWO SIZES. The card and the drawing show the same car and
+   the same figure, so the number in the column and the mark on the boundary
+   are visibly the same thing. Drawn in their own little boxes and placed by
+   transform, with non-scaling strokes so they stay crisp at either size. */
+const GCAR='<path fill-rule="evenodd" d="M1 18 Q1 15 4 15 H44 Q47 15 47 18 V31 '
+ +'H40 V36 Q40 39.4 37 39.4 Q34 39.4 34 36 V31 H14 V36 Q14 39.4 11 39.4 '
+ +'Q8 39.4 8 36 V31 H1 Z M7.5 23.4 a4.6 4.6 0 1 0 9.2 0 a4.6 4.6 0 1 0 -9.2 0 '
+ +'M31.3 23.4 a4.6 4.6 0 1 0 9.2 0 a4.6 4.6 0 1 0 -9.2 0" stroke="none"/>'
+ +'<path d="M11 15.4 L17.4 3.6 Q18.2 2.1 19.9 2.1 H28.1 Q29.8 2.1 30.6 3.6 L37 15.4" '
+ +'fill="none" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>';
+const GWALK='<g stroke="none"><circle cx="12" cy="6.2" r="5.3"/>'
+ +'<rect x="4.7" y="12.8" width="14.6" height="15.4" rx="4.8"/>'
+ +'<rect x="7.9" y="25.4" width="3.8" height="14.2" rx="1.9"/>'
+ +'<rect x="12.3" y="25.4" width="3.8" height="14.2" rx="1.9"/></g>';
+/* one badge, two sizes: the card and the boundary show the same disc, so the
+   number in the column and the mark on the plan are the same object */
+function inner(kind){
+  const p=PRIM[kind==="car"?"eCar":"eWalk"], k=.5;
+  const cx=kind==="car"?24:24.63, cy=kind==="car"?23.13:24;
+  return `<g transform="translate(${(cx-(p.x+p.w/2)*k).toFixed(2)},${
+    (cy-(p.y+p.h/2)*k).toFixed(2)}) scale(${k})">${p.m}</g>`;
+}
+function badge(kind,x,y,k,col,bg){
+  return `<g transform="translate(${(+x).toFixed(1)},${(+y).toFixed(1)}) scale(${k})`
+    +` translate(-24,-24)" fill="${col}" stroke="${col}" style="color:${col}">`
+    +`<circle cx="24" cy="24" r="22.4" fill="${bg||"var(--s0)"}" stroke-width="2.2"`
+    +` vector-effect="non-scaling-stroke"/>${inner(kind)}</g>`;
+}
+/* the courts, in the tool's own three colours — teal fitness, green, orange
+   playground — so the drawing the screenshot dissolves into looks like the
+   screen it came from. Positions are schematic, inside the real boundary. */
+const CRT=[[112,92,"#46b9b8"],[176,74,"#46a545"],[196,150,"#46a545"],
+           [104,150,"#f2b961"],[186,224,"#f2b961"],[132,238,"#46a545"]];
+const LOT=[[70,168,30,44],[150,116,38,32]];
+/* PUBLICNESS, REACHING IN FROM THE FRONT. The stretches are measured — NE 70 m
+   and N 30 m, found on the real boundary by bearing. How far that reach carries
+   into the site is DRAWN, not measured: an exponential falloff over about 90 m.
+   Swap FALL for the run's own per-cell values when the export carries them. */
+const FALL=62;
+let _HF=null;
+function field(){
+  if(_HF) return _HF;
+  const pts=[];
+  (gset().ne+" "+gset().n).split(/\s+/).forEach(p=>{
+    const a=p.split(","); if(a.length===2) pts.push([+a[0],+a[1]]);});
+  const xs=PARC.map(p=>p[0]), ys=PARC.map(p=>p[1]), C=6.97, out=[];
+  const inP=(x,y)=>{let ins=false,j=PARC.length-1;
+    for(let i=0;i<PARC.length;i++){const a=PARC[i],b=PARC[j];
+      if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1]+1e-9)+a[0])) ins=!ins;
+      j=i;} return ins;};
+  for(let y=Math.min(...ys)+C/2; y<Math.max(...ys); y+=C)
+    for(let x=Math.min(...xs)+C/2; x<Math.max(...xs); x+=C){
+      if(!inP(x,y)) continue;
+      let d=1e9;
+      for(const p of pts){const q=Math.hypot(p[0]-x,p[1]-y); if(q<d) d=q;}
+      out.push([x,y,Math.exp(-d/FALL)]);
+    }
+  return _HF={cells:out, C};
+}
+/* ---- WHAT IT COULD TAKE -----------------------------------------------
+   Shares and the "why" lines come from the run. The "bad" and BORROW lines
+   are written from figures that are already on this page (38%, 100 m, 189 m,
+   6%) rather than from the engine's own conclusions — swap each for the
+   tool's sentence when it states one. */
+const ORG=[
+ {k:"frontage",n:"Frontage",n2:"Frontage on NE",share:57,face:"ns",
+  why:["Faces N, where the draw is rail and groceries.",
+       "Schools E, business park W, private housing S — the quiet sides take the backs.",
+       "The carparks sit W, so no road crosses the front."],
+  bad:["38% of the site sits far from any amenity — a centre would reach it.",
+       "The S and W edges do no public work."]},
+ {k:"centre",n:"Centre",share:38,face:"ew",
+  why:["Every edge is within 189 m of the middle — one centre reaches them all."],
+  bad:["The NE stretch is the only 100 m that stands apart, and a centre turns its back on it."]},
+ {k:"spine",n:"Spine",n2:"Spine N–S",share:6,face:"ew",
+  why:["A second end on the N–S axis carries 6% of the signal."],
+  bad:["6% is all the axis carries, so both ends stay weak — frontage or a centre holds more."]},
+ {k:"web",n:"Web",share:0,face:"ns",why:[],bad:[],off:true}];
+const OCOL={frontage:"var(--warn)",centre:"#7c5cd6",spine:"var(--ta)",web:"#8a8a3d"};
+/* the borrow line answers the weakness above it: take the part of another
+   scheme that covers what this one misses, and say what it costs */
+const BORROW={
+ frontage:"<b>Take the centre's court into it.</b> The S and W edges get something to face, and the NE front stays where the draw is.",
+ centre:"<b>Keep the NE front.</b> One edge answers the rail and groceries while the middle still reaches every corner.",
+ spine:"<b>Take the NE front into it.</b> The axis keeps both ends and the strongest 100 m stops going to waste."};
+let ORGK="frontage";
+const BLOCK={x:66,y:100,w:100,h:78};
+/* ---- THE ZONE, AND THE LIFT INTO AXONOMETRIC ------------------------------
+   A slab on the NE front at −11°, the orientation family the as-built Ubi
+   blocks sit in. Stand-in geometry until the real zone arrives.
+   The lift is not a second picture: an axonometric is a linear transform of
+   the plan, so one function carries both and the tilt is a number between
+   them. At t=0 it returns the plan exactly — yaw 0, pitch 0, z discarded —
+   which is why the drawing can be tilted without being redrawn. */
+const ZC=[185,95], ZH=24.8;            // centre, and 12 storeys at 3 m
+const ZONE=(()=>{
+  const a=-11*Math.PI/180, L=40, D=7.5;
+  const ux=Math.cos(a)*L, uy=Math.sin(a)*L, vx=-Math.sin(a)*D, vy=Math.cos(a)*D;
+  return [[ZC[0]+ux+vx,ZC[1]+uy+vy],[ZC[0]+ux-vx,ZC[1]+uy-vy],
+          [ZC[0]-ux-vx,ZC[1]-uy-vy],[ZC[0]-ux+vx,ZC[1]-uy+vy]];
+})();
+function axo(x,y,z,t){
+  if(t<=0) return [x,y];
+  /* Back to -30. Turning the camera round to look at the park-facing side
+     cost a 170-degree spin between the first block card and the second, which
+     is far too much motion to buy one elevation. The park is north of the zone
+     and this yaw looks from the south, so those faces are away from the reader
+     — the side turned at the park is marked along the roof instead (see
+     parkEdges), and the arrows and the park stretch are on the ground, where
+     they read at any angle. */
+  const th=-t*Math.PI/6, ph=t*55*Math.PI/180;
+  const dx=x-ZC[0], dy=y-ZC[1];
+  const x1=dx*Math.cos(th)-dy*Math.sin(th), y1=dx*Math.sin(th)+dy*Math.cos(th);
+  return [ZC[0]+x1, ZC[1]+y1*Math.cos(ph)-(z||0)*Math.sin(ph)];
+}
+const pstr=p=>p.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join(" ");
+/* the mass, painted far face first so the near ones cover them — with one
+   yaw this is just a sort on projected depth, and it costs nothing */
+function zoneMass(t,S){
+  const base=ZONE.map(p=>axo(p[0],p[1],0,t));
+  const top =ZONE.map(p=>axo(p[0],p[1],ZH,t));
+  if(t<=.004) return `<polygon points="${pstr(base)}" fill="var(--s2)"
+    stroke="var(--t2)" stroke-width="1.4" ${S}/>`;
+  const faces=[];
+  for(let i=0;i<4;i++){
+    const j=(i+1)%4, q=[base[i],base[j],top[j],top[i]];
+    faces.push({d:(q[0][1]+q[1][1])/2, q, side:true});
+  }
+  faces.sort((a,b)=>a.d-b.d);
+  let g="";
+  faces.forEach((f,k)=>{ g+=`<polygon points="${pstr(f.q)}" fill="var(--s1)"
+    fill-opacity="${(.55+.14*k).toFixed(2)}" stroke="var(--t2)" stroke-width="1.1"
+    stroke-opacity=".7" ${S}/>`; });
+  g+=`<polygon points="${pstr(top)}" fill="var(--s2)" stroke="var(--t2)"
+    stroke-width="1.4" ${S}/>`;
+  // storey lines on the long face nearest the reader
+  const near=faces[faces.length-1].q;
+  for(let i=1;i<12;i++){
+    const f=i/12;
+    const a=[near[0][0]+(near[3][0]-near[0][0])*f, near[0][1]+(near[3][1]-near[0][1])*f];
+    const b=[near[1][0]+(near[2][0]-near[1][0])*f, near[1][1]+(near[2][1]-near[1][1])*f];
+    g+=`<path d="M ${a[0].toFixed(1)} ${a[1].toFixed(1)} L ${b[0].toFixed(1)}
+      ${b[1].toFixed(1)}" stroke="var(--t2)" stroke-opacity=".28" stroke-width=".7" ${S}/>`;
+  }
+  return g;
+}
+
+/* ---- THE BUILDING AT THE 50 ---------------------------------------------
+   The zone is a developable extent, not a building: the 50's job is to reduce
+   it. The bend is not decoration — it buys footprint length inside the same
+   site width, and it turns that length toward the one stretch of this
+   boundary the run reads as PARK (20 of the 200 frontage samples, 120 m).
+   The polygons are solved once, off the page's own metres->units transform,
+   so nothing here is drawn by eye. 1 page unit = 1.449 m. */
+const BLD={
+  bar:[[141.2,95.0],[188.7,114.2],[225.6,78.6],[218.0,70.6],[186.2,101.3],[145.3,84.8]], low:[[163.0,103.8],[188.7,114.2],[208.7,94.9],[201.1,87.0],[186.2,101.3],[167.1,93.6]], twA:[[141.2,95.0],[163.0,103.8],[167.1,93.6],[145.3,84.8]], twB:[[208.7,94.9],[225.6,78.6],[218.0,70.6],[201.1,87.0]],
+  str:[[144.3,95.3],[222.8,80.0],[220.7,69.2],[142.2,84.5]], coreA:[[155.1,99.3],[157.1,94.2],[152.0,92.2],[150.0,97.3]], coreB:[[218.3,84.0],[214.5,80.0],[210.6,83.9],[214.4,87.8]], refA:[[161.1,100.9],[162.6,97.4],[157.5,95.3],[156.0,98.8]], refB:[[222.2,79.1],[219.6,76.3],[215.6,80.2],[218.2,82.9]],
+  apA:[[165.5,92.9],[168.9,84.6],[150.3,77.1],[146.9,85.4]], apB:[[216.7,71.9],[210.4,65.4],[196.1,79.3],[202.3,85.8]],
+  park:[[126.6,53.7],[125.4,49.8],[124.2,45.8],[193.8,40.1],[189.9,41.5],[185.8,42.2],[181.8,43.0],[177.7,43.8],[173.7,44.6],[169.6,45.4],[165.5,46.2],[161.5,47.0],[157.4,47.7],[153.3,48.6],[149.2,49.3],[145.2,50.2],[141.2,50.9],[137.1,51.7],[133.0,52.5],[129.0,53.3]], arr:[[155.9,87.7,151.1,63.2],[186.0,99.9,181.2,75.4],[209.3,77.4,204.5,52.8]],
+  hA:53.83, hB:39.34, hL:10.35,
+  stA:26, stB:19, stL:5};
+const PKDIR=[-0.191,-0.982];              // the park side, square to the zone's axis
+const sarea=p=>{let a=0;for(let i=0;i<p.length;i++){const j=(i+1)%p.length;
+  a+=p[i][0]*p[j][1]-p[j][0]*p[i][1];} return a/2;};
+/* one extrusion for every part of the building: the same depth sort as the
+   zone, plus a test that lights whichever faces are turned toward the park */
+function prism(poly,h,t,S,storeys,hi){
+  const base=poly.map(q=>axo(q[0],q[1],0,t));
+  if(t<=.004) return `<polygon points="${pstr(base)}" fill="var(--s2)"
+    stroke="var(--t2)" stroke-width="1.2" ${S}/>`;
+  const top=poly.map(q=>axo(q[0],q[1],h,t)), ccw=sarea(poly)>0, F=[];
+  for(let i=0;i<poly.length;i++){
+    const j=(i+1)%poly.length, a=poly[i], b=poly[j];
+    const dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy);
+    let lit=false;
+    if(hi&&L>1e-6){ const nx=(ccw?dy:-dy)/L, ny=(ccw?-dx:dx)/L;
+      lit = nx*hi[0]+ny*hi[1] >= .707; }        // within 45 degrees of the park
+    F.push({d:(base[i][1]+base[j][1])/2, q:[base[i],base[j],top[j],top[i]], lit});
+  }
+  F.sort((a,b)=>a.d-b.d);
+  let g="";
+  F.forEach((f,k)=>{ const sh=k/Math.max(1,F.length-1);
+    g+=`<polygon points="${pstr(f.q)}" fill="${f.lit?'var(--ta)':'var(--s1)'}"
+      fill-opacity="${(f.lit?.22+.12*sh:.52+.26*sh).toFixed(2)}"
+      stroke="${f.lit?'var(--ta)':'var(--t2)'}" stroke-width="1.1"
+      stroke-opacity=".8" ${S}/>`; });
+  g+=`<polygon points="${pstr(top)}" fill="var(--s2)" stroke="var(--t2)"
+    stroke-width="1.2" ${S}/>`;
+  if(storeys) F.slice(-2).forEach(f=>{ for(let i=1;i<storeys;i++){ const r=i/storeys;
+    const a=[f.q[0][0]+(f.q[3][0]-f.q[0][0])*r, f.q[0][1]+(f.q[3][1]-f.q[0][1])*r];
+    const b=[f.q[1][0]+(f.q[2][0]-f.q[1][0])*r, f.q[1][1]+(f.q[2][1]-f.q[1][1])*r];
+    g+=`<path d="M ${a[0].toFixed(1)} ${a[1].toFixed(1)} L ${b[0].toFixed(1)}
+      ${b[1].toFixed(1)}" stroke="var(--t2)" stroke-opacity=".24" stroke-width=".6" ${S}/>`;}});
+  return g;
+}
+/* WHICH SIDE IS TURNED AT THE PARK, when that side is facing away. The faces
+   themselves cannot be seen from this yaw, so the edge they meet the roof at
+   is drawn over the mass — one blue line along the top of the park side. */
+function parkEdges(poly,h,t,S){
+  const ccw=sarea(poly)>0; let g="";
+  for(let i=0;i<poly.length;i++){
+    const j=(i+1)%poly.length, a=poly[i], b=poly[j];
+    const dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy); if(L<1e-6) continue;
+    const nx=(ccw?dy:-dy)/L, ny=(ccw?-dx:dx)/L;
+    if(nx*PKDIR[0]+ny*PKDIR[1] < .707) continue;
+    const p0=axo(a[0],a[1],h,t), p1=axo(b[0],b[1],h,t);
+    g+=`<path d="M ${p0[0].toFixed(1)} ${p0[1].toFixed(1)} L ${p1[0].toFixed(1)}
+      ${p1[1].toFixed(1)}" stroke="var(--ta)" stroke-width="2.6"
+      stroke-linecap="round" fill="none" ${S}/>`;
+  }
+  return g;
+}
+const gpoly=(P,t,f,fo,st,sw,extra="")=>`<polygon points="${pstr(P.map(q=>axo(q[0],q[1],0,t)))}"
+  fill="${f}" fill-opacity="${fo}" stroke="${st}" stroke-width="${sw}" ${extra}/>`;
+
+function world(){
+  const V=cur(), z=V.w, S='vector-effect="non-scaling-stroke"';
+  const fade=(a,b)=>clamp((z-a)/(b-a),0,1);
+  const far=fade(70,150), near=1-fade(90,180), fine=1-fade(9,26);
+  const aBld=seg(P,.06,.28),
+        aGat=seg(P,.14,.40), aCon=seg(P,.20,.48);
+  let g=`<defs><clipPath id="rclip"><circle cx="150" cy="152" r="${RING}"/></clipPath><clipPath id="pclip"><polygon points="${PARC.map(p=>p.join(',')).join(' ')}"/></clipPath></defs>`;
+  // the surroundings live INSIDE the ring, the way the tool shows them — the
+  // disc is what the site is read through, not a frame drawn round it after
+  // the lift: plan at the first card of the 50, axonometric by the second
+  const TILT=RM.matches?1:seg(P,4.45,5.05), BG=1-seg(P,4.35,4.95);
+  g+=`<g opacity="${BG.toFixed(3)}"><g clip-path="url(#rclip)">`;
+  g+=`<g opacity="${aBld*far}">`+CTX.map(c=>`<polygon points="${c}"
+      fill="var(--t3)" fill-opacity=".14"/>`).join("")+`</g>`;
+  g+=`</g>`;
+  g+=`<polygon points="126.5,54.0 120.3,34.0 70.0,56.1 61.7,71.3 72.7,129.2 110.7,121.6 117.6,154.1 122.4,182.4 84.4,190.0 100.3,262.4 108.6,269.3 116.2,270.0 224.5,249.3 210.7,178.2 238.3,172.7 225.9,109.9 236.9,92.0 226.6,82.3 203.8,35.4 191.4,40.9" fill="var(--s1)"
+      stroke="var(--t2)" stroke-width="1.4" ${S}/>`;
+
+  // the two gate families, arriving as their cards do: walk first, then the
+  // vehicle positions, then the two that want the same ground
+  // the badges belong to the first panel: they stay on as faint context once
+  // the reading moves to the boundary, but they stop competing with it
+  /* WHAT THE SITE HAS. The cards read vehicle, walk, contested; the plan used
+     to arrive walk-first off the zoom's own progress, so the card and the
+     drawing disagreed about which was which. Keyed to the panel now, in the
+     cards' order, each in a group of its own so one can be spotlighted when
+     the reader stops. They all step back as the reading moves to the boundary. */
+  const G=gset(), back=1-seg(P,0.95,1.30);
+  const aVe=seg(PAP,.05,.20)*back, aWk=seg(PAP,.33,.48)*back, aCt=seg(PAP,.62,.77)*back;
+  GBASE.ent0=aVe*far; GBASE.ent1=aWk*far; GBASE.ent2=aCt*far;
+  // each mark stands just inside the edge it sits on, the same figure the
+  // card shows: a car where a vehicle may come in, a person where you may walk
+  const inset=(p,d)=>{const dx=150-p[0],dy=152-p[1],L=Math.hypot(dx,dy)||1;
+    return [p[0]+dx/L*d, p[1]+dy/L*d];};
+  const GK=16.5/48;
+  g+=`<g id="ent0" class="asp" opacity="${aVe*far}">`+G.v.map(p=>{const q=inset(p,9);
+      return badge("car",q[0],q[1],GK,"var(--t2)");}).join("")+`</g>`;
+  g+=`<g id="ent1" class="asp" opacity="${aWk*far}">`+G.w.map((p,i)=>{const q=inset(p,9);
+      return (aCt>.3&&CONTESTED.indexOf(i)>=0)?"":badge("walk",q[0],q[1],GK,"var(--ta)");
+    }).join("")+`</g>`;
+  // the two that clash: the walk entrance, the vehicle gate that wants the
+  // same ground, and a cross between them
+  g+=`<g id="ent2" class="asp" opacity="${aCt*far}">`+CONTESTED.map(i=>{
+      const q=inset(G.w[i],9), c=[q[0]+16.3,q[1]];
+      const P2=PRIM.eBurst, bk=GK*.5;
+      return badge("walk",q[0],q[1],GK,"var(--warn)","none")
+           + badge("car", c[0],c[1],GK,"var(--warn)","none")
+           + `<g style="color:var(--warn)" transform="translate(${
+               (q[0]+(386.99-340)*bk-(P2.x+P2.w/2)*bk).toFixed(2)},${
+               (q[1]+(24.5-68)*bk-(P2.y+P2.h/2)*bk).toFixed(2)}) scale(${bk.toFixed(4)})">${
+               P2.m}</g>`;})
+      .join("")+`</g>`;
+  // WHAT IT CALLS FOR: the boundary that stands apart, then what the reader
+  // chose to make of it. Both live at the site scale and leave with the ring.
+  // the field belongs to the recommendation, not to the reading that produced
+  // it: it arrives as that panel comes up and leaves with the ring
+  const aHe=seg(P,2.20,2.56)*(1-seg(P,3.05,3.40));   // the field belongs to C
+  if(aHe>.002){
+    const F=field();
+    let h=`<g opacity="${aHe.toFixed(3)}" clip-path="url(#pclip)">`;
+    for(const c of F.cells){
+      const o=0.03+0.74*Math.pow(c[2],1.25);
+      if(o<.05) continue;
+      h+=`<rect x="${(c[0]-F.C/2).toFixed(1)}" y="${(c[1]-F.C/2).toFixed(1)}"
+        width="${F.C}" height="${F.C}" fill="var(--ta)" fill-opacity="${o.toFixed(3)}"/>`;
+    }
+    g+=h+`</g>`;
+  }
+  /* WHAT IT CALLS FOR. Scrolling brings the three aspects on one at a time and
+     leaves them on — the reading is cumulative, the way the cards are. Each
+     lives in a group of its own so the panel can spotlight one when the reader
+     stops (see cycle()). Keyed to the panel's own progress, so card and drawing
+     can never drift apart. Card k lights at (k+0.2)/3.5. */
+  const gone=1-seg(P,3.05,3.40);
+  const aFr=seg(PBP,.05,.20)*gone;
+  const aFn=seg(PBP,.33,.48)*gone*(1-.62*seg(P,2.20,2.56));
+  const aSg=seg(PBP,.62,.77)*gone*(1-seg(P,2.20,2.56));
+  GBASE.asp0=aFr; GBASE.asp1=aFn; GBASE.asp2=aSg; GBASE.asp3=aSg;
+  /* the 50's last panel: the run, the ground, the section — cumulative on
+     scroll, one at a time when the reader stops */
+  GBASE.sug0=seg(PDP,.05,.20); GBASE.sug1=seg(PDP,.33,.48);
+  GBASE.sug2=seg(PDP,.62,.77);
+  if(aFr>.002) g+=`<g id="asp0" class="asp" opacity="${aFr.toFixed(3)}" fill="none" stroke-linecap="round"
+      stroke="var(--ta)" ${S}>
+    <polyline points="${G.ne}" stroke-width="8.5" stroke-opacity=".30"/>
+    <polyline points="${G.ne}" stroke-width="2.6"/>
+    <polyline points="${G.n}"  stroke-width="8.5" stroke-opacity=".18"/>
+    <polyline points="${G.n}"  stroke-width="2.6" stroke-opacity=".62"/></g>`;
+  // the back reads as a wall, not as an accent: neutral, with hatch ticks
+  // turned into the site
+  if(aFn>.002){
+    let h="", pl="";
+    for(const run of FENCE){
+      const fp=run.split(" ").map(q=>q.split(",").map(Number));
+      pl+=`<polyline points="${run}" stroke-width="10" stroke-opacity=".20"
+        stroke-linecap="round"/><polyline points="${run}" stroke-width="2.8"
+        stroke-opacity=".8"/>`;
+      for(let i=0;i<fp.length-1;i++){
+        const p0=fp[i], p1=fp[i+1], dx=p1[0]-p0[0], dy=p1[1]-p0[1], L=Math.hypot(dx,dy)||1;
+        const nx=-dy/L, ny=dx/L, sgn=((150-p0[0])*nx+(152-p0[1])*ny)<0?-1:1;
+        for(let d=5;d<L-2;d+=11){
+          const px=p0[0]+dx*d/L, py=p0[1]+dy*d/L;
+          h+=`<path d="M ${px.toFixed(1)} ${py.toFixed(1)} L ${(px+nx*sgn*6).toFixed(1)}
+            ${(py+ny*sgn*6).toFixed(1)}"/>`;
+        }
+      }
+    }
+    g+=`<g id="asp1" class="asp" opacity="${aFn.toFixed(3)}" fill="none" stroke="var(--t2)" ${S}>
+      ${pl}<g stroke-width="1.3" stroke-opacity=".55">${h}</g></g>`;
+  }
+  /* THE LEADING APPROACH, AS GROUND RATHER THAN LINEWORK. Three schemes drawn
+     over each other — a circle, a curve and two lines — was a diagram of the
+     list, not of the site. The plan shows the one the run ranked first: the
+     band of the parcel the NE front actually reaches, from the same measured
+     stretches and the same falloff the recommendation uses, cut at 70 m so it
+     reads as a zone rather than a gradient. The other two stay in the card,
+     where a ranking belongs. */
+  if(aSg>.002){
+    const F=field(), CUT=Math.exp(-(70*0.690)/FALL);
+    let z=`<g id="asp2" class="asp" opacity="${aSg.toFixed(3)}" clip-path="url(#pclip)">`;
+    for(const c of F.cells){
+      const k=clamp((c[2]-CUT)/.16,0,1);
+      if(k<=.02) continue;
+      z+=`<rect x="${(c[0]-F.C/2).toFixed(1)}" y="${(c[1]-F.C/2).toFixed(1)}"
+        width="${F.C}" height="${F.C}" fill="${OCOL.frontage}"
+        fill-opacity="${(.06+.20*k).toFixed(3)}"/>`;
+    }
+    g+=z+`</g><g id="asp3" class="asp" opacity="${aSg.toFixed(3)}" fill="none" ${S} stroke-linecap="round"
+      stroke="${OCOL.frontage}" stroke-width="5.5">
+      <polyline points="${G.ne}"/><polyline points="${G.n}" stroke-opacity=".7"/></g>`;
+  }
+  const aOr=seg(P,2.28,2.62)*gone, OC=OCOL[ORGK];
+  if(aOr>.002){
+    g+=`<g opacity="${aOr.toFixed(3)}" fill="none" ${S}>`;
+    if(ORGK==="frontage")
+      g+=`<polyline points="${G.n}" stroke="${OC}" stroke-width="6.5" stroke-linecap="round"/>
+          <polyline points="${G.ne}" stroke="${OC}" stroke-width="6.5" stroke-linecap="round"/>`;
+    else if(ORGK==="centre")
+      g+=`<circle cx="152" cy="160" r="34" stroke="${OC}" stroke-width="3.4"/>`
+        +G.w.filter((_,i)=>i%2===0).map(p=>`<path d="M 152 160 L ${p[0].toFixed(1)}
+           ${p[1].toFixed(1)}" stroke="${OC}" stroke-width="1.5" stroke-opacity=".5"
+           stroke-dasharray="2 4"/>`).join("");
+    else
+      g+=`<path d="M 150 38 Q 128 150 146 266" stroke="${OC}" stroke-width="5.4"
+           stroke-linecap="round"/>`;
+    g+=`</g>`;
+  }
+  // everything at the 500's scale leaves with the ground
+  g+=`</g>`;
+  /* the 100 x 78 case that used to stand in for the block is gone: the zone
+     is the block now, and the case's dashed cut line was still ghosting into
+     the 50 behind it */
+  // THE ZONE. It arrives in plan as the zoom lands on it, then lifts.
+  const aZn=seg(P,3.55,4.10), aSug=seg(P,5.15,5.55), sgone=1-seg(P,6.12,6.46);
+  if(aZn>.002){
+    // the zone stops being a solid once the building it becomes is on the
+    // ground, and stays as a dashed outline so the reduction is still legible
+    const solid=aZn*(1-aSug);
+    if(solid>.004) g+=`<g opacity="${solid.toFixed(3)}">${zoneMass(TILT,S)}</g>`;
+    if(aSug>.004) g+=`<g opacity="${(aZn*aSug*.9*sgone).toFixed(3)}">${
+      gpoly(ZONE,TILT,"var(--t3)",".10","var(--t3)","1.1",'stroke-dasharray="4 3" '+S)}</g>`;
+  }
+  if(aSug*sgone>.004) g+=building(TILT,S,aSug*sgone);
+  const bay=BAY[SPINE], vert=SPINE==="ns";
+  g+=`<g opacity="${fine}"><rect x="${bay.x}" y="${bay.y}" width="${bay.w}" height="${bay.h}"
+      fill="var(--s2)" stroke="var(--t2)" stroke-width="1.2" ${S}/>
+    <rect x="${bay.x+.9}" y="${bay.y+1.3}" width="${bay.w-1.8}" height="${bay.h-3.1}"
+      fill="var(--bga)" fill-opacity=".8" stroke="var(--ta)" stroke-width=".8" ${S}/>`;
+  for(let i=0;i<7;i++) g+= vert
+    ? `<path d="M ${bay.x+1.2+i} ${bay.y+1.1} L ${bay.x+1.2+i} ${bay.y+bay.h-1.9}"
+        stroke="var(--t2)" stroke-width="2.4" stroke-linecap="round" ${S}/>`
+    : `<path d="M ${bay.x+1} ${bay.y+1.4+i*.85} L ${bay.x+bay.w-1} ${bay.y+1.4+i*.85}"
+        stroke="var(--t2)" stroke-width="1.8" stroke-linecap="round" ${S}/>`;
+  g+= vert
+    ? `<path d="M ${bay.x+bay.w+3.4} ${bay.y+2.2} L ${bay.x+bay.w+.4} ${bay.y+4.2}"
+        stroke="var(--warn)" stroke-width="1.4" ${S}/>
+       <circle cx="${bay.x+bay.w+3.9}" cy="${bay.y+1.9}" r="1" fill="var(--warn)"/>`
+    : `<path d="M ${bay.x+bay.w/2+1.4} ${bay.y-3.4} L ${bay.x+bay.w/2+.3} ${bay.y-.6}"
+        stroke="var(--warn)" stroke-width="1.4" ${S}/>
+       <circle cx="${bay.x+bay.w/2+1.6}" cy="${bay.y-3.8}" r="1" fill="var(--warn)"/>`;
+  return g+`</g>`+instrument();
+}
+
+/* THE THREE CARDS OF THE 50's LAST PANEL, AS THREE LAYERS. The footprint is
+   always there once the building arrives; the run, the ground and the section
+   are what the panel reads one at a time. */
+function building(t,S,w){
+  let g=`<g opacity="${w.toFixed(3)}">`;
+  // 1. THE RUN. The straight bar the same site width allows, under the bend.
+  g+=`<g id="sug0" class="asp" opacity="${(GBASE.sug0||0).toFixed(3)}">`
+   + gpoly(BLD.str,t,"var(--t3)",".13","var(--t3)","1","stroke-dasharray=\"4 3\" "+S)
+   + `<path d="${BLD.park.map((q,i)=>(i?"L ":"M ")+axo(q[0],q[1],0,t).map(v=>v.toFixed(1)).join(" ")).join(" ")}"
+       fill="none" stroke="#4f7a4a" stroke-width="3.4" stroke-opacity=".75"
+       stroke-linecap="round" ${S}/>`
+   + BLD.arr.map(a=>{
+       const p0=axo(a[0],a[1],0,t), p1=axo(a[2],a[3],0,t);
+       const dx=p1[0]-p0[0], dy=p1[1]-p0[1], L=Math.hypot(dx,dy)||1;
+       const ux=dx/L, uy=dy/L, hd=3.4, bx=p1[0]-ux*hd, by=p1[1]-uy*hd;
+       return `<path d="M ${p0[0].toFixed(1)} ${p0[1].toFixed(1)} L ${bx.toFixed(1)}
+         ${by.toFixed(1)}" stroke="var(--ta)" stroke-width="1.3" ${S}/>
+         <polygon points="${p1[0].toFixed(1)},${p1[1].toFixed(1)}
+           ${(bx-uy*hd*.42).toFixed(1)},${(by+ux*hd*.42).toFixed(1)}
+           ${(bx+uy*hd*.42).toFixed(1)},${(by-ux*hd*.42).toFixed(1)}"
+           fill="var(--ta)" ${S}/>`;}).join("")
+   + `</g>`;
+  // the footprint itself, on the ground at whatever tilt the page is holding
+  g+=gpoly(BLD.bar,t,"var(--ta)",".30","var(--ta)","1.2",S);
+  // 2. WHAT HAS TO LAND. Two cores, a chamber each, and the ground they make.
+  g+=`<g id="sug1" class="asp" opacity="${(GBASE.sug1||0).toFixed(3)}">`
+   + [BLD.apA,BLD.apB].map(a=>gpoly(a,t,"var(--t2)",".10","var(--t2)","1",
+       'stroke-dasharray="3 3" '+S)).join("")
+   + [BLD.refA,BLD.refB].map(a=>gpoly(a,t,"var(--warn)",".40","var(--warn)","1",S)).join("")
+   + [BLD.coreA,BLD.coreB].map(a=>gpoly(a,t,"#d8382a",".85","#a52a1e","1",S)).join("")
+   + `</g>`;
+  // 3. THE SECTION. Low between, and the two towers off the cores.
+  g+=`<g id="sug2" class="asp" opacity="${(GBASE.sug2||0).toFixed(3)}">`
+   + prism(BLD.low,BLD.hL,t,S,BLD.stL,PKDIR)
+   + prism(BLD.twB,BLD.hB,t,S,BLD.stB,PKDIR)
+   + prism(BLD.twA,BLD.hA,t,S,BLD.stA,PKDIR)
+   + parkEdges(BLD.low,BLD.hL,t,S) + parkEdges(BLD.twB,BLD.hB,t,S)
+   + parkEdges(BLD.twA,BLD.hA,t,S)
+   + `</g>`;
+  return g+`</g>`;
+}
+
+/* THE INSTRUMENT SURVIVES THE HANDOFF. The screenshot dissolves but the ring
+   stays: compass, scale, and two arrows that say what lies beyond an edge in
+   two words instead of a paragraph. It is a 500-scale instrument, so it leaves
+   when the rail moves to the block. LETR is the tool's own ring-to-parcel
+   ratio, so the compass lands on the compass at the moment of the cross-fade. */
+/* set from the tool, not by eye: in the dial the compass letters sit at 520 px
+   with the parcel 643 px wide, so at this drawing's 176.6 the letters land at
+   142.8 — which is why the two compasses coincide at the moment of the swap */
+const RING=138.7, LETR=142.8;
+const CMP=[["N",270],["E",0],["S",90],["W",180]];
+function instrument(){
+  const a=RM.matches?1:(1-seg(P,3.05,3.40));
+  if(a<=.002) return "";
+  const S='vector-effect="non-scaling-stroke"';
+  let s=`<g opacity="${a.toFixed(3)}">
+    <circle cx="150" cy="152" r="${RING}" fill="none" stroke="var(--t3)"
+      stroke-opacity=".32" stroke-width="1" ${S}/>`;
+  s+=CMP.map(([c,d])=>{
+    const t=d*Math.PI/180;
+    return `<text class="cmp" x="${(150+Math.cos(t)*LETR).toFixed(1)}"
+      y="${(152+Math.sin(t)*LETR).toFixed(1)}">${c}</text>`;}).join("");
+  // 100 m is 69 units at this scale; it sits outside the ring on the clear
+  // side, because the chapter card covers the corner the tool puts it in
+  s+=`<g opacity=".85"><path d="M 214 306 L 283 306 M 214 303 L 214 309
+      M 283 303 L 283 309" stroke="var(--t3)" stroke-width="1" ${S}/>
+    <text class="cmp scl" x="248.5" y="298">100 m</text></g>`;
+  return s+`</g>`;
+}
+
+function cur(){
+  const K=KEY.map(k=>k===null?HELD:(k==="bay"?{...BAY[SPINE]}:k));
+  const i=clamp(Math.floor(P),0,K.length-2), f=ease(clamp(P-i,0,1));
+  const a=K[i], b=K[i+1];
+  const lw=Math.exp(Math.log(a.w)*(1-f)+Math.log(b.w)*f);   // log space, or it lurches
+  const k=(a.w===b.w)?f:(a.w-lw)/(a.w-b.w||1);
+  return {x:a.x+(b.x-a.x)*k, y:a.y+(b.y-a.y)*k, w:lw, h:lw};
+}
+
+/* THE PLAN LEANS AWAY FROM WHICHEVER CARD IS LIVE. The first chapter's card
+   sits on the left and the ring's west label sits under it, so the drawing
+   moves right while that card is up and left again for the chapter after,
+   where side by side is the whole point — the parameter and the drawing it
+   changes have to be in one glance, not stacked with one hidden behind. */
+function shift(){
+  const el=document.getElementById("world");
+  // nothing moves until the two pictures have traded places, or the swap
+  // happens between a drawing that has drifted and a screenshot that has not
+  // the panels hold one column on the right for the whole of the 500, so the
+  // drawing moves out from under them once and stays put until the block
+  const rt=0;
+  // the drawing leans left for the whole of the 500 — the panels own the
+  // right column — and comes back to centre when the block card takes over
+  const lf=Math.min(seg(P,AT(.30,.50),AT(.46,.78)), 1-seg(P,3.20,3.60));
+  // it used to shrink 15% as it moved, so the reader saw the circle grow into
+  // place and then immediately give some of it back. Translation alone clears
+  // the panel column at full size, so the size the handoff landed on is kept.
+  el.style.transform = innerWidth>760
+    ? `translateX(${(15*rt-19*lf).toFixed(2)}%)`
+    // on a phone the card rises over the lower half, so the ring climbs out
+    // of its way rather than doing its pointing behind a sheet of paper —
+    // by moving only, like the wide layout
+    : `translateY(${(-34*lf).toFixed(2)}%)`;
+}
+
+
+
+const D5={
+ ns:{h:"An east face wants vertical fins",
+  p:`The N–S spine puts this block's long façade <b>east</b>, onto the industrial edge. At
+     <b>1.35° N</b> the midday sun is almost overhead, so a horizontal shelf does nothing —
+     the problem is low afternoon sun arriving side-on. Deep <b>vertical fins</b>, and the
+     same depth doubles as an acoustic baffle against business 2.`},
+ ew:{h:"A north face wants a shallow shelf",
+  p:`The E–W spine turns this block's long façade <b>north</b>, onto the park. A north
+     façade at <b>1.35° N</b> takes almost no direct sun, so shading can be a <b>shallow
+     horizontal louvre</b> — enough for glare, not so deep that it takes the view you just
+     spent a public face to get.`}};
+function d5(){const d=D5[SPINE];
+  document.getElementById("d5h").innerHTML=d.h;
+  document.getElementById("d5p").innerHTML=d.p;}
+
+/* THE NUMERAL, SCRUBBED WITH THE ZOOM. The zeros leave in two phases: the
+   digit falls and fades first, and only then does its box close up — so the
+   number never looks like it is being squeezed, it looks like a zero dropped
+   off and the rest slid together. Width is in `ch`, which is the advance of
+   a "0" in the current font, so it is exact without measuring anything. */
+const Z1=document.getElementById("z1"), Z2=document.getElementById("z2"),
+      RSEC=document.getElementById("rsec"), RAIL=document.getElementById("rail");
+function numeral(){
+  const fall=(el,t)=>{
+    const f=seg(t,0,.55), c=seg(t,.5,1);
+    el.style.opacity=1-f;
+    el.style.transform=`translateY(${(f*0.42).toFixed(3)}em)`;
+    el.style.width=(1-c).toFixed(3)+"ch";
+  };
+  // trailing zero first: 500 -> 50 -> 5, tied to the two descents
+  // the 500 now holds for three panels, so the two descents move with it
+  const d1=RM.matches?(P>=3.6?1:0):seg(P,3.25,4.00);
+  const d2=RM.matches?(P>=6.6?1:0):seg(P,6.35,7.00);
+  fall(Z2,d1); fall(Z1,d2);
+  const i = d2>.5 ? 2 : d1>.5 ? 1 : 0;
+  if(RSEC.textContent!==SEC[i]) RSEC.textContent=SEC[i];
+  const n = ["500","50","5"][i];
+  RAIL.setAttribute("aria-label","Groundwork "+n+" — "+SEC[i]);
+  // the rail belongs to the journey, not to the hero or the close
+  // the rail steps aside when the close arrives: the close shows all three
+  // numerals itself, and the rail's single one would repeat it
+  const endIn=document.querySelector(".end").getBoundingClientRect().top<innerHeight*.85;
+  RAIL.classList.toggle("on", (P>0.04 || HAND>=.98) && !endIn);
+}
+
+const svg=document.getElementById("world");
+const TSHOT=document.getElementById("toolshot"), TSIMG=TSHOT.querySelector("img");
+/* where Ubi sits inside the dial crop, measured off the image itself: centre
+   and width as fractions of the frame. The crop is the tool's own ring, square
+   and centred on the parcel, so the zoom begins inside the instrument rather
+   than on a picture of a screen. */
+const SHOTP={cx:.4996,cy:.4993,w:.4728};
+function toolshot(){
+  // ONE PARCEL, TWO PICTURES. The screenshot zooms until its parcel is exactly
+  // the size of the drawn one and sits exactly where it sits — then they
+  // cross-fade, so the tool becomes the drawing without the site moving. The
+  // drawn ring is set to the tool's own ring-to-parcel ratio, so the compass
+  // lands on the compass at the same moment.
+  // GEOMETRY FIRST, THEN THE SWAP. One progress moved both the zoom and the
+  // fade, so the pictures traded places at about half the travel and the two
+  // compasses were a fifth of a turn apart when they did. The zoom now lands
+  // first and the dissolve happens afterwards, on a picture already in register.
+  const z1=AT(.26,.40), f0=AT(.26,.40), f1=AT(.10,.18);
+  const q =RM.matches?1:ease(clamp(P/z1,0,1));         // where and how big
+  const qf=RM.matches?1:clamp((P-f0)/f1,0,1);          // which one you see
+  const iw=TSIMG.offsetWidth, ih=TSIMG.offsetHeight;
+  const R=document.getElementById("world").getBoundingClientRect();
+  // the SVG holds a square viewBox in a box that is not square, so the scale
+  // is set by the SHORTER side — using the width overstated it by a fifth
+  const s=Math.min(R.width,R.height)/HELD.w;
+  const drawnW=176.6*s;                        // the drawn parcel, on screen
+  const zEnd=clamp(iw*SHOTP.w?drawnW/(iw*SHOTP.w):1, .6, 6);
+  // both start at 1: the held view is fitted to the picture, so there is
+  // nothing left to travel and the handoff is a dissolve on both layouts
+  const z0=1;
+  const z=z0+(zEnd-z0)*q;
+  // where each parcel's centre sits on screen — the drawing's is offset by the
+  // rail's column, so the two are matched by measurement, not by assumption
+  const T=TSHOT.getBoundingClientRect();
+  const sx=T.left+T.width/2+(SHOTP.cx-.5)*iw*z, sy=T.top+T.height/2+(SHOTP.cy-.5)*ih*z;
+  const tx=R.left+R.width/2 +(150-(HELD.x+HELD.w/2))*s,
+        ty=R.top +R.height/2+(152-(HELD.y+HELD.h/2))*s;
+  const dx=(tx-sx)*q, dy=(ty-sy)*q;
+  TSIMG.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) scale(${z.toFixed(3)})`;
+  TSHOT.style.opacity=(1-qf).toFixed(3);
+  TSHOT.style.display=qf>=.995?"none":"flex";
+  document.getElementById("world").style.opacity=qf.toFixed(3);
+}
+/* ---- THE 50's SECOND CARD: what the twenty-five are for -----------------
+   Beat 1  the archive arrives — 25 record marks, the architect's own.
+   Beat 2  measurement — a pass crosses them, each emits a dot, the dots land
+           in a profile that names what was measured. The marks stay put.
+   Beat 3  suggestions shaped by it — three skeletons sized from the profile,
+           and a fourth that falls outside it and is not offered.
+   The four features are the ones the extraction actually returns off the 25;
+   no values are printed, because none have been exported to this page yet. */
+const AFEAT=["Unit","Corridor","Core","Positioning"];
+const AFIG=document.getElementById("afig");
+const AS='vector-effect="non-scaling-stroke"';
+/* ONE FIGURE, TWO LAYOUTS. On a wide screen the reference and the features
+   sit side by side; on a phone that would put 6 px type in a 326 px box, so
+   they stack instead. Every coordinate comes from L, so the drawing code is
+   written once. The viewBox is sized so both render the type at about 10 px. */
+const ALAY={
+ d:{vb:"0 0 225 100", tx:6,ty:20,tw:12,th:10,gx:16,gy:14,
+    swA:15,swB:91,swX:4,swW:82,
+    px:118,py:20,pw:78,ph:72, ry:34,rd:16, dx:130,lx:140,
+    hA:[6,13], hB:[118,13]},
+ /* the phone keeps the same two columns — reference left, features right —
+    and gets there by narrowing the drawing space instead of stacking it.
+    At 176 units across a 326 px card the type lands at 12 px and the tiles
+    at 18 px, which is what the wide layout renders too: one figure, one
+    size, half the height. */
+ m:{vb:"0 0 176 92", tx:4,ty:20,tw:10,th:8,gx:13,gy:11.5,
+    swA:15,swB:78,swX:2,swW:68,
+    px:92,py:20,pw:82,ph:62, ry:32,rd:14, dx:103,lx:112,
+    hA:[4,13], hB:[92,13]}};
+const AL=()=>MOB.matches?ALAY.m:ALAY.d;
+/* THE IDLE PASS. Once the two beats are done and the reader is still here,
+   plans keep going to the features: one shrinks to a small square and travels
+   to one of the four, at random, for as long as the card is on screen. It is
+   the measurement beat, running rather than remembered. */
+let ADUST=[], ABUSY=new Set(), AT_=0, ASPAWN=0;
+function dustSVG(now){
+  const L=AL(); let g=""; ABUSY=new Set();
+  for(const d of ADUST){
+    const u=clamp((now-d.t0)/d.dur,0,1), e=ease(u);
+    if(u<.55) ABUSY.add(d.i);
+    const c=d.i%5, r=(d.i/5)|0;
+    const sx=L.tx+c*L.gx, sy=L.ty+r*L.gy;
+    const tx=L.dx-2.2, ty=L.ry+d.j*L.rd-2.2;
+    const k=Math.min(1,e*1.7);
+    const w=L.tw+(4.4-L.tw)*k, h=L.th+(4.4-L.th)*k;
+    const o=u<.10?u/.10:(u>.86?(1-u)/.14:1);
+    g+=`<rect x="${(sx+(tx-sx)*e).toFixed(1)}" y="${(sy+(ty-sy)*e).toFixed(1)}"
+      width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="var(--ta)"
+      fill-opacity="${(.5*o).toFixed(2)}" stroke="var(--ta)"
+      stroke-opacity="${(.85*o).toFixed(2)}" stroke-width=".8" ${AS}/>`;
+    if(u>.80) g+=`<circle cx="${L.dx}" cy="${(L.ry+d.j*L.rd).toFixed(1)}"
+      r="${(2.6+8*(u-.80)/.20).toFixed(1)}" fill="none" stroke="var(--ta)"
+      stroke-opacity="${(.5*(1-(u-.80)/.20)).toFixed(2)}" stroke-width="1" ${AS}/>`;
+  }
+  return g;
+}
+function archFig(t){
+  const L=AL(); let g="";
+  // 1 — the reference, arriving
+  const hA=seg(t,.03,.14);
+  if(hA>.002) g+=`<text class="ah" x="${L.hA[0]}" y="${L.hA[1]}"
+    opacity="${hA.toFixed(3)}">REFERENCE</text>`;
+  for(let i=0;i<25;i++){
+    const c=i%5, r=(i/5)|0, x=L.tx+c*L.gx, y=L.ty+r*L.gy;
+    const a=seg(t,.03+c*.018+r*.018,.15+c*.018+r*.018)*(ABUSY.has(i)?.25:1);
+    if(a<=.002) continue;
+    g+=`<g opacity="${a.toFixed(3)}"><rect x="${x}" y="${y}" width="${L.tw}" height="${L.th}"
+      rx="1.5" fill="var(--s1)" stroke="var(--t3)" stroke-opacity=".45" stroke-width=".9" ${AS}/>
+      <path d="M ${x+2.4} ${y+L.th*.37} H ${x+L.tw-2.4} M ${x+2.4} ${y+L.th*.67}
+      H ${x+L.tw-5} " stroke="var(--t3)" stroke-opacity=".5" stroke-width=".9" ${AS}/></g>`;
+  }
+  // 2 — the pass, and what it sends. Nothing leaves: the reference is still there.
+  const pa=seg(t,.30,.40);
+  if(pa>.002)
+    g+=`<g opacity="${pa.toFixed(3)}"><rect x="${L.px}" y="${L.py}" width="${L.pw}"
+      height="${L.ph}" rx="5" fill="var(--bga)" fill-opacity=".5" stroke="var(--ta)"
+      stroke-opacity=".5" stroke-width="1" ${AS}/>
+      <text class="ah" x="${L.hB[0]}" y="${L.hB[1]}">DESIGN FEATURES</text></g>`;
+  const sw=seg(t,.32,.62);
+  if(sw>.004&&sw<.996)
+    g+=`<path d="M ${(L.swX+sw*L.swW).toFixed(1)} ${L.swA} V ${L.swB}" stroke="var(--ta)"
+      stroke-width="1" stroke-opacity=".45" ${AS}/>`;
+  for(let i=0;i<25;i++){
+    const c=i%5, r=(i/5)|0, j=i%4;
+    const a=seg(t,.34+c*.05,.62+c*.05);
+    if(a<=.002||a>=.998) continue;
+    const sx=L.tx+c*L.gx+L.tw/2, sy=L.ty+r*L.gy+L.th/2, dx=L.dx, dy=L.ry+j*L.rd;
+    g+=`<circle cx="${(sx+(dx-sx)*a).toFixed(1)}" cy="${(sy+(dy-sy)*a).toFixed(1)}"
+      r="1.4" fill="var(--ta)"/>`;
+  }
+  AFEAT.forEach((f,j)=>{
+    const a=seg(t,.62+j*.05,.74+j*.05);
+    if(a<=.002) return;
+    const y=L.ry+j*L.rd;
+    g+=`<g opacity="${a.toFixed(3)}"><text class="an" x="${L.dx}" y="${y+2.4}"
+      text-anchor="middle">${j+1}</text>
+      <text class="al" x="${L.lx}" y="${y+2.4}">${f}</text></g>`;
+  });
+  return g;
+}
+/* ---- TWO WAYS IN, AS A CIRCUIT ----------------------------------------
+   Four slots in a row said what the block takes and nothing about where it
+   sits, which is the thing that needed to be obvious. This draws the ladder
+   instead: the masterplan feeds the block, the block feeds the detail, and
+   there is a door into the middle you can use today. Both paths are on screen
+   at once, so nothing has to alternate for the picture to be understood.
+   Built once and on a layout change — not per scroll, or the travelling heads
+   would restart on every wheel notch. */
+const CIRC={
+ d:{vb:"0 0 190 113", sub:["MASTERPLAN","THE BLOCK","DETAIL"],
+    p5:[1,6,62,32], blk:[83,4,52,36], p5b:[155,10,32,24],
+    you:[1,88,62,22], rise:109},
+ /* the phone gets the same circuit, not a stack — just tighter boxes */
+ m:{vb:"0 0 160 113", sub:["PLAN","BLOCK","DETAIL"],
+    p5:[1,6,50,32], blk:[69,4,40,36], p5b:[127,10,30,24],
+    you:[1,88,50,22], rise:89}};
+/* every arrowhead stops the same distance short of the box it points at */
+const CGAP=5, CHEAD=6;
+function buildCircuit(){
+  const F=document.getElementById("ifig"); if(!F) return;
+  const C=MOB.matches?CIRC.m:CIRC.d, R=RM.matches;
+  F.setAttribute("viewBox",C.vb);
+  const bl=C.blk[0], br=C.blk[0]+C.blk[2], bb=C.blk[1]+C.blk[3];
+  const cy=C.blk[1]+C.blk[3]/2;
+  const box=(b,fill,stroke,w,cls)=>`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}"
+    height="${b[3]}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="${w}"
+    ${cls?`class="${cls}"`:""} vector-effect="non-scaling-stroke"/>`;
+  const num=(b,col,op)=>`<text class="cn" x="${b[0]+b[2]/2}"
+    y="${(b[1]+b[3]*.55).toFixed(1)}" text-anchor="middle" fill="${col}"
+    ${op?`opacity="${op}"`:""}>`;
+  const wordY=b=>b[1]+b[3]-5;
+  // a head that stops CGAP short of `to`, pointing right or up
+  const rightArrow=(from,to,col)=>{
+    const tip=to-CGAP, base=tip-CHEAD;
+    return {path:`M ${from} ${cy} H ${base}`,
+      head:`<path d="M ${base} ${cy-3.5} L ${tip} ${cy} L ${base} ${cy+3.5} Z" fill="${col}"/>`};
+  };
+  let g=`<defs><filter id="iglowf" x="-45%" y="-70%" width="190%" height="240%">
+    <feGaussianBlur stdDeviation="2.4"/></filter></defs>`;
+  // the glow sits behind everything
+  if(!R) g+=`<g filter="url(#iglowf)" fill="none" stroke-width="3">
+    ${box(C.blk,"none","var(--t)",3,"gA").replace('rx="5"','rx="6"')}
+    ${box(C.blk,"none","var(--ta)",3,"gB").replace('rx="5"','rx="6"')}</g>`;
+  // the masterplan, and the link that is not built yet
+  g+=box(C.p5,"var(--bga)","var(--ta)",1.2);
+  g+=num(C.p5,"var(--ta)")+`500</text>
+    <text class="cs" x="${C.p5[0]+C.p5[2]/2}" y="${wordY(C.p5)}" text-anchor="middle"
+      fill="var(--ta)">${C.sub[0]}</text>`;
+  const A1=rightArrow(C.p5[0]+C.p5[2], bl, "var(--ta)");
+  g+=`<path d="${A1.path}" fill="none" stroke="var(--ta)" stroke-width="1.6"
+      stroke-dasharray="4 3"/>`+A1.head;
+  // the block
+  g+=box(C.blk,"var(--s2)","var(--t)",1.5,R?"":"blk");
+  g+=num(C.blk,"var(--t)")+`50</text>
+    <text class="cs" x="${C.blk[0]+C.blk[2]/2}" y="${wordY(C.blk)}" text-anchor="middle"
+      fill="var(--t)">${C.sub[1]}</text>`;
+  // what comes out, and the scale it hands to
+  const A2=rightArrow(br, C.p5b[0], "var(--t2)");
+  g+=`<path d="${A2.path}" fill="none" stroke="var(--t2)" stroke-width="1.5"/>`+A2.head;
+  g+=box(C.p5b,"none","var(--t3)",1)+num(C.p5b,"var(--t3)",".75")+`5</text>
+    <text class="cs" x="${C.p5b[0]+C.p5b[2]/2}" y="${wordY(C.p5b)}" text-anchor="middle"
+      fill="var(--t3)" opacity=".7">${C.sub[2]}</text>`;
+  // the door you can use today: along, then up into the block's underside
+  g+=box(C.you,"var(--s1)","var(--t2)",1);
+  g+=`<text class="cy" x="${C.you[0]+C.you[2]/2}"
+      y="${(C.you[1]+C.you[3]/2+3.6).toFixed(1)}" text-anchor="middle"
+      fill="var(--t2)">YOU</text>`;
+  const yY=C.you[1]+C.you[3]/2, tipY=bb+CGAP, baseY=tipY+CHEAD;
+  const ywire=`M ${C.you[0]+C.you[2]} ${yY} H ${C.rise} V ${baseY}`;
+  g+=`<path d="${ywire}" fill="none" stroke="var(--t2)" stroke-width="1.6"/>
+    <path d="M ${C.rise-3.5} ${baseY} L ${C.rise} ${tipY} L ${C.rise+3.5} ${baseY} Z"
+      fill="var(--t2)"/>`;
+  // the two travelling heads, 1.1 s apart, so the block's flash is an arrival
+  if(!R){
+    const trav=(path,col,begin)=>`<g><path d="M -3.2 -2.8 L 3.2 0 L -3.2 2.8 Z"
+      fill="${col}"/><animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto"
+      path="${path}" begin="${begin}"/><animate attributeName="opacity"
+      values="0;1;1;0" keyTimes="0;.14;.8;1" dur="2.2s" repeatCount="indefinite"
+      begin="${begin}"/></g>`;
+    g+=trav(ywire,"var(--t2)","0s")+trav(A1.path,"var(--ta)","1.1s");
+  }
+  F.innerHTML=g;
+}
+let CMOB=null;
+function circuitCheck(){
+  if(CMOB!==MOB.matches){ CMOB=MOB.matches; buildCircuit(); }
+}
+/* the beats are keyed to the CARD, not to its section: the section is 112svh
+   tall and centres the card inside it, so timing off the section ran the whole
+   figure out before the card had arrived on screen */
+const ARCH=document.querySelector("#arch .chin");
+let AVB="";
+function archive(){
+  if(!AFIG||!ARCH) return;
+  const L=AL();
+  if(AVB!==L.vb){ AVB=L.vb; AFIG.setAttribute("viewBox",L.vb); }
+  const r=ARCH.getBoundingClientRect();
+  AT_=RM.matches?1:clamp((innerHeight*.82-r.top)
+    /Math.max(1,r.height*.55+innerHeight*.20),0,1);
+  AFIG.innerHTML=archFig(AT_)+(ADUST.length?dustSVG(performance.now()):"");
+}
+(function aframe(now){
+  requestAnimationFrame(aframe);
+  if(!AFIG||!ARCH||RM.matches) return;
+  const r=ARCH.getBoundingClientRect();
+  const live = AT_>=.90 && r.bottom>60 && r.top<innerHeight-40;
+  if(live && now-ASPAWN>260 && ADUST.length<5){
+    ADUST.push({i:(Math.random()*25)|0, j:(Math.random()*4)|0,
+                t0:now, dur:1100+Math.random()*600});
+    ASPAWN=now;
+  }
+  cycle(now);
+  const n=ADUST.length;
+  ADUST=ADUST.filter(d=>now-d.t0<d.dur);
+  if(!live){ if(n){ ADUST=[]; ABUSY=new Set(); AFIG.innerHTML=archFig(AT_); } return; }
+  AFIG.innerHTML=archFig(AT_)+dustSVG(now);
+})(performance.now());
+function paint(){
+  heldFit();
+  toolshot(); shift();
+  const V=cur();
+  svg.setAttribute("viewBox",`${V.x} ${V.y} ${V.w} ${V.h}`);
+  svg.innerHTML=world();
+  numeral();
+}
+function onScroll(){
+  const z=document.getElementById("zoom"), r=z.getBoundingClientRect();
+  P=clamp((-r.top/Math.max(1,z.offsetHeight-innerHeight))*(N-1),0,N-1);
+  panels(); archive();
+  paint();
+  document.querySelectorAll(".ch").forEach(c=>{
+    const b=c.getBoundingClientRect();
+    c.classList.toggle("on", b.top<innerHeight*.62 && b.bottom>innerHeight*.30);});
+}
+/* THE THREE OPTIONS. The order is the run's; the page states which leads and
+   keeps the other two one click away, each with its own case against it. */
+function shareBar(){
+  const el=document.getElementById("rank"); if(!el) return;
+  el.innerHTML=ORG.filter(o=>!o.off).map((o,i)=>
+    `<li${i?"":' class="top"'}><span class="dot" style="background:${OCOL[o.k]}"></span>${o.n2||o.n}
+      <b>${o.share}%</b></li>`).join("")
+   +`<li class="off"><span class="dot" style="background:${OCOL.web}"></span>Web
+      <b>not supported here</b></li>`;
+}
+function reasons(){
+  const o=ORG.find(x=>x.k===ORGK), z=document.getElementById("ozone");
+  if(!z) return;
+  z.innerHTML=`<div class="rzh">why</div><ul class="rz">${
+      o.why.map(t=>`<li>${t}</li>`).join("")}</ul>`
+    +`<div class="rzh">what it does badly</div><ul class="rz bad">${
+      o.bad.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  const bw=document.getElementById("oborrow");
+  if(bw) bw.innerHTML=BORROW[o.k]||"";
+  const hd=document.getElementById("ohead");
+  if(hd) hd.textContent=o.n2||o.n;
+
+}
+function options(){
+  const box=document.getElementById("opts"); if(!box) return;
+  const lead=ORG.filter(o=>!o.off).reduce((a,b)=>b.share>a.share?b:a);
+  box.innerHTML=ORG.filter(o=>!o.off).map(o=>`<button data-k="${o.k}"
+    class="${o.k===ORGK?"on":""}">${o.n}</button>`
+    +(o.k===lead.k?'<span class="hold">recommended</span>':'')).join("");
+  reasons();
+}
+document.getElementById("opts").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b||b.disabled) return;
+  ORGK=b.dataset.k;
+  SPINE=(ORG.find(o=>o.k===ORGK)||{}).face||"ns";
+  document.querySelectorAll("#opts button").forEach(x=>
+    x.classList.toggle("on",x===b));
+  reasons(); d5(); paint();
+});
+shareBar(); options();
+
+/* the cards arrive one at a time and stay: the derivation is cumulative, so
+   "2 contested" needs the eight still above it */
+let PAP=0, PBP=0, PDP=0;
+function panels(){
+  document.querySelectorAll(".panel").forEach(p=>{
+    const r=p.getBoundingClientRect();
+    const prog=clamp((innerHeight*.74-r.top)/Math.max(1,r.height*.50),0,1);
+    const cs=p.querySelectorAll(".card");
+    let now=0;
+    cs.forEach((c,i)=>{ const on=prog>=(i+.2)/(cs.length+.5);
+      c.classList.toggle("lit",on); if(on) now=i; });
+    cs.forEach((c,i)=>c.classList.toggle("now", i===now));
+    // the drawing answers THIS panel card by card, so its progress leaves here
+    if(p.id==="pA") PAP=prog;
+    if(p.id==="pB") PBP=prog;
+    if(p.id==="pD") PDP=prog;
+    const note=p.querySelector(".pcol>.cs");
+    if(note) note.classList.toggle("lit", prog>=.84);
+    p.classList.toggle("gone", r.bottom<innerHeight*.62);
+  });
+}
+/* A PANEL READS ITSELF WHEN YOU STOP. Scrolling leaves every card lit and
+   every layer on the plan, unchanged. Stand still for half a second and the
+   panel takes over: each note lights in turn and the plan lights with it, so
+   what the run found gets read one thing at a time without spending any more
+   scroll on it. The first touch of the wheel hands it straight back.
+   Each card owns the drawing groups it is about — the third card of "what it
+   calls for" owns two, the zone and the line on its edge. */
+function cycle(now){
+  const WSVG=document.getElementById("world"); if(!WSVG) return;
+  let any=false;
+  for(const C of CYCS){
+    const el=document.getElementById(C.id); if(!el) continue;
+    const st=CYCST[C.id]||(CYCST[C.id]={sel:-1,t0:0});
+    const r=el.getBoundingClientRect(), cs=[...el.querySelectorAll(".card")];
+    const lit=cs.reduce((a,c,i)=>(c.classList.contains("lit")&&a.push(i),a),[]);
+    // two lit cards is the minimum for a turn to mean anything
+    const on=!RM.matches && lit.length>1 && now-ASCROLL>500
+      && r.top<innerHeight*.55 && r.bottom>innerHeight*.40;
+    if(!on){
+      if(st.sel>=0||st.t0){
+        st.sel=-1; st.t0=0; el.classList.remove("cyc");
+        cs.forEach(c=>c.classList.remove("act"));
+        C.groups.forEach(gs=>gs.forEach(id=>{
+          const e=document.getElementById(id); if(e) e.style.opacity="";}));
+      }
+      continue;
+    }
+    any=true;
+    if(!st.t0){ st.t0=now; el.classList.add("cyc"); }
+    const sel=lit[Math.floor((now-st.t0)/2100)%lit.length];
+    if(sel!==st.sel){ st.sel=sel; cs.forEach((c,i)=>c.classList.toggle("act", i===sel)); }
+    // written every frame, not only on the change: an option click repaints
+    // the drawing and the inline opacities would be gone with it
+    C.groups.forEach((gs,i)=>gs.forEach(id=>{
+      const e=document.getElementById(id); if(!e) return;
+      e.style.opacity=((GBASE[id]||0)*(i===sel?1:.18)).toFixed(3);
+    }));
+  }
+  WSVG.classList.toggle("cyc", any);
+}
+/* THE HANDOFF. As the three scales scroll up, the big 500 is carried to the
+   rail's numeral — measured, not guessed, so it lands exactly on the digits
+   it becomes — while the 50 and the 5 step back. When it lands, the rail
+   takes over and the big one is gone. */
+const BIG=document.getElementById("big500"), RNUM=document.querySelector(".rnum"),
+      SREST=[...document.querySelectorAll("#scales h2,#scales p,#scales .sl,#scales .st,#scales .tl3,#s50 .sn,#s5 .sn")];
+let HAND=0;
+function handoff(){
+  if(RM.matches){ HAND=1; return; }
+  const row=BIG.parentElement.getBoundingClientRect();
+  // start once the last of the three scales has been read: the bottom of the
+  // row, not the 500 — on a phone the 50 and 5 sit below it
+  const endY=document.querySelector("#scales .srow").getBoundingClientRect().bottom;
+  const q=ease(clamp((innerHeight*.62-endY)/(innerHeight*.30),0,1));
+  HAND=q;
+  const t=RNUM.getBoundingClientRect(), k=t.height/row.height;
+  const dx=t.left-row.left, dy=t.top-row.top;
+  BIG.style.transform=`translate(${(dx*q).toFixed(1)}px,${(dy*q).toFixed(1)}px) scale(${(1+(k-1)*q).toFixed(4)})`;
+  BIG.style.opacity = q>=.98 ? 0 : 1;
+  // everything but the 500 steps back first, so the rail never lands on text
+  const o=clamp(1-q*1.8,0,1).toFixed(3);
+  SREST.forEach(el=>el.style.opacity=o);
+}
+/* ---- THE SWEEP (sample). The unnamed plans draw first, faint and scattered;
+   the named concepts arrive after, bright and bunched — so the picture shows
+   the finding (a minority of the sweep shares a logic) before anything says it.
+   Geometry is a seeded stand-in; the real export replaces PARC, DOOR and RTE. */
+/* THE REAL BOUNDARY. Ubi Avenue as the engine holds it — 120 points in metres,
+   simplified to 20 and scaled into this drawing's 300-unit space. The zoom
+   dissolves from the tool's own screen into this outline, so it has to be the
+   same shape. Doors sit on it, spaced around the perimeter. */
+const PARC=[[126.5,54.0],[120.3,34.0],[70.0,56.1],[61.7,71.3],[72.7,129.2],[110.7,121.6],[117.6,154.1],[122.4,182.4],[84.4,190.0],[100.3,262.4],[108.6,269.3],[116.2,270.0],[224.5,249.3],[210.7,178.2],[238.3,172.7],[225.9,109.9],[236.9,92.0],[226.6,82.3],[203.8,35.4],[191.4,40.9]];
+const DOOR=(()=>{
+  // eight doors, evenly spaced along the boundary by distance
+  const L=[],n=PARC.length; let tot=0;
+  for(let i=0;i<n;i++){ const a=PARC[i],b=PARC[(i+1)%n];
+    const d=Math.hypot(b[0]-a[0],b[1]-a[1]); L.push(d); tot+=d; }
+  const at=t=>{ let x=t*tot,i=0; while(x>L[i]){ x-=L[i]; i=(i+1)%n; }
+    const a=PARC[i],b=PARC[(i+1)%n],f=x/L[i];
+    return [+(a[0]+(b[0]-a[0])*f).toFixed(1), +(a[1]+(b[1]-a[1])*f).toFixed(1)]; };
+  const k=["n","ne","e","se","s","sw","w","nw"], o={};
+  k.forEach((key,i)=>o[key]=at((i/8+.06)%1));
+  return o;
+})();
+const DKEYS=Object.keys(DOOR);
+const RTE=(()=>{
+  let z=7734; const r=()=>{z=(z*1103515245+12345)&0x7fffffff; return z/0x7fffffff;};
+  const out=[];
+  [["n","s"],["ne","sw"],["nw","se"],["n","sw"]].forEach((pr,ci)=>{
+    for(let i=0;i<8+(ci%2);i++) out.push({a:pr[0],b:pr[1],bow:(r()-.45)*46,k:ci});});
+  while(out.length<129){
+    const a=DKEYS[Math.floor(r()*8)], b=DKEYS[Math.floor(r()*8)];
+    if(a===b) continue;
+    out.push({a,b,bow:(r()-.5)*150,k:-1});
+  }
+  return out;
+})();
+const CC=["var(--ta)","var(--gr)","var(--warn)","#a58bd0"];
+function rpath(t){
+  const A=DOOR[t.a], B=DOOR[t.b];
+  const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2;
+  const nx=-(B[1]-A[1]), ny=(B[0]-A[0]), L=Math.hypot(nx,ny)||1;
+  return `M ${A[0]} ${A[1]} Q ${(mx+nx/L*t.bow).toFixed(1)} ${(my+ny/L*t.bow).toFixed(1)} ${B[0]} ${B[1]}`;
+}
+function drawSweep(){
+  // no non-scaling-stroke on the drawn routes: it makes the browser measure the
+  // dash in screen pixels, so pathLength-based drawing stopped half way
+  const S='vector-effect="non-scaling-stroke"';
+  let z=91; const r=()=>{z=(z*1103515245+12345)&0x7fffffff; return z/0x7fffffff;};
+  let g=`<polygon class="pc0" points="${PARC.map(p=>p.join(',')).join(' ')}" fill="var(--s1)"
+    fill-opacity=".6" stroke="var(--t3)" stroke-width="1" ${S}/>`;
+  const faint=RTE.filter(t=>t.k<0), named=RTE.filter(t=>t.k>=0);
+  g+=faint.map(t=>`<path class="r" pathLength="1" d="${rpath(t)}" fill="none" stroke="var(--t2)"
+    stroke-opacity=".3" stroke-width=".6" stroke-linecap="round"
+    style="animation-delay:${(.3+r()*1.2).toFixed(2)}s"/>`).join("");
+  g+=named.map(t=>`<path class="r" pathLength="1" d="${rpath(t)}" fill="none" stroke="${CC[t.k]}"
+    stroke-opacity=".9" stroke-width="1.05" stroke-linecap="round"
+    style="animation-delay:${(1.5+t.k*.25+r()*.4).toFixed(2)}s"/>`).join("");
+  g+=Object.values(DOOR).map(p=>`<circle class="pc0" cx="${p[0]}" cy="${p[1]}" r="3.2"
+    fill="var(--s0)" stroke="var(--t)" stroke-width="1.3" ${S} style="animation-delay:.2s"/>`).join("");
+  // THE SPINE IS THE CLUSTER'S OWN AVERAGE. It used to be a hand-drawn curve
+  // that happened to sit beside the routes it claimed to summarise, which read
+  // as a ninth route going its own way. Every kept route is the same quadratic
+  // between the same two doors and differs only in its bow, so the mean bow is
+  // the mean route — the line through the middle of the cluster, by
+  // construction rather than by eye.
+  const K0=RTE.filter(t=>t.k===0);
+  const spineD=rpath({a:K0[0].a, b:K0[0].b,
+    bow:K0.reduce((a,t)=>a+t.bow,0)/K0.length});
+  g+=`<path class="spine" pathLength="1" d="${spineD}" fill="none"
+    stroke="var(--ta)" stroke-width="3.2" stroke-linecap="round"/>`;
+  // pins: where each note is about
+  const PINS=[[118,150],[150,40],[214,214],[266,122]];
+  g+=PINS.map((p,i)=>`<g class="pin" id="pin${i+1}" opacity="0"><circle cx="${p[0]}" cy="${p[1]}"
+    r="4.6" stroke="#1b1a17" stroke-width="1.2"/></g>`).join("");
+  document.getElementById("sweep").innerHTML=g;
+  // mark the kept concept's routes
+  const paths=[...document.querySelectorAll("#sweep path.r")];
+  let i=0; RTE.filter(t=>t.k<0).forEach(()=>i++);
+  RTE.filter(t=>t.k>=0).forEach(t=>{ if(t.k===0) paths[i].classList.add("keep"); i++; });
+}
+drawSweep();
+
+/* ---- the hero's timeline: sweep, three suggestions, one direction.
+   Timed, not scrolled: it has to finish on the first screen, before anyone
+   has decided whether to scroll. */
+/* It loops: finish, hold on the concept for 5 s, fade, start again — the
+   first screen keeps making its point for someone who lingers on it. */
+(function heroStory(){
+  const H=document.querySelector(".hart"), cap=document.getElementById("hcap");
+  const setCap=t=>{cap.style.opacity=0; setTimeout(()=>{cap.textContent=t; cap.style.opacity=1;},250);};
+  const on=(id)=>document.getElementById(id).classList.add("on");
+  const pin=(n)=>{const p=document.getElementById("pin"+n); if(p) p.setAttribute("opacity","1");};
+  const steps=[
+    [3400,()=>{setCap("4 suggestions, each with its reasons"); on("nt1"); on("hl1"); pin(1);}],
+    [4600,()=>{on("nt2"); on("hl2"); pin(2);}],
+    [5800,()=>{on("nt3"); on("hl3"); pin(3);}],
+    [7000,()=>{on("nt4"); on("hl4"); pin(4);}],
+    [9400,()=>{H.classList.add("settle"); [1,2,3,4].forEach(n=>
+        document.getElementById("pin"+n).setAttribute("opacity","0"));
+      setCap("One direction. Still yours to design.");}]
+  ];
+  if(RM.matches){ steps.forEach(([,f])=>f()); return; }
+  const HOLD=5000, SETTLED=9400+1200;          // the card finishes arriving ~1.2 s after settle
+  function run(){ steps.forEach(([t,f])=>setTimeout(f,t)); setTimeout(restart,SETTLED+HOLD); }
+  function restart(){
+    H.classList.add("reset");                 // fade the drawing and the card out
+    setTimeout(()=>{
+      H.classList.remove("settle");
+      document.querySelectorAll(".nt,.hl").forEach(n=>n.classList.remove("on"));
+      drawSweep();                            // fresh paths restart the draw-in
+      cap.textContent="129 ways across one parcel";
+      H.classList.remove("reset");
+      run();
+    },600);
+  }
+  run();
+})();
+
+/* ---- THE WORD. "Groundwork" in the hero is carried to "Groundwork" in the
+   claim — measured, like the 500 into the rail — while the rest of the hero
+   steps back. The claim's own word stays hidden until this one lands on it,
+   so the reader sees one word move, not two words swap. */
+const HWORD=document.getElementById("hword"), SUBJ=document.getElementById("subj"),
+      HFADE=[...document.querySelectorAll(".hfade")];
+let WQ=0;
+function wordHand(){
+  const o=document.getElementById("open").getBoundingClientRect().top;
+  const q=RM.matches?1:ease(clamp((innerHeight*.98-o)/(innerHeight*.48),0,1));
+  WQ=q;
+  HFADE.forEach(el=>el.style.opacity=clamp(1-q*3.2,0,1).toFixed(3));
+  if(RM.matches){ SUBJ.style.opacity=1; return; }
+  const src=HWORD.parentElement.getBoundingClientRect(), t=SUBJ.getBoundingClientRect();
+  const k=t.height/src.height;
+  HWORD.style.transform=`translate(${((t.left-src.left)*q).toFixed(1)}px,${((t.top-src.top)*q).toFixed(1)}px) scale(${(1+(k-1)*q).toFixed(4)})`;
+  const landed=q>=.985;
+  HWORD.style.opacity=landed?0:1;
+  SUBJ.style.opacity=landed?1:0;
+}
+/* the header takes the ground it is over; the running frames follow the step
+   nearest the middle of the screen */
+const HDR=document.getElementById("hdr");
+function chrome(){
+  const sc=document.getElementById("scales").getBoundingClientRect();
+  HDR.classList.toggle("lit", sc.top<innerHeight*.5);
+}
+const onAll=()=>{ASCROLL=performance.now();wordHand();opening();handoff();chrome();onScroll();};
+addEventListener("resize",circuitCheck,{passive:true});
+circuitCheck();
+addEventListener("scroll",onAll,{passive:true});
+addEventListener("resize",onAll,{passive:true});
+d5(); onAll();
+
+
+/* ============================================================================
+   GROUNDWORK — SCROLL PAGE TRACKING
+   Paste this at the very END of the page's existing script block, just above
+   its closing tag. It has to be inside (or after) that block because it
+   reads the page's own `P` and `seg` rather than recomputing them — the
+   number logged and the numeral on screen then cannot disagree.
+
+   Two rows per session: "arrive" on load, "leave" when the tab is hidden or
+   closed. Dwell is sampled on a timer, NOT on scroll — a reader who stops to
+   read fires no scroll events, and stopping to read is the thing you most
+   want to measure.
+
+   Before using: set ENDPOINT, and give the last chapter an id:
+       <section class="ch right" id="detail">
+   ========================================================================= */
+(function () {
+  var ENDPOINT = "https://script.google.com/macros/s/PASTE_YOUR_ID/exec";
+
+  var TICK = 250;        // ms between samples
+  var IDLE = 30000;      // stop counting after this long with no input
+
+  // a throwaway id, session-scoped, no personal data in it
+  var sid = (function () {
+    try {
+      var s = sessionStorage.getItem("gw_sid");
+      if (!s) {
+        s = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        sessionStorage.setItem("gw_sid", s);
+      }
+      return s;
+    } catch (e) { return "x" + Date.now().toString(36); }
+  })();
+
+  var secs = [].slice.call(document.querySelectorAll(".chapters > section"));
+  function secName(s) {
+    return s.id || s.className.trim().replace(/\s+/g, "-") || "sec";
+  }
+
+  var ms = { total: 0, active: 0 };
+  var scaleMs = { "500": 0, "50": 0, "5": 0 };
+  var secMs = {};
+  secs.forEach(function (s) { secMs[secName(s)] = 0; });
+
+  var clicks = { demo_header: 0, demo_end: 0, opt_frontage: 0, opt_centre: 0, opt_spine: 0 };
+  var maxP = 0, maxScroll = 0, cycles = 0, errs = 0, firstErr = "";
+  var last = performance.now(), lastAct = last, started = Date.now();
+  var sentLeave = false;
+
+  ["scroll", "pointerdown", "keydown", "wheel", "touchstart"].forEach(function (ev) {
+    addEventListener(ev, function () { lastAct = performance.now(); }, { passive: true });
+  });
+  addEventListener("error", function (e) {
+    errs++; if (!firstErr) firstErr = String(e.message || "").slice(0, 120);
+  });
+
+  /* THE SCALE THE READER IS ON — READ OFF THE RAIL, NOT RECOMPUTED.
+     The obvious way is to repeat numeral()'s own test, seg(P,3.25,4.00) and
+     seg(P,6.35,7.00). Don't: those thresholds are tuned to the seven chapters
+     that exist today, so adding or removing one at the 50 silently moves the
+     boundary and the log drifts away from the page. Reading the word the rail
+     has already put on screen means retuning the page retunes the tracking,
+     and there is only ever one answer to "which scale was the reader on". */
+  var RSEC = document.getElementById("rsec");
+  var SCALE_OF = { "the parcel": "500", "the block": "50", "the detail": "5" };
+  function scaleNow() {
+    var w = RSEC && RSEC.textContent.trim().toLowerCase();
+    return SCALE_OF[w] || "500";
+  }
+
+  /* THE PANEL THE READER IS ON. Whichever section covers the middle of the
+     screen — exactly one at a time, so the per-section times sum cleanly to
+     the total rather than double-counting the overlaps. */
+  function liveSection() {
+    var mid = innerHeight / 2;
+    for (var i = 0; i < secs.length; i++) {
+      var r = secs[i].getBoundingClientRect();
+      if (r.top <= mid && r.bottom >= mid) return secName(secs[i]);
+    }
+    return null;
+  }
+
+  setInterval(function () {
+    var now = performance.now(), dt = now - last; last = now;
+    ms.total += dt;
+    if (document.visibilityState !== "visible") return;   // tab in the background
+    if (now - lastAct > IDLE) return;                     // walked away
+    ms.active += dt;
+    scaleMs[scaleNow()] += dt;
+    var L = liveSection(); if (L) secMs[L] += dt;
+    if (P > maxP) maxP = P;
+    var d = (scrollY + innerHeight) / Math.max(1, document.body.scrollHeight);
+    if (d > maxScroll) maxScroll = d;
+    // the panel self-reading is a direct signal that someone stopped to read
+    if (document.querySelector(".panel.cyc")) cycles++;
+  }, TICK);
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.try, a.cta");
+    if (a) {
+      clicks[a.classList.contains("cta") ? "demo_end" : "demo_header"]++;
+      send("click");                       // they are leaving; send now
+      return;
+    }
+    var b = e.target.closest && e.target.closest("#opts button");
+    if (b && b.dataset.k) {
+      var k = "opt_" + b.dataset.k;
+      clicks[k] = (clicks[k] || 0) + 1;
+    }
+  }, true);
+
+  var s = function (x) { return Math.round(x / 1000); };   // ms -> whole seconds
+
+  function payload(kind) {
+    var out = {
+      kind: kind,
+      sid: sid,
+      started: new Date(started).toISOString(),
+      device: innerWidth <= 760 ? "mobile" : "desktop",
+      vw: innerWidth, vh: innerHeight, dpr: devicePixelRatio || 1,
+      touch: ("ontouchstart" in window) ? 1 : 0,
+      ref: (document.referrer || "").slice(0, 200),
+      query: (location.search || "").slice(0, 200),
+      reduced: matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 0,
+      dark: matchMedia("(prefers-color-scheme: dark)").matches ? 1 : 0,
+      total: s(ms.total), active: s(ms.active),
+      t500: s(scaleMs["500"]), t50: s(scaleMs["50"]), t5: s(scaleMs["5"]),
+      maxP: +maxP.toFixed(2),
+      maxScroll: Math.round(maxScroll * 100),
+      cycles: cycles,
+      errs: errs, firstErr: firstErr,
+      clicks: clicks,
+      sections: {}
+    };
+    for (var k in secMs) out.sections[k] = s(secMs[k]);
+    return JSON.stringify(out);
+  }
+
+  function send(kind) {
+    var body = payload(kind);
+    try {
+      // text/plain keeps it a simple request — no CORS preflight, which an
+      // Apps Script web app would not answer
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "text/plain;charset=UTF-8" }));
+      } else {
+        fetch(ENDPOINT, { method: "POST", body: body, keepalive: true, mode: "no-cors" });
+      }
+    } catch (e) { /* tracking must never break the page */ }
+  }
+
+  send("arrive");        // the denominator, kept even if they bounce in 2 s
+
+  function leave() {
+    if (sentLeave) return;
+    sentLeave = true;
+    send("leave");
+  }
+  addEventListener("pagehide", leave);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") leave();
+    else sentLeave = false;     // they came back; allow an updated row later
+  });
+})();
+</script></body></html>
