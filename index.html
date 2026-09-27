@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- analytics: paste the Apps Script WEB APP url here. It must end in /exec -->
+<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbw_GmWf8e_ArDx8DLRFBmSZVLEWbtuAjOGrqkNsdQ1k63o1kgAPFwwbt03IRlGl0AQ/exec">
 <title>Groundwork — 500 · 50 · 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,8 +20,6 @@
 *{box-sizing:border-box}
 body{margin:0;padding-top:47px;background:var(--s0);color:var(--t);font-size:15px;line-height:1.6;
  font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
-.mockbar{background:var(--warn);color:#fff;font-size:11px;letter-spacing:.06em;
- text-transform:uppercase;text-align:center;padding:4px;font-weight:600}
 /* THE HEADER. Slim, present from the first screen, so a reader who is already
    convinced has somewhere to go. It carries the page's ground with it: dark
    over the argument, paper over the site, switched at the fade. */
@@ -608,7 +608,6 @@ svg#world.cyc .asp{transition:opacity .55s}
   <span class="hw">Groundwork<small>500 · 50 · 5</small></span>
   <a class="try" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">Try the demo</a>
 </header>
-<div class="mockbar">Mockup — schematic geometry, measured figures</div>
 
 <div class="dk">
 <section class="hero">
@@ -816,8 +815,7 @@ svg#world.cyc .asp{transition:opacity .55s}
 <p class="foot">
   One drawing, one <code>viewBox</code>, animated against scroll — not an image sequence, so
   detail resolves rather than being revealed. Geometry is schematic and stands in for real
-  exports. Figures are measured: parcel numbers from the Ubi sweep, footprint numbers from a
-  single real 100 × 78 m case. No archive plan geometry is shown.
+  exports. Figures are measured: parcel numbers from the Ubi sweep. No archive plan geometry is shown.
 </p>
 
 <script>
@@ -2342,7 +2340,16 @@ d5(); onAll();
        <section class="ch right" id="detail">
    ========================================================================= */
 (function () {
-  var ENDPOINT = "https://script.google.com/macros/s/PASTE_YOUR_ID/exec";
+  /* THE ENDPOINT LIVES IN A <meta> TAG AT THE TOP OF THE PAGE, not down here.
+     Hunting for one line near the bottom of a 158 KB file is a good way to
+     paste it into the wrong place; the tag is the third line of the head. */
+  var ENDPOINT = ((document.querySelector('meta[name="gw-endpoint"]') || {}).content || "").trim();
+  if (ENDPOINT.indexOf("http") !== 0) return;          // not configured yet — do nothing
+  if (/\/dev$/.test(ENDPOINT)) {                        // the head deployment, not a real one
+    console.warn("[gw] endpoint ends in /dev — that URL only answers to the "
+      + "signed-in script owner, so no visitor beacon will land. Use the /exec "
+      + "URL from Deploy > New deployment > Web app.");
+  }
 
   var TICK = 250;        // ms between samples
   var IDLE = 30000;      // stop counting after this long with no input
