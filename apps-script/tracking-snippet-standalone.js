@@ -14,7 +14,16 @@
        <section class="ch right" id="detail">
    ========================================================================= */
 (function () {
-  var ENDPOINT = "https://script.google.com/macros/s/PASTE_YOUR_ID/exec";
+  /* THE ENDPOINT LIVES IN A <meta> TAG AT THE TOP OF THE PAGE, not down here.
+     Hunting for one line near the bottom of a 158 KB file is a good way to
+     paste it into the wrong place; the tag is the third line of the head. */
+  var ENDPOINT = ((document.querySelector('meta[name="gw-endpoint"]') || {}).content || "").trim();
+  if (ENDPOINT.indexOf("http") !== 0) return;          // not configured yet — do nothing
+  if (/\/dev$/.test(ENDPOINT)) {                        // the head deployment, not a real one
+    console.warn("[gw] endpoint ends in /dev — that URL only answers to the "
+      + "signed-in script owner, so no visitor beacon will land. Use the /exec "
+      + "URL from Deploy > New deployment > Web app.");
+  }
 
   var TICK = 250;        // ms between samples
   var IDLE = 30000;      // stop counting after this long with no input
@@ -30,18 +39,43 @@
       return s;
     } catch (e) { return "x" + Date.now().toString(36); }
   })();
+  /* the signup POST carries this too, so a row in the signups tab joins to the
+     session that produced it — you can see how far someone had read when they
+     asked, not just that they asked */
+  window.GWSID = sid;
 
-  var secs = [].slice.call(document.querySelectorAll(".chapters > section"));
-  function secName(s) {
-    return s.id || s.className.trim().replace(/\s+/g, "-") || "sec";
-  }
+  /* EVERY BLOCK OF THE PAGE, not just the chapters. Tracking only the chapters
+     left the hero, the opening, the scales and the close uncounted, so the
+     per-section seconds quietly failed to add up to the active time. Anything
+     not covered by a named block lands in "other", which makes the columns sum
+     exactly and turns a silent gap into a visible one. */
+  var secs = [];
+  [[".hero", "hero"], ["#open", "opening"], ["#scales", "scales"],
+   [".runlead", "runlead"], [".end", "close"]].forEach(function (t) {
+    var e = document.querySelector(t[0]); if (e) secs.push([e, t[1]]);
+  });
+  [].slice.call(document.querySelectorAll(".chapters > section")).forEach(function (e) {
+    secs.push([e, e.id || e.className.trim().replace(/\s+/g, "-") || "sec"]);
+  });
 
   var ms = { total: 0, active: 0 };
   var scaleMs = { "500": 0, "50": 0, "5": 0 };
   var secMs = {};
-  secs.forEach(function (s) { secMs[secName(s)] = 0; });
+  secs.forEach(function (x) { secMs[x[1]] = 0; });
+  secMs.other = 0;
 
-  var clicks = { demo_header: 0, demo_end: 0, opt_frontage: 0, opt_centre: 0, opt_spine: 0 };
+  var clicks = { demo_header: 0, demo_end: 0, opt_frontage: 0, opt_centre: 0, opt_spine: 0,
+                 ml_open_header: 0, ml_open_end: 0, ml_open_badge: 0,
+                 ml_open_badge_top: 0, ml_submit: 0 };
+
+  /* THE MAILING LIST COUNTS RIDE ON THE SESSION ROW, not on send(). Opening the
+     dialog is not leaving the page, so it must not fire a beacon of its own —
+     three opens and an abandon would otherwise look like four sessions. The
+     counts go out with "leave" like everything else. */
+  window.MLCLICK = function (k) {
+    var key = "ml_" + k;
+    clicks[key] = (clicks[key] || 0) + 1;
+  };
   var maxP = 0, maxScroll = 0, cycles = 0, errs = 0, firstErr = "";
   var last = performance.now(), lastAct = last, started = Date.now();
   var sentLeave = false;
@@ -61,6 +95,7 @@
      has already put on screen means retuning the page retunes the tracking,
      and there is only ever one answer to "which scale was the reader on". */
   var RSEC = document.getElementById("rsec");
+  var RAIL = document.getElementById("rail");
   var SCALE_OF = { "the parcel": "500", "the block": "50", "the detail": "5" };
   function scaleNow() {
     var w = RSEC && RSEC.textContent.trim().toLowerCase();
@@ -73,10 +108,10 @@
   function liveSection() {
     var mid = innerHeight / 2;
     for (var i = 0; i < secs.length; i++) {
-      var r = secs[i].getBoundingClientRect();
-      if (r.top <= mid && r.bottom >= mid) return secName(secs[i]);
+      var r = secs[i][0].getBoundingClientRect();
+      if (r.top <= mid && r.bottom >= mid) return secs[i][1];
     }
-    return null;
+    return "other";
   }
 
   setInterval(function () {
@@ -85,7 +120,9 @@
     if (document.visibilityState !== "visible") return;   // tab in the background
     if (now - lastAct > IDLE) return;                     // walked away
     ms.active += dt;
-    scaleMs[scaleNow()] += dt;
+    /* only while the rail is up. Its text says "the parcel" from page load, so
+       counting it unconditionally charged the hero and the opening to the 500 */
+    if (RAIL && RAIL.classList.contains("on")) scaleMs[scaleNow()] += dt;
     var L = liveSection(); if (L) secMs[L] += dt;
     if (P > maxP) maxP = P;
     var d = (scrollY + innerHeight) / Math.max(1, document.body.scrollHeight);
