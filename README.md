@@ -40,8 +40,10 @@ it stops the demo link feeling like a hop to a different company.
 2. **Extensions → Apps Script**, delete the stub, paste `apps-script/Code.gs`.
 3. **Deploy → New deployment → Web app.** Execute as **Me**; who has access
    **Anyone**. Authorise it. Copy the `/exec` URL.
-4. Open that URL in a browser — it should print `ok`. If it asks you to sign
-   in, access is not set to Anyone.
+4. Open that URL in a browser — it should print **`ok — v2 (events + signups)`**.
+   If it asks you to sign in, access is not set to Anyone. **If it prints a bare
+   `ok`, or anything without `v2`, the deployment is still serving old code** —
+   saving the script does not change what `/exec` answers with. See the box below.
 5. In `index.html`, the **third line of the `<head>`** is
    `<meta name="gw-endpoint" content="…">`. **This build already carries a
    URL** — the one the page was built against. Only replace it if you are
@@ -49,12 +51,24 @@ it stops the demo link feeling like a hop to a different company.
 6. Push. Load the page, scroll to the end, close the tab. Two rows should
    appear within a few seconds.
 
-> **If you are pasting `Code.gs` over a script that is already deployed, the
-> edit does nothing until you redeploy.** Deploy → Manage deployments → pencil
-> → Version: **New version** → Deploy. The `/exec` URL does not change, so
-> nothing in `index.html` needs touching. Skip this and the page will POST
-> perfectly happily to code that has never heard of the rows it is sending —
-> which looks exactly like working tracking that logs nothing.
+> ### Pasting `Code.gs` over a script that is already deployed
+>
+> **The edit does nothing until you redeploy**, and there are two menu items
+> here that look alike and are not:
+>
+> - **Deploy → Manage deployments →** click the existing deployment **→ pencil
+>   (Edit) → Version: New version → Deploy.** ✅ Same `/exec` URL, new code.
+>   Nothing in `index.html` changes.
+> - **Deploy → New deployment.** ❌ Makes a *second* deployment on a **different**
+>   `/exec` URL, leaves the old one live, and means editing the meta tag in
+>   `index.html` to match.
+>
+> Skip the redeploy and the page POSTs perfectly happily to code that has never
+> heard of the rows it is sending. A signup then lands in `events` as a
+> half-empty row with `kind: signup` and **no address**, because the old header
+> has no `email` column — and the reader is still told they are on the list.
+> Nothing anywhere looks broken. Check `/exec` in a browser: if it does not say
+> `v2`, that is what is happening.
 
 **It must be the `/exec` URL.** The `/dev` one shown in the editor is the head
 deployment: it answers only to the signed-in owner of the script, so no visitor

@@ -21,6 +21,14 @@
    read when they asked — which is the thing an address on its own cannot say.
    ========================================================================= */
 
+/* WHICH CODE IS ACTUALLY LIVE. Saving the script changes nothing until you
+   redeploy, and both versions used to answer a bare "ok" — so the smoke test
+   could not tell a redeployed script from one that had only been saved, which
+   is the single easiest way to lose every signup while everything looks fine.
+   Open the /exec URL in a browser: if it does not say v2, the deployment is
+   still serving the old code and addresses are being dropped. */
+var VERSION = 'v2 (events + signups)';
+
 var SHEET_NAME  = 'events';
 var SIGNUP_NAME = 'signups';
 
@@ -109,7 +117,9 @@ function signup(d) {
   return out('ok');
 }
 
-function doGet() { return out('ok'); }   // lets you smoke-test the URL in a browser
+// smoke-test the URL in a browser: it prints which version is DEPLOYED, which
+// is not the same question as which version is saved in the editor
+function doGet() { return out('ok — ' + VERSION); }
 
 function sheet(name, head) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
