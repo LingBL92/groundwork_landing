@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- analytics: the Apps Script WEB APP url. Must end in /exec -->
-<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbyOGQP5B1cgMJgaPG2jPcx6YiHoomez9TVEe9eRhknUDb-Z15vIP1MhiDpKIq8jwCVf/exec">
+<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbyoT21MqAb8gA9a4ROfM9kN7-3lw2dqfLimwYzDKvhL5h0cV-_2gQJt50466K2xuoCy/exec">
 <title>Groundwork — 500 · 50 · 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -3433,7 +3433,14 @@ MLF.addEventListener("submit",e=>{
        say that an address on its own cannot */
     maxScroll:Math.round(((scrollY+innerHeight)/Math.max(1,document.body.scrollHeight))*100),
     maxP:+(typeof P==="number"?P:0).toFixed(2),
-    scale:((document.getElementById("rsec")||{}).textContent||"").trim()});
+    /* ONLY WHILE THE RAIL IS UP. #rsec reads "the parcel" from page load,
+       before the rail is even on screen, so taking it unconditionally records
+       a scale for a reader who has seen nothing — which is exactly the trap
+       the per-scale seconds already guard against. Blank means they signed up
+       before reaching the drawing, and blank is the honest answer. */
+    scale:(()=>{ const r=document.getElementById("rail");
+      return (r && r.classList.contains("on"))
+        ? ((document.getElementById("rsec")||{}).textContent||"").trim() : ""; })()});
   const beacon=()=>{ try{ return !!(navigator.sendBeacon &&
     navigator.sendBeacon(ep,new Blob([body],{type:"text/plain;charset=UTF-8"}))); }
     catch(err){ return false; } };
