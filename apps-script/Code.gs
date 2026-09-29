@@ -45,7 +45,7 @@ var HEAD = [].concat(
   ['referrer', 'query', 'reduced_motion', 'dark'],
   ['total_s', 'active_s', 't500_s', 't50_s', 't5_s'],
   SECTIONS.map(function (k) { return k + '_s'; }),
-  ['max_P', 'max_scroll_pct', 'pause_cycles'],
+  ['max_P', 'max_scroll_pct', 'scale_on_screen', 'pause_cycles'],
   ['demo_header', 'demo_end', 'opt_frontage', 'opt_centre', 'opt_spine'],
   ['ml_open_header', 'ml_open_end', 'ml_open_badge', 'ml_open_badge_top', 'ml_submit'],
   ['errors', 'first_error', 'sections_raw']     // the blob goes last, it is wide
@@ -125,8 +125,11 @@ function signup(sh, d) {
     device: d.device, referrer: d.ref, query: d.query,
     /* how far they had read when they asked — the one thing a signup row can
        say that an address on its own cannot */
-    max_P: d.maxP, max_scroll_pct: d.maxScroll,
-    sections_raw: d.scale || ''
+    /* scale_on_screen gets a column of its own rather than riding in
+       sections_raw, which holds JSON on every other row. One column, one
+       meaning — otherwise nothing downstream can parse the column without
+       first asking what kind of row it is looking at. */
+    max_P: d.maxP, max_scroll_pct: d.maxScroll, scale_on_screen: d.scale || ''
   }));
   return out('ok');
 }
