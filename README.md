@@ -40,9 +40,9 @@ it stops the demo link feeling like a hop to a different company.
 2. **Extensions → Apps Script**, delete the stub, paste `apps-script/Code.gs`.
 3. **Deploy → New deployment → Web app.** Execute as **Me**; who has access
    **Anyone**. Authorise it. Copy the `/exec` URL.
-4. Open that URL in a browser — it should print **`ok — v2 (events + signups)`**.
+4. Open that URL in a browser — it should print **`ok — v3 (one tab: sessions + signups)`**.
    If it asks you to sign in, access is not set to Anyone. **If it prints a bare
-   `ok`, or anything without `v2`, the deployment is still serving old code** —
+   `ok`, or anything without `v3`, the deployment is still serving old code** —
    saving the script does not change what `/exec` answers with. See the box below.
 5. In `index.html`, the **third line of the `<head>`** is
    `<meta name="gw-endpoint" content="…">`. **This build already carries a
@@ -68,7 +68,7 @@ it stops the demo link feeling like a hop to a different company.
 > half-empty row with `kind: signup` and **no address**, because the old header
 > has no `email` column — and the reader is still told they are on the list.
 > Nothing anywhere looks broken. Check `/exec` in a browser: if it does not say
-> `v2`, that is what is happening.
+> `v3`, that is what is happening.
 
 **It must be the `/exec` URL.** The `/dev` one shown in the editor is the head
 deployment: it answers only to the signed-in owner of the script, so no visitor
@@ -94,13 +94,15 @@ exactly the group a leave-only beacon loses.
 
 | column | what it is |
 |---|---|
-| `sid` | throwaway per-session id, no personal data |
+| `kind` | `arrive`, `leave`, a demo click — or `signup` |
+| `email`, `source` | filled only on a `signup` row. `source` is which trigger opened the dialog: `header`, `end`, `badge`, `badge_top`. Third and fourth columns, because on the day you use this sheet you are looking for addresses, not for `dpr` |
+| `sid` | throwaway per-session id, no personal data — **and the join between a signup row and the session that produced it** |
 | `device`, `vw`, `vh`, `dpr`, `touch` | mobile or desktop, and the numbers behind it |
 | `referrer`, `query` | where they came from, UTM tags |
 | `reduced_motion`, `dark` | both change what they actually saw — filter on these |
 | `total_s`, `active_s` | wall-clock, and time with the tab visible and someone present |
 | `t500_s`, `t50_s`, `t5_s` | **seconds on each scale** |
-| `pA_s … detail_s` | **seconds on each panel**, one column each |
+| `hero_s … other_s` | **seconds on each panel**, one column each. The list lives in `SECTIONS` at the top of `Code.gs` and is used twice — for the column names and for reading the payload — so a panel cannot have a column without a value or a value without a column. The old header predated four of them: `pP`, `pE1`, `pE2` and `pE3` had no column at all and survived only inside `sections_raw`, while a dead `detail_s` sat there from a chapter that no longer exists. `pP` is the longest dwell on the page, so that was not a small gap. **Add a panel to the page, add its id to `SECTIONS`.** |
 | `max_P`, `max_scroll_pct` | how far they got |
 | `pause_cycles` | samples that caught a panel mid self-read — a direct read on "stopped and read" rather than "scrolled past" |
 | `demo_header`, `demo_end` | the two CTAs, counted separately: the header click is impatience, the end click is persuasion |
@@ -119,32 +121,50 @@ inflate every number.
 Because exactly one section covers the middle of the screen at a time, the
 per-section seconds **sum to `active_s`** rather than double-counting overlaps.
 
-### The second tab: `signups`
+### Signups live in the same tab
 
-The mailing-list dialog writes here, one row per address, and `Code.gs` creates
-the tab on the first signup. A repeat address is answered `ok dup` and nothing
-is written — the person is on the list, which is what they asked for, so the
-page still tells them so.
+One tab, two kinds of row, told apart by `kind`:
 
-| column | what it is |
-|---|---|
-| `email` | lower-cased and trimmed, validated both sides |
-| `source` | which trigger opened the dialog: `header`, `end`, `badge`, `badge_top` |
-| `sid` | **the same id as the events tab** — join on it |
-| `max_scroll_pct`, `max_P`, `scale_on_screen` | how far they had read when they asked |
+```
+mailing list  = filter kind = "signup", read `email`
+sessions      = filter kind = "leave",  last row per sid
+```
 
-That join is the point of the tab. An address on its own tells you someone was
-interested; the same address next to `max_P 3.7, the parcel` tells you they
-asked **before** they had seen the 50 or the 5, which is a different signal
-about what is doing the persuading.
+A signup **appends its own row** rather than being written into the session's
+row. That is not a style choice: the beacons fire `arrive` → `signup` → `leave`,
+so at signup time the only row for that visitor is the near-empty `arrive` one.
+Writing the address there and then reading the sheet by the documented rule —
+last row per `sid` — hands you the `leave` row with no address on it. Appending
+is also the only shape that cannot race the `leave` beacon, since every other
+write in this system is an append too.
 
-Opening the dialog does **not** send a beacon of its own — the counts ride out
-on the session's own `leave` row. Three opens and an abandon would otherwise
-log as four sessions.
+A repeat address is answered `ok dup` and nothing is written; the person is on
+the list, which is what they asked for, so the page still tells them so. The
+check reads one column of the whole tab, which is the price of keeping the list
+in with the sessions — fine into the thousands of rows, and the first thing to
+revisit if this sheet ever gets big.
+
+The `sid` is on both rows, so a signup joins to the session that produced it:
+an address on its own says someone was interested, while the same address next
+to `max_P 3.7, the parcel` says they asked **before** seeing the 50 or the 5 —
+a different signal about what is doing the persuading.
+
+Opening the dialog does **not** send a beacon of its own; the counts ride out on
+the session's `leave` row. Three opens and an abandon would otherwise log as
+four sessions.
 
 The page reads the endpoint from the same `<meta>` tag the tracking uses, so
 there is no second URL to keep in step. **A copy of the page built without that
 tag will say so in the dialog rather than showing a thank-you it cannot keep.**
+
+### If the header has moved, the old tab is parked
+
+`Code.gs` compares the existing header with its own. If the new one merely
+**grew** — columns added on the end — it widens the header in place and every
+row already written still reads correctly. If the columns have **moved**,
+rewriting the header would relabel every existing row silently, so instead the
+old tab is renamed `events_old` and a clean `events` is started. Nothing is
+lost, nothing is mislabelled, and there is nothing for you to remember to do.
 
 ---
 
