@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- analytics: the Apps Script WEB APP url. Must end in /exec -->
-<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbzAS_GZHU5WYH4LA2PGD-GcrOfxrIrd7O8s8mgUP0LqOKFIITv4Vncp8EVWkjjw1TJ2/exec">
+<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbw_GmWf8e_ArDx8DLRFBmSZVLEWbtuAjOGrqkNsdQ1k63o1kgAPFwwbt03IRlGl0AQ/exec">
 <title>Groundwork — 500 · 50 · 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -715,6 +715,42 @@ svg#world.cyc .asp{transition:opacity .55s}
 .tyrow .tl3:last-child ul{columns:2;column-gap:22px}
 @media(max-width:760px){.tyrow{grid-template-columns:1fr;gap:26px;margin:34px 0 40px}
  .tyrow .tl3:last-child ul{columns:2}}
+/* THE FILM. Square, because that is the shape it was cut in — letterboxing it
+   into a wide band would crop the very numbers it exists to show. Capped at
+   the same measure the drawing used, so it sits in the page's column rather
+   than breaking out of it. */
+.film{max-width:1000px;margin:0 auto;padding:78px 22px 34px}
+.filmin{max-width:640px}
+.filmhd{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
+ color:var(--t3);display:flex;justify-content:space-between;align-items:baseline;
+ gap:12px;margin:0 0 12px;border-bottom:.5px solid var(--b);padding-bottom:9px}
+.filmhd em{font-style:normal;font-weight:500;letter-spacing:0;text-transform:none;
+ font-size:11.5px;opacity:.9}
+/* CENTRED, not set on the page's left edge. Everything else here is a column
+   of text and hangs off that edge; the film is a square figure, and a square
+   left-aligned in a 956px column strands a third of the field beside it. On a
+   phone it already fills the measure, so the centring is a desktop matter that
+   costs the narrow layout nothing. */
+.filmin{margin-left:auto;margin-right:auto}
+.filmw{position:relative}
+.film video{display:block;width:100%;height:auto;aspect-ratio:1/1;border-radius:12px;
+ border:1px solid var(--b);background:var(--s1)}
+/* THE SOUND, OFFERED. It only appears once the film is actually running (.live),
+   because a "sound off" badge over a still poster is a puzzle rather than an
+   offer — and the film is still not running under reduced motion, on a metered
+   connection, or wherever the browser refused to start it. Top right: the only
+   corner of the frame the film never writes in. */
+.snd{position:absolute;top:11px;right:11px;z-index:2;display:none;align-items:center;
+ gap:6px;font-family:inherit;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+ font-weight:700;line-height:1;color:var(--t);background:var(--s0);
+ border:1px solid var(--b);border-radius:20px;padding:7px 11px 7px 9px;
+ cursor:pointer;opacity:.9;transition:opacity .15s}
+.filmw.live .snd{display:inline-flex}
+.snd:hover{opacity:1}
+.snd svg{width:13px;height:13px;flex:none;display:block}
+.filmw:not(.loud) .snd .wv,.filmw.loud .snd .sl{display:none}
+.filmcap{margin:12px 0 0;font-size:12.5px;line-height:1.6;color:var(--t2);max-width:56ch}
+@media(max-width:760px){.film{padding:44px 16px 24px}}
 .cta{display:inline-flex;align-items:center;gap:9px;background:var(--t);color:var(--s0);
  text-decoration:none;font-weight:600;font-size:15px;padding:13px 22px;border-radius:26px}
 .cta:hover{opacity:.87}
@@ -801,8 +837,15 @@ svg#world.cyc .asp{transition:opacity .55s}
   <p class="lead hfade">Groundwork reads the problem, works through what it allows, and
   hands the designer suggestions: <b><span class="hl k1" id="hl1">a trade-off</span>, <span class="hl k2" id="hl2">a
   conflict</span>, <span class="hl k3" id="hl3">a stress test</span>, <span class="hl k4" id="hl4">a gap</span>.</b> The design stays theirs.</p>
-  <p class="hfade">Check out an example and try the demo. Scroll for more.</p>
-  <div class="cue hfade"><span></span>scroll</div>
+  <!-- THE HANDOFF. This line used to read "check out an example and try the
+       demo, scroll for more", which was the entrance to a twenty-thousand-pixel
+       journey. What is below it now is a 52-second film that starts itself, so
+       the line says what is there instead of asking for a scroll the film is
+       about to reward anyway. The demo is not named here on purpose: the header
+       button is sticky and on screen the whole way down, and the close asks
+       again — three asks above the fold was one too many. -->
+  <p class="hfade">Below: one parcel taken from masterplan to block, in 60&nbsp;seconds.</p>
+  <div class="cue hfade"><span></span>60 seconds</div>
  </div>
  <div class="hart hfade"><svg id="sweep" class="sweep" viewBox="22 18 264 264" role="img"
    aria-label="129 ways across one parcel, drawn over each other"></svg>
@@ -818,6 +861,57 @@ svg#world.cyc .asp{transition:opacity .55s}
      <p>North–south, from the station.</p>
      <div class="why"><span style="color:var(--ta)">trade-off</span><span style="color:var(--warn)">conflict</span><span style="color:var(--hl3)">stress test</span><span class="open" style="color:var(--hl4)">gap · still open</span></div></div>
    <div class="hcap" id="hcap">129 ways across one parcel</div></div>
+</section>
+
+<!-- THE ARGUMENT IN 52 SECONDS. It replaces the scroll that used to run from
+     the 500 to the 5: the same parcel, the same figures, the same three
+     scales, told once and quickly.
+
+     IT SITS INSIDE THE DARK FIELD, between the hero and the opening, and it is
+     there because of what the opening is. Those five beats — surfaces the
+     trade-offs, names the conflicts, checks what holds up — are the film said
+     in the abstract, and they used to be a ramp into the 500-to-5 scroll that
+     paid them off. That scroll is gone; the film is the payoff now. Run the
+     beats first and the page spends five screens describing something the
+     reader could have watched. Run the film first and the beats become the
+     index of what they just saw. .dk redefines the theme tokens on itself, so
+     the section needs no dark styling of its own — it inherits the field.
+
+     IT STARTS ITSELF, MUTED, WHEN IT REACHES THE SCREEN — see "THE FILM PLAYS
+     ITSELF" in the script. `muted` is in the markup and not negotiable: a
+     browser asked to start audio without a gesture does not ask the reader, it
+     refuses the play() outright and leaves a still frame that looks like a
+     broken film. The sound is a music bed with nothing spoken over it, so
+     muted costs the reader no part of the argument, and the pill puts it one
+     click away. `preload="none"` stays because the fetch is armed by the
+     observer a screen early, and no `autoplay` attribute: that one fires on
+     page load, which is now only a screen above — the film would be running
+     to nobody while the hero is still on screen, and a reader arriving at it
+     would join halfway through. The poster is the film's own eighth second. -->
+<section class="film">
+  <div class="filmin">
+    <div class="filmhd">Learn about Groundwork in 60s<em>one parcel, three scales</em></div>
+    <div class="filmw" id="filmw">
+      <video id="film" controls playsinline muted preload="none"
+        poster="media/groundwork-open.jpg" width="900" height="900"
+        aria-label="Groundwork reading the Ubi Avenue parcel, deriving ways across it,
+        making a suggestion with its reasons, and carrying it from masterplan to block">
+        <source src="media/groundwork.mp4" type="video/mp4">
+        Your browser cannot play this video.
+      </video>
+      <button class="snd" id="snd" type="button" aria-pressed="false"
+        aria-label="Turn the sound on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 5 6 9H2v6h4l5 4z"/>
+          <g class="wv"><path d="M15.4 8.6a4.8 4.8 0 0 1 0 6.8"/>
+            <path d="M18.6 5.4a9.3 9.3 0 0 1 0 13.2"/></g>
+          <g class="sl"><path d="M22 9.5 16.5 15"/><path d="M16.5 9.5 22 15"/></g>
+        </svg><span class="lab">Sound off</span>
+      </button>
+    </div>
+    <p class="filmcap">Ubi Avenue &mdash; residential design</p>
+  </div>
 </section>
 
 <div class="open" id="open">
@@ -865,167 +959,20 @@ svg#world.cyc .asp{transition:opacity .55s}
   </div>
 </section>
 
-<div class="rail" id="rail" role="status" aria-live="polite" aria-label="Groundwork 500">
-  <div class="rwm">Groundwork</div>
-  <div class="rnum" aria-hidden="true"><span>5</span><span id="z1">0</span><span id="z2">0</span></div>
-  <div class="rtick"></div>
-  <div class="rsec" id="rsec">the parcel</div>
-</div>
 
-<section class="runlead">
-  <h2>Here it is, running.</h2>
-</section>
 
-<div class="zoom" id="zoom">
-  <div class="stage">
-    <!-- the tool, then the drawing: the screenshot scales up around its own
-         ring and dissolves into the schematic parcel at the same size, so the
-         zoom starts inside the real thing. The line sits across the page while
-         the 500 is still flying to the rail. -->
-    <div class="toolshot" id="toolshot"><img src="frames/dial.jpg" id="tsimg"
-      onerror="this.dataset.gone=1"
-      alt="Groundwork 500 running on the Ubi Avenue parcel — the site inside the tool's ring"></div>
-    <svg id="world" viewBox="0 0 300 300" role="img"
-      aria-label="one site, drawn from parcel to louvre"></svg>
-  </div>
-  <div class="chapters">
 
-    <!-- THE DERIVATION, IN THE TOOL'S OWN THREE HEADINGS. Every figure here
-         is from a run; the cards are rendered from CARDS below so a new run
-         is a data edit, not a markup edit. -->
-    <section class="panel" id="pA"><div class="pcol">
-      <div class="phd">What the site has</div>
-      <div class="card"><div class="cnum"><span class="gly"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--t2)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--t2)" stroke-width="2.4"/><g transform="translate(-10.00,-10.00) scale(0.5)"><path d="M83.14,84.66h-30.28s-.04,4.04-.04,4.04c-.01,1.03-.9,2.09-1.97,2.09h-8.01c-1.3,0-2.12-1.09-2.12-2.34v-17.97c0-1.49.28-2.7.77-4.17l-2.42-.08c-.33-.01-.95-.28-1.13-.52s-.31-.92-.21-1.22l.68-2.11c.89-2.78,3.27-2.14,5.28-2.35l4.33-12.12c.49-1.36,1.36-2.48,2.61-3.22,2.54-1.51,5.27-2.29,8.26-2.57,6.09-.57,12.07-.58,18.16,0,3.4.32,9.31,1.59,10.61,5.19l4.61,12.75,2.78.11c1.08.04,2.13,1,2.45,2l.74,2.28c.28.86-.33,1.76-1.21,1.79l-2.54.09c.42,1.29.78,2.4.78,3.73v18.4c0,1.45-.98,2.36-2.38,2.36l-7.57-.02c-1.2,0-2.08-.92-2.15-2.1l-.02-4.03ZM87.67,60.94c-1.09-4.33-2.42-8.3-4.08-12.36-1.25-.93-2.8-1.24-4.32-1.6-4.42-.66-8.76-.78-13.27-.73-3.72.05-7.22.26-10.85.98-.87.42-2.39.58-2.83,1.53-1.86,3.92-3,7.95-4.06,12.18,3.02.83,5.84,1.34,8.93,1.67,9.13.95,21.48.86,30.48-1.67ZM54.24,75.52c1.02-.06,1.63-.76,1.71-1.57.06-.56-.33-1.43-.99-1.79-2.29-1.22-4.59-2.2-7.07-3.06-1.29-.45-4.01-.55-4.09,1.25-.05,1.21-.22,2.49.12,3.6.68,2.18,8.19,1.69,10.31,1.57ZM92.03,74.03c.38-1.18.23-2.49.12-3.72-.17-1.92-3-1.61-4.26-1.15-2.41.87-4.67,1.83-6.89,3.01-.76.41-1.09,1.3-.93,2.07.13.63.91,1.24,1.74,1.28,1.9.09,9.54.57,10.22-1.5Z" fill="currentColor"></path></g></g></svg></span>
-        <div><div class="cf">5</div><div class="cl">possible vehicle gates</div></div></div></div>
-      <div class="card"><div class="cnum"><span class="gly"><svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--ta)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--ta)" stroke-width="2.4"/><g transform="translate(-78.02,-10.00) scale(0.5)"><path d="M207.31,51c0-.07.03-.19,0-.25-.06-.11-.18-.05-.35-.06-3.78-.33-6.5-3.6-6.31-7.3.19-3.66,3.25-6.58,6.93-6.58s6.75,2.93,6.94,6.58-2.46,6.88-6.18,7.29c-.16.02-.28,0-.33.08-.04.06-.02.17-.01.24h-.68Z" fill="currentColor"></path><path d="M210.35,82.53l-7.65-8.07-1.61,9.06c-.13.75-.43,1.31-.92,1.88l-10.09,11.9c-1.13,1.33-3.03,1.35-4.27.32s-1.62-3-.49-4.34l8.43-10.01,2.66-15.35,2.18-10.16-2.5,1.4-4.44,8.45c-.68,1.3-2.23,1.76-3.48,1.12s-1.87-2.14-1.2-3.44l4.76-9.11c.29-.56.71-.97,1.26-1.28l9.61-5.46c3.07-1.74,6.9.12,8.26,2.84l5.28,10.57,7.71,1.52c.89.17,1.56.72,1.84,1.56.4.92.37,1.89-.28,2.66-.58.69-1.5,1.13-2.52.93l-9.19-1.81c-.71-.23-1.27-.57-1.6-1.23l-2.45-4.87-1.66,7.83,7.57,8.04c.6.64,1.04,1.36,1.04,2.28l-.02,16.45c0,1.72-1.55,2.99-3.11,2.99-1.67,0-3.12-1.36-3.12-3.11v-13.55Z" fill="currentColor"></path></g></g></svg></span>
-        <div><div class="cf">8</div><div class="cl">possible walk entrances</div></div></div></div>
-      <div class="card"><div class="cnum"><span class="gly"><svg width="62" height="34" viewBox="0 -8 98 56" aria-hidden="true"><g transform="translate(0,0)" style="color:var(--warn)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--warn)" stroke-width="2.4"/><g transform="translate(-78.02,-10.00) scale(0.5)"><path d="M207.31,51c0-.07.03-.19,0-.25-.06-.11-.18-.05-.35-.06-3.78-.33-6.5-3.6-6.31-7.3.19-3.66,3.25-6.58,6.93-6.58s6.75,2.93,6.94,6.58-2.46,6.88-6.18,7.29c-.16.02-.28,0-.33.08-.04.06-.02.17-.01.24h-.68Z" fill="currentColor"></path><path d="M210.35,82.53l-7.65-8.07-1.61,9.06c-.13.75-.43,1.31-.92,1.88l-10.09,11.9c-1.13,1.33-3.03,1.35-4.27.32s-1.62-3-.49-4.34l8.43-10.01,2.66-15.35,2.18-10.16-2.5,1.4-4.44,8.45c-.68,1.3-2.23,1.76-3.48,1.12s-1.87-2.14-1.2-3.44l4.76-9.11c.29-.56.71-.97,1.26-1.28l9.61-5.46c3.07-1.74,6.9.12,8.26,2.84l5.28,10.57,7.71,1.52c.89.17,1.56.72,1.84,1.56.4.92.37,1.89-.28,2.66-.58.69-1.5,1.13-2.52.93l-9.19-1.81c-.71-.23-1.27-.57-1.6-1.23l-2.45-4.87-1.66,7.83,7.57,8.04c.6.64,1.04,1.36,1.04,2.28l-.02,16.45c0,1.72-1.55,2.99-3.11,2.99-1.67,0-3.12-1.36-3.12-3.11v-13.55Z" fill="currentColor"></path></g></g><g transform="translate(47.3,0)" style="color:var(--warn)"><circle cx="24" cy="24" r="22.4" fill="none" stroke="var(--warn)" stroke-width="2.4"/><g transform="translate(-10.00,-10.00) scale(0.5)"><path d="M83.14,84.66h-30.28s-.04,4.04-.04,4.04c-.01,1.03-.9,2.09-1.97,2.09h-8.01c-1.3,0-2.12-1.09-2.12-2.34v-17.97c0-1.49.28-2.7.77-4.17l-2.42-.08c-.33-.01-.95-.28-1.13-.52s-.31-.92-.21-1.22l.68-2.11c.89-2.78,3.27-2.14,5.28-2.35l4.33-12.12c.49-1.36,1.36-2.48,2.61-3.22,2.54-1.51,5.27-2.29,8.26-2.57,6.09-.57,12.07-.58,18.16,0,3.4.32,9.31,1.59,10.61,5.19l4.61,12.75,2.78.11c1.08.04,2.13,1,2.45,2l.74,2.28c.28.86-.33,1.76-1.21,1.79l-2.54.09c.42,1.29.78,2.4.78,3.73v18.4c0,1.45-.98,2.36-2.38,2.36l-7.57-.02c-1.2,0-2.08-.92-2.15-2.1l-.02-4.03ZM87.67,60.94c-1.09-4.33-2.42-8.3-4.08-12.36-1.25-.93-2.8-1.24-4.32-1.6-4.42-.66-8.76-.78-13.27-.73-3.72.05-7.22.26-10.85.98-.87.42-2.39.58-2.83,1.53-1.86,3.92-3,7.95-4.06,12.18,3.02.83,5.84,1.34,8.93,1.67,9.13.95,21.48.86,30.48-1.67ZM54.24,75.52c1.02-.06,1.63-.76,1.71-1.57.06-.56-.33-1.43-.99-1.79-2.29-1.22-4.59-2.2-7.07-3.06-1.29-.45-4.01-.55-4.09,1.25-.05,1.21-.22,2.49.12,3.6.68,2.18,8.19,1.69,10.31,1.57ZM92.03,74.03c.38-1.18.23-2.49.12-3.72-.17-1.92-3-1.61-4.26-1.15-2.41.87-4.67,1.83-6.89,3.01-.76.41-1.09,1.3-.93,2.07.13.63.91,1.24,1.74,1.28,1.9.09,9.54.57,10.22-1.5Z" fill="currentColor"></path></g></g><g style="color:var(--warn)" transform="translate(-146.00,-10.02) scale(0.5)"><path d="M386.59,37.33c-.18-3.83,0-7.75-.72-11.48.34-1.87-.26-3.78-.19-5.63.08-2.05.09-3.99-.28-6.01-.25-1.35.24-2.95.08-4.33.82-.17,2.68-.91,3.07.47.35,1.22.3,2.8.23,3.81-.14,2.01-.64,4.04-.21,6.05-.76,1.7-.2,3.7-.43,5.52-.25,2.05-.3,4.04-.3,6.1,0,1.82-.59,3.65-.19,5.48-.05.64-.57,1.5-.43,2.23h-.46c.02-.65-.14-1.53-.18-2.21Z" fill="currentColor"></path><path d="M394.57,32.31c2.03-3.7,3.47-7.89,4.96-11.95.33-.91,1.04-1.67,1.04-2.75.54.08,1.12.11,1.66.46.57.37.72,1.27.62,2.06-1.3,1.33-2.17,3.28-2.81,5.16-1.98,2.78-3.54,6.05-5.05,9.23-.42,0-.79-.34-.7-.65.16-.57.08-1.2.28-1.56Z" fill="currentColor"></path><path d="M371.11,19.85c0-.56.26-1.18.18-1.75,3.01-2.34,3.42,5.53,5.75,8.13.36,2.08,1.2,4.1,2.29,5.77-.05.68.46,1.24.02,2.24-3.16-3.82-5.15-10.23-8.23-14.39Z" fill="currentColor"></path></g></svg></span>
-        <div><div class="cf">2</div><div class="cl">contested</div></div></div></div>
-      <p class="cs">Another parcel returns a different set.</p>
-    </div></section>
 
-    <section class="panel" id="pB"><div class="pcol">
-      <div class="phd">What it calls for</div>
-      <div class="card"><div class="ct">Public front<em>layers 1–2</em></div>
-        <div class="cf">NE 100<small>m</small></div></div>
-      <div class="card"><div class="ct">Fenced sides</div>
-        <div class="cf">670<small>m</small></div>
-        <div class="cl">of the 1,201 m boundary acts like the back — the school east,
-        the whole west side</div>
-        <div class="chips"><span class="chip">sides good for carparks</span></div></div>
-      <div class="card"><div class="ct">Suggested approach<em>layer 3</em></div>
-        <ol class="rank" id="rank"></ol></div>
-    </div></section>
 
-    <section class="panel" id="pC"><div class="pcol">
-      <div class="phd">Recommendation</div>
-      <div class="card"><div class="ct" id="ohead">Frontage on NE</div>
-        <div class="opts" id="opts"></div>
-        <div id="ozone"></div>
-        <p class="cs" style="color:var(--t3);margin-top:9px">Shaded on the plan: the
-        front's reach in from <b>NE 70 m</b> and <b>N 30 m</b>.</p></div>
-    </div></section>
-
-    <!-- THE 50, IN TWO PANELS. The first is the derivation on the whole
-         parcel: where people are going, the ground the paths leave, and the
-         plots that fall out of it. The second takes one of those plots. Every
-         figure is measured off the run or off the drawing beside it, and the
-         one that is not says so. -->
-    <section class="panel" id="pP"><div class="pcol">
-      <div class="phd">How it fills the parcel</div>
-      <div class="card"><div class="ct">The front's reach<em>the zone</em></div>
-        <div class="cf">38<small>%</small></div>
-        <div class="cl">of the parcel, within <b>90 m</b> of the two stretches the 500
-        recommends</div></div>
-      <div class="card"><div class="ct">Court placement<em>the rooms</em></div>
-        <div class="cf">4<small>rooms</small></div></div>
-      <div class="card"><div class="ct">Building zone<em>what is left</em></div>
-        <div class="cf">10,300<small>m&sup2;</small></div></div>
-    </div></section>
-
-    <section class="panel" id="pD"><div class="pcol">
-      <div class="phd">One plot, resolved</div>
-      <div class="card"><div class="ct">The court comes first<em>the void</em></div>
-        <div class="cf">33<small>%</small></div>
-        <div class="cl">open before anything is built: the front&rsquo;s rooms, and one
-        court of <b>49 &times; 46 m</b></div></div>
-      <div class="card"><div class="ct">It takes less ground<em>the balance</em></div>
-        <div class="cf">27<small>% built</small></div>
-        <div class="cl">At the <b>15</b>-storey cap the floor area needs 2,219 m&sup2; of
-        ground. This takes 3,590 &mdash; near the floor, not the whole plot</div></div>
-      <div class="card"><div class="ct">The section follows<em>the height</em></div>
-        <div class="cf">15 &middot; 7</div>
-        <div class="cl">storeys. Plot ratio fixes the plot at <b>33,285 m&sup2;</b>: the bar
-        on the front takes the cap, the rest stays low</div></div>
-      <p class="cs">The cap is a brief figure, like the flight path. The shape is a dummy
-      at this scale; the arithmetic under it is not.</p>
-    </div></section>
-
-    <section class="ch" id="ways"><div class="chin wide">
-      <div class="tag">the block<span class="wip">early access</span></div>
-      <h2>Start from a footprint</h2>
-      <div class="afig"><svg id="ifig" viewBox="0 0 190 113" role="img"
-        aria-label="the masterplan feeds the block and the block feeds the detail;
-        a footprint and a unit mix of your own enter the block directly"></svg>
-        <p class="cap c500">footprint · unit mix<br><em>frontage · storeys</em></p></div>
-      <p class="cap capy">footprint · unit mix</p>
-    </div></section>
-
-    <section class="ch" id="arch"><div class="chin wide">
-      <div class="tag">the block<span class="wip">early access</span></div>
-      <h2>Curate your reference</h2>
-      <p>Designers select plans that capture preferences, and these create new plans.</p>
-      <div class="afig"><svg id="afig" viewBox="0 0 225 100" role="img"
-        aria-label="a curated reference of plans, and the four design features
-        measured off it"></svg></div>
-    </div></section>
-
-    <!-- THE 5, IN TWO PANELS. Arriving on the wall is one argument — why this
-         face, why this device — and taking it apart is another: what it is made
-         of, and which of those parts could be something cheaper. Those two
-         belong together, so the second panel carries both. Three panels would
-         have made the detail the longest-scrolled scale on a page whose detail
-         is the one still being built. -->
-    <section class="panel" id="pE1"><div class="pcol">
-      <div class="phd">The detail<span class="wip">in progress</span></div>
-      <div class="card"><div class="ct" id="d5h">What shades this façade</div>
-        <div class="cf" id="d5a"></div>
-        <div class="cl" id="d5p"></div></div>
-      <p class="cs">This wall is here because the section put the tall block here, and the
-      section came from the plan. One decision, read at three sizes.</p>
-    </div></section>
-
-    <section class="panel" id="pE2"><div class="pcol">
-      <div class="phd">The detail<span class="wip">in progress</span></div>
-      <div class="card"><div class="ct">What it is made of<em>parts</em></div>
-        <ol class="xparts" id="d5l"></ol></div>
-      <p class="cs">Inside to out: the unit pulls back out of the opening, the seal and
-      the shelf come off the front.</p>
-    </div></section>
-
-    <section class="panel" id="pE3" data-lit="0.30"><div class="pcol">
-      <div class="phd">The detail<span class="wip">in progress</span></div>
-      <div class="card"><div class="ct">What could be cheaper<em>swap</em></div>
-        <div class="cf" id="d5n"></div>
-        <div class="cl" id="d5q"></div>
-        <ul class="qopt" id="d5o"></ul></div>
-    </div></section>
-  </div>
-</div>
 
 <section class="end">
   <!-- the close repeats the three scales: the reader has now SEEN each one,
        so the same three numerals mean something they didn't the first time -->
-  <h2 class="scales-h">One tool, three scales.</h2>
-  <div class="srow endrow">
-    <div><div class="sn">500</div><div class="sl">masterplan</div>
-      <span class="st live">live</span></div>
-    <div><div class="sn">50</div><div class="sl">block</div>
-      <button type="button" class="st early ml" data-ml="badge">early access ·
-        on request<span class="mlar">&rarr;</span></button></div>
-    <div><div class="sn">5</div><div class="sl">detail</div>
-      <span class="st">in development</span></div>
-  </div>
+  <!-- the close used to repeat the three scales because the reader had just
+       SCROLLED through each one; with the film carrying that job the repeat is
+       twenty lines below the section it repeats, so it earns nothing. The
+       "on request" trigger it carried moves up to the scales section, which is
+       where the badge now lives. -->
   <h2 class="scales-h">One tool, more than one thing to build.</h2>
   <div class="tyrow">
     <div class="tl3"><small>running today</small><ul><li>Residential</li></ul></div>
@@ -1334,1895 +1281,6 @@ const RM=matchMedia("(prefers-reduced-motion: reduce)");
 const MOB=matchMedia("(max-width:760px)");
 const AT=(a,b)=>MOB.matches?a:b;
 
-/* FOUR CHAPTERS, NOT SEVEN. The opening now carries the claims, so the zoom
-   stops re-arguing them and does the one thing nothing else on the page can:
-   the same site at three scales, each deciding the next. */
-const N=11;  // ten chapters: 3 at the 500, 4 at the 50, 3 at the 5
-/* the last view is not a constant any more — it is solved from the bay's own
-   projected corners by bayBox(), further down, because the window is drawn
-   through axo() and a plan coordinate is no longer where it lands */
-/* three panels are held at the site, then the block, then the bay: the
-   held run has to cover all three or the zoom starts under a live card */
-/* THE THREE HELD VIEWS AT THE BLOCK, FITTED. They were 150 units centred on a
-   box rather than on anything drawn, so the zone sat small and off to one side.
-   The first is the plan, centred on the zone itself; the second and third are
-   the axonometric, centred on the union of what is drawn there — the slab and
-   the building it becomes, which land within ten units of each other, so the
-   one dissolves into the other in place instead of jumping. 104 units fills
-   about seventy per cent either way. */
-/* nine now. The 50 opens on the WHOLE PARCEL, because paths and courts are
-   parcel facts and a 104-unit box would have cut three of the five paths in
-   half; it narrows to the plot only once one plot is being resolved. */
-/* 250 units, not 200: the parcel is 176 x 236, so a 200 box cut 34 units off
-   the foot of it and three of the five paths ended off screen. Centred on the
-   parcel's own centre and pushed 16 right, which moves the drawing clear of
-   the card column the way the block views are. */
-const PV={x:41,y:27,w:250,h:250};
-/* the plot view is solved the same way the bay's is: the union of the cell,
-   the court and both blocks at their full height comes to 113 x 80 units, so
-   104 was cutting 30 units off the top of the tall one. 129 with 8 of pad,
-   and pushed 12 right to clear the card column. */
-const PLV={x:132,y:16,w:129,h:129};
-/* THE VIEW IS HELD FOR BOTH BLOCK CHAPTERS, AND THE SCHEME CHANGES INSTEAD.
-   A zoom running under "curate your reference" put two things in motion at
-   once and neither read: the drawing was closing in while the thing it was
-   closing in on was the point. The reference chapter now holds at the block and
-   cycles the three alternatives (see SITE.alts), which is the curation it is
-   claiming; the descent to the bay belongs to the detail chapter alone. */
-const KEY=[null,null,null,null,PV,PLV,PLV,PLV,"bay","bay","bay"];
-/* WHICH LEG ACTUALLY CLOSES ON THE BAY. The legs after it hold, so the fast
-   landing belongs to that one and only that one — found from KEY rather than
-   written down, or adding another holding stop silently moves it. */
-const LASTZOOM=KEY.reduce((a,k,i)=>(i<KEY.length-1&&KEY[i]!==KEY[i+1])?i:a,0);
-/* the held view leaves a margin outside the ring for the ring's own lettering
-   and the two labels — the parcel gives up a fifth of its size and buys back
-   a place to put words that used to be a paragraph */
-/* THE HELD VIEW IS FITTED, NOT FIXED. It used to be a constant 330 units, so
-   the drawn parcel came out about a quarter larger than the parcel inside the
-   screenshot and the screenshot had to grow to meet it — which the reader saw
-   as the ring swelling just before the swap. The held view is now solved from
-   the two measurements instead: whatever makes the DRAWN parcel exactly the
-   size of the one in the picture, so the screenshot scales by 1.0 and the
-   handoff is a pure dissolve. Centred on the parcel's own centre, not the
-   box's, so there is no drift either. */
-const HELD={x:-15,y:-15,w:330,h:330};
-function heldFit(){
-  const R=svg.getBoundingClientRect(), iw=TSIMG.offsetWidth;
-  if(!R.width||!R.height||!iw) return;
-  const px=iw*SHOTP.w/176.6;                    // px per unit that matches
-  const w=clamp(Math.min(R.width,R.height)/px,240,620);
-  HELD.w=HELD.h=w; HELD.x=150-w/2; HELD.y=152-w/2;
-}
-const SEC=["the parcel","the block","the detail"];
-let SPINE="ns", P=0;
-/* every spotlightable drawing group at its scrolled weight, and when the page
-   was last scrolled — see cycle() */
-let GBASE={}, ASCROLL=0;
-/* which drawing groups each card of a panel owns — the third card of "what it
-   calls for" owns two, the zone and the line on its edge. Declared up here
-   because the frame loop starts before cycle() is reached. */
-const CYCS=[
-  {id:"pA", groups:[["ent0"],["ent1"],["ent2"]]},
-  {id:"pB", groups:[["asp0"],["asp1"],["asp2","asp3"]]},
-  {id:"pP", groups:[["pth0"],["pth1"],["pth2"]]},
-  {id:"pD", groups:[["sug0"],["sug1"],["sug2"]]}
-];
-const CYCST={};
-
-/* THE SURROUNDINGS ARE REAL. These are the building footprints the run
-   itself carries (ubi_live.json → ctx), put through the same metres→page
-   transform as the parcel: x = 150+(m+7)·0.690, y = 152+(m−7)·0.690. Only
-   the twenty whose box reaches the ring are kept; the ring clip cuts the
-   rest, so the ones on the edge are cut the way a real disc cuts them.
-   Nothing here is drawn by hand. */
-const CTX=[
- "167.2,283.8 180.4,281.7 181.7,290.0 123.1,302.4 101.0,306.6 99.6,297.6 110.7,292.8 112.1,292.1 112.7,294.8 165.9,284.5 165.2,281.7 167.2,281.7",
- "-81.8,119.6 -77.7,129.2 36.2,83.0 32.7,73.3",
- "78.9,9.2 78.9,9.9 69.3,12.6 63.1,14.0 57.5,13.3 54.1,11.2 46.5,-19.8 64.4,-26.7 68.6,-16.4 81.7,-21.2 90.7,5.0",
- "260.4,265.9 262.5,274.8 263.9,284.5 265.2,283.8 265.9,287.2 264.5,287.9 277.0,303.8 275.6,298.3 277.6,298.3 272.1,269.3 270.1,270.0 269.4,264.5",
- "348.0,246.5 361.1,243.8 363.2,252.7 298.4,267.9 283.2,271.4 281.1,262.4 291.4,257.6 293.5,256.9 294.2,259.6 346.6,247.2 346.0,245.1 347.3,244.5",
- "284.5,276.9 287.3,290.7 281.8,292.1 283.9,301.7 299.7,298.3 294.2,274.8",
- "199.0,277.6 252.1,267.2 254.2,276.2 187.9,289.3 185.9,280.3 196.9,278.3 196.9,275.5 198.3,275.5",
- "282.5,-0.5 290.1,-28.1 277.6,-43.3 258.3,-31.5 225.2,-5.3 222.4,-5.3 219.0,17.5 220.4,19.5 244.5,27.1 245.9,24.4 254.9,16.1 280.4,0.9",
- "301.8,58.2 309.4,38.2 308.0,36.1 297.7,18.1 288.0,7.1 274.2,22.3 265.9,42.3 266.6,45.1 274.2,54.0 275.6,58.2 285.2,69.9 300.4,60.9",
- "-18.4,257.6 -14.2,266.5 -14.2,276.2 -10.1,285.2 -1.8,288.6 7.9,287.9 14.8,281.7 16.1,276.9 14.8,267.9 7.9,261.0 -4.6,224.4 -43.2,266.5",
- "3.0,137.5 41.7,124.4 45.1,134.1 48.6,143.0 9.2,156.1",
- "26.5,194.1 53.4,189.3 56.9,212.7 31.3,217.6",
- "34.1,225.8 65.8,221.0 73.4,273.4 42.4,278.3",
- "9.2,167.9 46.5,152.7 51.3,155.4 54.8,177.5 42.4,178.9 41.0,172.0 14.8,183.7",
- "95.5,15.4 85.8,19.5 86.5,22.3 96.9,18.1",
- "79.6,21.6 60.3,29.9 61.0,32.6 81.0,25.0",
- "136.9,41.6 136.2,39.5 141.7,38.8 142.4,43.0 137.6,44.4",
- "184.5,3.7 159.7,14.0 162.4,20.9 187.3,9.9",
- "179.0,31.9 183.8,31.3 184.5,36.1 179.7,36.8",
- "260.4,128.5 235.6,134.1 241.8,163.0 266.6,157.5"];
-/* parsed once into points, because the context has to go through the same
-   transform as everything else and a string cannot be tilted */
-const CTXP=CTX.map(c=>c.split(" ").map(p=>p.split(",").map(Number)));
-/* GATES ON THE REAL BOUNDARY. Five vehicle positions and eight walk ones,
-   spaced along the measured perimeter rather than placed by hand. Which
-   fractions they sit at is schematic until the run exports the positions;
-   the counts and the contested pair are from the run. */
-let _PER=null;
-function perim(){ if(_PER) return _PER;
-  const L=[]; let t=0;
-  for(let i=0;i<PARC.length;i++){ const a=PARC[i],b=PARC[(i+1)%PARC.length];
-    const d=Math.hypot(b[0]-a[0],b[1]-a[1]); L.push(d); t+=d; }
-  return _PER={L,t}; }
-function onEdge(f){ const R=perim(); let x=(((f%1)+1)%1)*R.t, i=0;
-  for(; i<R.L.length-1 && x>R.L[i]; i++) x-=R.L[i];
-  const a=PARC[i], b=PARC[(i+1)%PARC.length], L=R.L[i]||1, k=clamp(x/L,0,1);
-  return [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k]; }
-/* the stretch of boundary that stands apart: NE 70 m, then N 30 m */
-function edgeRun(deg,metres){
-  const t=deg*Math.PI/180; let best=0,bd=9e9;
-  for(let i=0;i<360;i++){ const f=i/360,p=onEdge(f);
-    const a=Math.atan2(p[1]-152,p[0]-150);
-    const d=Math.abs(((a-t+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI);
-    if(d<bd){ bd=d; best=f; } }
-  const half=(metres/1.449)/perim().t/2, pts=[];
-  for(let i=0;i<=14;i++) pts.push(onEdge(best-half+(2*half)*i/14));
-  return pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" "); }
-/* PARC is declared further down, so everything above is computed on first
-   use rather than at load: five vehicle positions and eight walk ones,
-   spaced along the measured perimeter. The counts and the contested pair
-   are from the run; which fractions they sit at is schematic until the
-   export carries the real positions. */
-let _G=null;
-function gset(){ if(_G) return _G;
-  return _G={ v:[.055,.235,.435,.625,.835].map(onEdge),
-              w:[.015,.135,.295,.375,.495,.655,.745,.905].map(onEdge),
-              ne:edgeRun(-45,70), n:edgeRun(-90,30) }; }
-/* THE BACK, MEASURED, ON BOTH SIDES. Of the 200 frontage samples the run
-   takes round the boundary, 122–162 come back EDUCATIONAL INSTITUTION — one
-   unbroken stretch of 41 samples at 6.01 m each, the 246 m facing the school.
-   The west is not labelled that way: 53 of its samples come back ROAD, because
-   what stands immediately across the boundary is a road. So it is taken
-   geometrically instead — samples 20–89, the whole west side including the
-   notch, 70 samples = 420 m. The notch is the place of worship (17 of those
-   samples); the business park stands beyond the road at the top of the run and
-   housing at the foot. 246 + 420 = 666 m, which the card rounds to 670. Both stretches go
-   through the same metres-to-page transform as the parcel, simplified to draw. */
-const FENCE=["222.7,239.6 210.7,178.6 238.0,172.2 226.0,111.3 231.4,100.5",
-             "65.5,61.1 62.3,68.6 62.2,76.9 73.4,129.1 110.0,121.9 112.5,128.8 "
-            +"122.3,181.7 86.7,189.6 84.7,191.8 98.8,256.4 101.8,264.1"];
-const CONTESTED=[1,5];          // the two a vehicle gate wants within 40 m
-/* ONE ICON SET, TWO SIZES. The card and the drawing show the same car and
-   the same figure, so the number in the column and the mark on the boundary
-   are visibly the same thing. Drawn in their own little boxes and placed by
-   transform, with non-scaling strokes so they stay crisp at either size. */
-const GCAR='<path fill-rule="evenodd" d="M1 18 Q1 15 4 15 H44 Q47 15 47 18 V31 '
- +'H40 V36 Q40 39.4 37 39.4 Q34 39.4 34 36 V31 H14 V36 Q14 39.4 11 39.4 '
- +'Q8 39.4 8 36 V31 H1 Z M7.5 23.4 a4.6 4.6 0 1 0 9.2 0 a4.6 4.6 0 1 0 -9.2 0 '
- +'M31.3 23.4 a4.6 4.6 0 1 0 9.2 0 a4.6 4.6 0 1 0 -9.2 0" stroke="none"/>'
- +'<path d="M11 15.4 L17.4 3.6 Q18.2 2.1 19.9 2.1 H28.1 Q29.8 2.1 30.6 3.6 L37 15.4" '
- +'fill="none" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>';
-const GWALK='<g stroke="none"><circle cx="12" cy="6.2" r="5.3"/>'
- +'<rect x="4.7" y="12.8" width="14.6" height="15.4" rx="4.8"/>'
- +'<rect x="7.9" y="25.4" width="3.8" height="14.2" rx="1.9"/>'
- +'<rect x="12.3" y="25.4" width="3.8" height="14.2" rx="1.9"/></g>';
-/* one badge, two sizes: the card and the boundary show the same disc, so the
-   number in the column and the mark on the plan are the same object */
-function inner(kind){
-  const p=PRIM[kind==="car"?"eCar":"eWalk"], k=.5;
-  const cx=kind==="car"?24:24.63, cy=kind==="car"?23.13:24;
-  return `<g transform="translate(${(cx-(p.x+p.w/2)*k).toFixed(2)},${
-    (cy-(p.y+p.h/2)*k).toFixed(2)}) scale(${k})">${p.m}</g>`;
-}
-function badge(kind,x,y,k,col,bg){
-  return `<g transform="translate(${(+x).toFixed(1)},${(+y).toFixed(1)}) scale(${k})`
-    +` translate(-24,-24)" fill="${col}" stroke="${col}" style="color:${col}">`
-    +`<circle cx="24" cy="24" r="22.4" fill="${bg||"var(--s0)"}" stroke-width="2.2"`
-    +` vector-effect="non-scaling-stroke"/>${inner(kind)}</g>`;
-}
-/* the courts, in the tool's own three colours — teal fitness, green, orange
-   playground — so the drawing the screenshot dissolves into looks like the
-   screen it came from. Positions are schematic, inside the real boundary. */
-const CRT=[[112,92,"#46b9b8"],[176,74,"#46a545"],[196,150,"#46a545"],
-           [104,150,"#f2b961"],[186,224,"#f2b961"],[132,238,"#46a545"]];
-const LOT=[[70,168,30,44],[150,116,38,32]];
-/* PUBLICNESS, REACHING IN FROM THE FRONT. The stretches are measured — NE 70 m
-   and N 30 m, found on the real boundary by bearing. How far that reach carries
-   into the site is DRAWN, not measured: an exponential falloff over about 90 m.
-   Swap FALL for the run's own per-cell values when the export carries them. */
-const FALL=62;
-let _HF=null;
-function field(){
-  if(_HF) return _HF;
-  const pts=[];
-  (gset().ne+" "+gset().n).split(/\s+/).forEach(p=>{
-    const a=p.split(","); if(a.length===2) pts.push([+a[0],+a[1]]);});
-  const xs=PARC.map(p=>p[0]), ys=PARC.map(p=>p[1]), C=6.97, out=[];
-  const inP=(x,y)=>{let ins=false,j=PARC.length-1;
-    for(let i=0;i<PARC.length;i++){const a=PARC[i],b=PARC[j];
-      if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1]+1e-9)+a[0])) ins=!ins;
-      j=i;} return ins;};
-  for(let y=Math.min(...ys)+C/2; y<Math.max(...ys); y+=C)
-    for(let x=Math.min(...xs)+C/2; x<Math.max(...xs); x+=C){
-      if(!inP(x,y)) continue;
-      let d=1e9;
-      for(const p of pts){const q=Math.hypot(p[0]-x,p[1]-y); if(q<d) d=q;}
-      out.push([x,y,Math.exp(-d/FALL)]);
-    }
-  return _HF={cells:out, C};
-}
-/* ---- WHAT IT COULD TAKE -----------------------------------------------
-   Shares and the "why" lines come from the run. The rest of the sheet does not:
-   the "to be improved" and "constraints" lines are from the brief: what a scheme
-   still owes the site, and the two site constraints under CONS. They are the
-   half of the sheet the engine does not produce, which is the point of showing
-   them beside the half it does — swap each for the tool's sentence when it
-   states one. */
-const ORG=[
- /* ONE LINE EACH. Frontage ran three reasons and two objections while the two
-    schemes it beats ran one and one, so the recommended option was the wordiest
-    thing on the panel — seven bullets under three headings, which reads as a
-    dump rather than as a judgement. The three reasons were one reason stated
-    three ways; the carpark consequence is already a chip on the panel before
-    this one. */
- {k:"frontage",n:"Frontage",n2:"Frontage on NE",share:57,face:"ns",
-  why:["N has the MRT, F&amp;B and groceries; E, W and S are quiet enough to be backs."],
-  bad:["Owes the S side a centre and access to its bus stops."]},
- {k:"centre",n:"Centre",share:38,face:"ew",
-  why:["Every edge is within 189 m of the middle — one centre reaches them all."],
-  bad:["The NE stretch is the only 100 m that stands apart, and a centre turns its back on it."]},
- {k:"spine",n:"Spine",n2:"Spine N–S",share:6,face:"ew",
-  why:["A second end on the N–S axis carries 6% of the signal."],
-  bad:["6% is all the axis carries, so both ends stay weak — frontage or a centre holds more."]},
- {k:"web",n:"Web",share:0,face:"ns",why:[],bad:[],off:true}];
-const OCOL={frontage:"var(--warn)",centre:"#7c5cd6",spine:"var(--ta)",web:"#8a8a3d"};
-/* THE CONSTRAINTS BELONG TO THE SITE, NOT TO THE SCHEME, so the same two stand
-   under whichever option is showing: changing how the parcel is organised does
-   not move a flight path or change how many spaces the brief needs. Both are
-   BRIEF figures rather than anything the run measures, which is what the
-   heading over them says. The cap stood as a blank for as long as nobody had
-   told the page a number; 15 storeys is the number it was told, so it is
-   stated. It is the SAME 15 the massing at the 50 obeys, which means the 500
-   now says where that figure comes from instead of the 50 quietly honouring a
-   limit the page never names. A flight path is really a height above a datum;
-   15 storeys is the brief's own translation of it, which is why it belongs on
-   this list and not in the measured half of the sheet. The point the blank
-   carried — a tool has to be told, never guess — lives on at the 5, where the
-   three candidate prices stand as x, y and z until a supplier names them.
-   The borrow line that used to sit here is gone; it had the page arguing with
-   its own recommendation. (Not quoted here: the guard that keeps it out is a
-   string search, and the only reason the old wording survived in this comment
-   was that the line happened to wrap in the middle of it.) */
-/* and "from the brief, not the site" is the heading's job, not each line's:
-   BOTH of these are brief figures, so saying it once over the pair is shorter
-   and truer than saying it after one of them. */
-/* nbsp: the figure and its unit are one thing, and the column is narrow enough
-   that "15" was ending a line with "storeys." starting the next */
-const CONS=["Flight path caps the height at <b>15&nbsp;storeys</b>.",
-            "Two carparks, not one: enough spaces, each under the fire threshold."];
-let ORGK="frontage";
-const BLOCK={x:66,y:100,w:100,h:78};
-/* ---- THE LIFT INTO AXONOMETRIC -------------------------------------------
-   The zone the 500 used to hand down is gone: the 50 makes its own plots now,
-   so there is no slab to reduce. ZC survives as the point the drawing turns
-   about, which is within ten units of the plot the last panel resolves.
-   The lift is not a second picture: an axonometric is a linear transform of
-   the plan, so one function carries both and the tilt is a number between
-   them. At t=0 it returns the plan exactly — yaw 0, pitch 0, z discarded —
-   which is why the drawing can be tilted without being redrawn. */
-const ZC=[185,95];            // the point the drawing turns about
-function axo(x,y,z,t){
-  if(t<=0) return [x,y];
-  /* Back to -30. Turning the camera round to look at the park-facing side
-     cost a 170-degree spin between the first block card and the second, which
-     is far too much motion to buy one elevation. The park is north of the zone
-     and this yaw looks from the south, so those faces are away from the reader
-     — the arrows and the park stretch are on the ground instead, where they
-     read at any angle. Only three faces of the bend are visible from here,
-     which is also what decides the wall the bay is cut into (see WALL). */
-  const th=-t*Math.PI/6, ph=t*55*Math.PI/180;
-  const dx=x-ZC[0], dy=y-ZC[1];
-  const x1=dx*Math.cos(th)-dy*Math.sin(th), y1=dx*Math.sin(th)+dy*Math.cos(th);
-  return [ZC[0]+x1, ZC[1]+y1*Math.cos(ph)-(z||0)*Math.sin(ph)];
-}
-const pstr=p=>p.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join(" ");
-/* ---- THE 50, ON THE REAL PARCEL -----------------------------------------
-   The zone used to arrive from the 500 as a slab and the 50 reduced it to one
-   bent block. That was a building where a block scale should have produced
-   several, and the slab was drawn rather than derived. This is the sequence
-   instead: the front, then the open ground, then the plots, then one plot
-   resolved.
-
-   WHAT IS MEASURED. The two frontage stretches and their labels, every draw and
-   its distance, and the distance-to-edge grid are the run's own (ubi_live.json).
-   The court is contoured off that grid at its own peak, not placed. The 38% and
-   the 94% are measured on this drawing: the share of the parcel, and of each
-   plot, inside 90 m of those two stretches.
-
-   WHAT IS ILLUSTRATIVE, and says so on the card: the waiting green is placed;
-   the four-way split is a
-   centroidal Voronoi (Lloyd) on the in-parcel cells, which is a reasonable
-   way to cut a parcel and is not yet the engine's; 13 m is a double-loaded
-   depth; plot ratio 2.5 is the figure the opening already quotes for URA.
-   Coordinates are in page units — 1 unit = 1.449 m — through the same
-   metres->units transform as the parcel. */
-const SITE={
-  /* THE DESIRE LINES ARE GONE. Five straight lines fanning out of one corner
-     were the messiest marks on the page and the least honest: the run gives a
-     single pedestrian access point, so a fan drawn from it says more about that
-     one input than about the site. What stands in their place is the front
-     itself, carried in from the 500 -- which is also the thing that makes the
-     plot the next panel takes legible. The draws stay on the card, in metres. */
-  /* THE FRONT'S REACH, AS ONE SHAPE. It used to be 700 grid squares fading out,
-     which read as weather rather than as a decision and could not hold an edge.
-     This is the same field contoured at ONE FALLOFF LENGTH -- 62 units, the 90 m
-     the recommendation's own falloff is described by -- and simplified: 23,038 m2,
-     38% of the parcel. Cutting it at 70 m before was borrowing the NE stretch's
-     LENGTH and using it as a DEPTH, which is two different measurements wearing
-     the same number. 94% of the NE plot is inside this; 59% of the next best. */
-  zone:"119.3,34.5 120.0,34.3 120.8,35.0 126.5,53.8 190.5,41.3 202.5,35.8 204.3,36.0 226.3,82.0 236.8,92.0 225.8,110.0 235.3,157.5 229.5,157.8 216.5,155.3 206.5,151.3 197.0,145.3 187.3,136.0 183.8,131.5 180.3,126.0 177.8,120.5 172.8,113.5 170.5,108.8 168.0,108.8 150.5,112.8 143.0,113.3 142.5,113.8 135.5,113.8 135.0,113.3 130.5,113.3 130.0,112.8 125.0,112.3 115.5,109.3 106.5,104.8 99.5,99.8 90.8,91.0 84.3,81.5 80.8,74.0 77.3,61.0 76.8,53.5 80.5,51.3 119.0,34.8",
-  /* A SERIES OF ROOMS ALONG THE FRONT, not one court in a corner. One room made
-     the public face a place you either reached or did not; four of them make it
-     a frontage you move along. All from one derivation: the parcel within 30 m
-     of the two recommended stretches -- a third of the reach -- is the strip
-     where public ground can sit at all. Find the widest circle that fits in it,
-     grow a room out to the strip's own edges, mask that off and find the next,
-     until no circle of 10 m radius is left. Four rooms, 2,638 m2, running west
-     to east from the PARK stretch round to the ROAD corner. The strip depth and
-     the growth cap are the drawn parts; where each room lands, and the shape it
-     takes, are not. Every vertex sits inside both the parcel and the reach.
-
-     THE BLOCK PANEL STEPS BACK FOR THEM. Its two bars used to run the plot from
-     y 48, which is the frontage itself; they now start at 72, below every room.
-     That is the honest cost and the page says it: the same floor area on 76 m
-     of run instead of 110 goes to 28 storeys instead of 19. */
-  rooms:[
-   "139.4,62.3 139.0,64.0 138.4,65.4 137.6,66.5 136.5,67.5 135.0,68.5 133.6,69.0 132.3,69.3 130.7,69.2 129.0,68.8 127.6,68.2 126.5,67.4 125.5,66.3 124.5,64.8 124.0,63.4 123.7,62.1 123.8,60.5 124.2,58.8 124.8,57.4 125.6,56.3 126.7,55.3 128.2,54.3 129.6,53.8 130.9,53.5 132.5,53.6 134.2,54.0 135.6,54.6 136.7,55.4 137.8,57.0 138.9,59.3 139.5,60.7 139.6,61.2",
-   "174.4,58.5 174.1,60.6 173.1,62.5 171.6,64.0 169.7,65.3 167.4,66.5 163.7,67.6 158.5,68.6 154.8,68.2 152.6,66.4 150.7,63.8 149.4,60.5 148.8,57.4 149.2,54.5 149.9,52.2 150.9,50.2 155.4,48.4 163.2,47.0 168.4,46.6 170.6,48.4 172.5,51.0 173.8,54.3 174.5,56.3 174.6,57.0",
-   "213.9,60.2 213.6,61.9 212.9,63.7 211.7,65.5 210.4,67.0 209.0,67.9 207.3,68.7 205.1,69.2 202.9,69.2 200.7,68.7 199.0,67.9 197.6,67.0 196.4,65.8 195.5,64.4 194.7,62.9 194.3,61.3 194.2,59.4 194.4,57.2 194.9,55.4 195.8,53.9 196.8,52.6 198.0,51.5 199.7,50.5 201.8,49.8 204.0,49.6 206.2,49.8 208.0,50.3 209.5,51.2 210.8,52.2 211.9,53.4 212.9,55.1 213.6,57.2 214.0,58.6 214.0,59.1",
-   "233.3,94.6 233.0,96.3 232.2,98.1 231.0,100.1 229.5,101.6 227.5,102.8 225.7,103.6 224.0,103.9 222.4,103.9 220.7,103.6 218.9,102.8 216.9,101.6 215.5,100.3 214.5,98.9 213.8,97.4 213.3,95.8 213.2,93.8 213.4,91.6 214.0,89.7 214.8,88.2 216.1,86.7 217.9,85.3 219.6,84.4 221.2,83.9 223.2,83.8 225.4,84.0 227.3,84.6 228.8,85.4 230.1,86.4 231.3,87.7 232.2,89.4 233.0,91.6 233.4,92.9 233.4,93.5"],
-  // the two ends of the series get a word: where you arrive, and where it turns
-  rlab:[["waiting",131.6,77.5],["court",223.2,93.8]],
-  cells:[
-    [[61.7,71.3],[72.7,129.2],[110.7,121.6],[116.8,150.1],[146.7,121.6],[146.3,50.0],[126.5,54.0],[120.3,34.0],[70.0,56.1]],
-    [[100.3,262.4],[108.6,269.3],[116.2,270.0],[224.5,249.3],[219.7,224.5],[120.9,173.4],[122.4,182.4],[84.4,190.0]],
-    [[225.9,109.9],[236.9,92.0],[226.6,82.3],[203.8,35.4],[191.4,40.9],[146.3,50.0],[146.7,121.6],[229.7,129.2]],
-    [[219.7,224.5],[210.7,178.2],[238.3,172.7],[229.7,129.2],[146.7,121.6],[116.8,150.1],[117.6,154.1],[120.9,173.4]]
-  ],
-  // the cells are the EXACT Voronoi: each one the intersection of the three
-  // perpendicular bisectors with the parcel, so its edges are the straight
-  // lines the algorithm actually draws. They used to be marching squares on
-  // the 10.1 m grid, which put 27 to 38 stair-steps round every plot and read
-  // as noise rather than as a cut. The areas agree to within 0.7 per cent.
-  /* the four-way split is no longer drawn: at this scale the question is where
-     building may go, not where the lines between owners fall, and four plots
-     lit at once was the thing that read as rudimentary. The cells stay because
-     the block panel still resolves one of them. */
-  ne:2, areas:[13913,17574,13303,15916],
-  // the NE plot resolved: a court on the path that crosses it, a block
-  // front and back, each one's height from the clear ground in front of it
-  /* AS LITTLE GROUND AS THE CAP ALLOWS, on the plot's own edges. Two parallel
-     bars needed 28 storeys to carry this plot's floor area, and 28 is too tall
-     for this site — the brief caps it at 15, and at 15 the same 33,285 m2 needs
-     at least 2,219 m2 on the ground. Spreading to the whole 8,900 m2 the courts
-     leave was the other extreme: five pieces round two slots, 4,327 m2 taken,
-     and a plot that read as solid. This sits near the floor instead — 3,590 m2,
-     27% of the plot, 73% of it with nothing standing on it — by letting the low
-     pieces go to 7 rather than 5, which is what buys the ground back.
-     Four pieces, not five, round ONE court of 49 x 46 m. The south bar is set
-     parallel to the SOUTH BOUNDARY, which falls 7.6 units over its 83 of run —
-     struck as an offset of that line, 2 units off it and 9 deep, so its long
-     edges are not horizontal and it reaches the south-east corner, 22 units
-     past where the front bar stops. The two wings hang off the front bar and
-     are cut by that same sloping face, so they come out 42 and 47 m.
-     The tall piece is still the one on the front, where the frontage rooms leave
-     open ground before it; everything else takes what the floor area has left,
-     which is 7. Total 33,297 m2 against the 33,285 plot ratio asks for: 0.04% out.
-     Nothing here is the engine's — it is a dummy at this scale, said so on the
-     card — but the ARITHMETIC is the page's own. Every vertex AND every edge is
-     inside the plot and clear of the frontage rooms, sampled and checked. */
-  gfa:33285,
-  /* THREE OF THEM, BECAUSE "CURATE YOUR REFERENCE" HAS TO SHOW A CHOICE.
-     The reference chapter used to claim the tool produces alternatives over a
-     drawing that was standing still, which is the one place on the page where
-     the words ran ahead of the picture. These are the alternatives: the same
-     plot, the same 33,285 m2 the plot ratio fixes, three different answers.
-     Every one is checked the same way as the resolved scheme — floor area
-     within 0.06%, every vertex and edge inside the plot and clear of the
-     frontage rooms, no two pieces of the same scheme overlapping. A is the one
-     the block panel resolves and the one the detail is cut from, so the run
-     always comes back to it before the 5.
-     Verified, and kept here because nothing on the page prints them any more:
-       as resolved          15 / 7        3,590 m2 on the ground   GFA +0.04%
-       opened to the front  12 / 14 / 10  2,791 m2                 GFA +0.06%
-       spread to fill       15 / 5        4,327 m2                 GFA +0.04% */
-  alts:[
-   {n:"as resolved", sub:"one court, closed on four sides",
-    pcourts:[[[159.2,83],[193,83],[193,114.79],[159.2,111.7]]],
-    bars:[
-      {poly:[[148,74],[202,74],[202,83],[148,83]], st:15},
-      {poly:[[150.2,83],[159.2,83],[159.2,111.7],[150.2,110.87]], st:7},
-      {poly:[[193,83],[202,83],[202,115.62],[193,114.79]], st:7},
-      {poly:[[149.37,119.84],[224.56,126.72],[225.38,117.76],[150.19,110.87]], st:7}]},
-   /* the court opened to the frontage: three pieces with the north side left
-      out, so the open ground runs from the front rooms straight through. Every
-      square metre of its open ground touches a frontage room; A's court is
-      sealed behind the tall bar. It costs the low-rise — 2,791 m2 of ground is
-      only a quarter above the floor the 15 cap imposes, so nothing is under 10. */
-   {n:"opened to the front", sub:"three pieces, the north side left out",
-    pcourts:[],
-    bars:[
-      {poly:[[147.3,71],[156.3,71],[156.3,97],[184,97],[184,106],[147.3,106]], st:12},
-      {poly:[[152.86,120.16],[192.69,123.8],[193.51,114.84],[153.68,111.19]], st:14},
-      {poly:[[195,95],[204,95],[204,112],[223,112],[223,121],[195,121]], st:10}]},
-   /* and the other extreme: spread to take every part of the plot the courts
-      leave, which is 4,327 m2 and reads as a solid block from the street */
-   {n:"spread to fill", sub:"five pieces round two courts",
-    pcourts:[[[159.2,83],[175.6,83],[175.6,113.2],[159.2,111.7]],
-             [[184.6,83],[200.7,83],[200.7,115.5],[184.6,114.02]]],
-    bars:[
-      {poly:[[148,74],[209.7,74],[209.7,83],[148,83]], st:15},
-      {poly:[[150.2,83],[159.2,83],[159.2,111.7],[150.2,110.87]], st:5},
-      {poly:[[175.6,83],[184.6,83],[184.6,114.02],[175.6,113.2]], st:5},
-      {poly:[[200.7,83],[209.7,83],[209.7,116.32],[200.7,115.5]], st:5},
-      {poly:[[149.37,119.84],[224.56,126.72],[225.38,117.76],[150.19,110.87]], st:5}]}
-  ]};
-// the resolved scheme is the first alternative: WALL, the block panel and every
-// figure on it read these, so they cannot drift from what alts[0] actually is
-SITE.bars=SITE.alts[0].bars; SITE.pcourts=SITE.alts[0].pcourts;
-const ST=3.0/1.449;                       // one storey, 3 m, in page units
-const MU=1.449;                           // metres in a page unit
-const sarea=p=>{let a=0;for(let i=0;i<p.length;i++){const j=(i+1)%p.length;
-  a+=p[i][0]*p[j][1]-p[j][0]*p[i][1];} return a/2;};
-/* one extrusion for every part of the building: the same depth sort as the
-   zone. It takes no highlight argument any more — the mass is white, and the
-   only thing that varies face to face is how far back it stands. */
-function prism(poly,h,t,S,storeys){
-  const base=poly.map(q=>axo(q[0],q[1],0,t));
-  if(t<=.004) return `<polygon points="${pstr(base)}" fill="var(--s2)"
-    stroke="var(--t2)" stroke-width="1.2" ${S}/>`;
-  const top=poly.map(q=>axo(q[0],q[1],h,t)), F=[];
-  for(let i=0;i<poly.length;i++){
-    const j=(i+1)%poly.length;
-    F.push({d:(base[i][1]+base[j][1])/2, q:[base[i],base[j],top[j],top[i]]});
-  }
-  F.sort((a,b)=>a.d-b.d);
-  let g="";
-  F.forEach((f,k)=>{ const sh=k/Math.max(1,F.length-1);
-    g+=`<polygon points="${pstr(f.q)}" fill="var(--s1)"
-      fill-opacity="${(.52+.26*sh).toFixed(2)}"
-      stroke="var(--t2)" stroke-width="1.1"
-      stroke-opacity=".8" ${S}/>`; });
-  g+=`<polygon points="${pstr(top)}" fill="var(--s2)" stroke="var(--t2)"
-    stroke-width="1.2" ${S}/>`;
-  /* BANDED EVERY FIVE, not ruled every floor. At 15 storeys a line per floor
-     put fourteen of them on each of the two near faces, and with four pieces on
-     one plot the massing read as hatching rather than as volume. Every fifth
-     still says how tall the thing is — two bands on the 15, one on the 7 — and
-     leaves the faces reading as faces. */
-  if(storeys) F.slice(-2).forEach(f=>{ for(let i=5;i<storeys;i+=5){ const r=i/storeys;
-    const a=[f.q[0][0]+(f.q[3][0]-f.q[0][0])*r, f.q[0][1]+(f.q[3][1]-f.q[0][1])*r];
-    const b=[f.q[1][0]+(f.q[2][0]-f.q[1][0])*r, f.q[1][1]+(f.q[2][1]-f.q[1][1])*r];
-    g+=`<path d="M ${a[0].toFixed(1)} ${a[1].toFixed(1)} L ${b[0].toFixed(1)}
-      ${b[1].toFixed(1)}" stroke="var(--t2)" stroke-opacity=".24" stroke-width=".6" ${S}/>`;}});
-  return g;
-}
-/* ---- THE BAY AT THE 5, IN THE BUILDING'S OWN AXONOMETRIC ----------------
-   The window used to be an axis-aligned rectangle with straight fins. Correct
-   as an elevation, and wrong here: everything around it had been turned -30
-   degrees and tilted 55, so the bay read as a sticker on the glass rather
-   than a piece of this building. Every point below goes through the page's
-   own axo(), which means the bay arrives at the angle of the mass it is cut
-   from and its storey lines run on from the tower's.
-
-   WHICH WALL. Whichever long face of the tall bar this projection actually
-   shows — WALL picks it by testing the outward normal against the camera. It is also the face that looks over
-   the frontage rooms to the road, which is the outlook the whole plot was
-   arranged to get. It USED to be a west wall, when the plot was two parallel
-   bars running north-south; the plan turned, so the wall turned with it and the
-   sun problem is a different one. That is the point of deriving the detail from
-   the plan rather than choosing it: change the plan and the detail changes,
-   without anyone editing the detail.
-
-   Dimensions are metres, converted once, the same as everything else here. */
-const WALL=(()=>{
-  /* WHICH EDGE — DECIDED BY THE VIEW, not written down. It was the bar's north
-     edge, and the camera sits SOUTH of this block: measured, a point 1 m off
-     that face lands 0.497 units FURTHER from the reader than the face itself,
-     so the whole detail was the back of a wall with its shelf projecting away
-     into the screen. No yaw fixes that — depth here IS screen y, and for a
-     north normal to come forward the camera has to swing past 90 degrees,
-     which is the spin this page already refused to spend on one elevation.
-     So the wall is picked instead: of the faces this projection actually
-     shows, the longest. Change the plan or the camera and it re-picks itself. */
-  const P=SITE.bars[0].poly, ccw=sarea(P)>0; let best=null;
-  for(let i=0;i<P.length;i++){
-    const a=P[i], b=P[(i+1)%P.length];
-    const dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy);
-    if(L<1e-6) continue;
-    const u=[dx/L,dy/L], n=ccw?[dy/L,-dx/L]:[-dy/L,dx/L];   // outward
-    const m=[(a[0]+b[0])/2,(a[1]+b[1])/2];
-    if(axo(m[0]+n[0],m[1]+n[1],0,1)[1] <= axo(m[0],m[1],0,1)[1]) continue;
-    if(!best || L>best.L) best={a,u,n,L};
-  }
-  const a=best.a, u=best.u, n=best.n, L=best.L;
-  const W=8.4/MU, s=L*0.42, z0=8*ST;      // one 8.4 m structural bay, eight up
-  const c=[a[0]+u[0]*s, a[1]+u[1]*s];
-  return {u,n,W,H:2*ST,z0,L,
-    p0:[c[0]-u[0]*W/2, c[1]-u[1]*W/2],
-    p1:[c[0]+u[0]*W/2, c[1]+u[1]*W/2]};
-})();
-/* AND THE SUN THAT FACE GETS, FROM ITS OWN BEARING. At 1.35 N the critical noon
-   is the solstice on the face's own side, 90 - |lat - dec|: 67.9 degrees in June
-   on a north wall, 65.2 in December on a south one. The shelf is then SIZED to
-   shade the whole 2.4 m band at that angle rather than being a round number
-   somebody liked — so turning the plan, or the camera, moves the projection.
-   Nothing here is a simulation: it is the sun's noon altitude and a tangent. */
-const BANDH=2.4;
-const FACE=(()=>{
-  const brg=((Math.atan2(WALL.n[0],-WALL.n[1])*180/Math.PI)+360)%360;
-  const south=Math.abs(((brg-180)+540)%360-180)<90;
-  return {brg, south, name:south?"south":"north",
-    alt:  south ? 90-(23.44+1.35) : 90-23.44+1.35,
-    sols: south ? "December" : "June",
-    mths: south ? "seven" : "five",
-    over: south ? "the court the plot is arranged round"
-                : "the frontage rooms to the road"};
-})();
-const SHELFP=Math.ceil(BANDH/Math.tan(FACE.alt*Math.PI/180)*10)/10;
-const SHAD=SHELFP*Math.tan(FACE.alt*Math.PI/180);
-/* HOW MANY OF THIS ONE PART THE PLAN ASKS FOR. A supplier quotes per unit; what
-   turns that quote into a decision is the count, and the count is the drawing's
-   — whole 8.4 m structural bays along the face the detail is cut from, one band
-   a storey, as many storeys as the section landed on. */
-const BAYS=(()=>{const L=WALL.L*MU;
-  return {len:L, n:Math.floor(L/8.4), st:SITE.bars[0].st};})();
-const BAYN=BAYS.n*BAYS.st;
-/* a point on the wall: s along it, z up, d out along its own normal — so a
-   fin's depth is drawn as a surface rather than implied by a thick line */
-const wp=(s,z,d,t)=>axo(WALL.p0[0]+WALL.u[0]*s+WALL.n[0]*(d||0),
-                        WALL.p0[1]+WALL.u[1]*s+WALL.n[1]*(d||0), z, t);
-/* THE PARTS, AND HOW FAR APART THEY STAND. Offsets are metres off the wall
-   face along its own normal: the first is where the part sits when it is built,
-   the second is how far it travels when the assembly comes apart. At x=0 this
-   returns the built drawing exactly, so the explode is one number and not a
-   second picture. Order is the order you meet them coming out of the wall. */
-const XPART=[
-  {k:"seal",  d0:-0.10, dx: 1.3, num:4},
-  {k:"frame", d0:-0.25, dx:-2.2, num:2},
-  {k:"glass", d0:-0.30, dx:-4.4, num:1},
-  {k:"shelf", d0: SHELFP, dx: 2.9, num:5}];
-/* FRONT AND BACK ABOUT THE WALL, not a one-way fan. Everything leaving on the
-   same side made the wall look like the back of a stack; separating the window
-   unit inwards and the seal and shelf outwards is how the thing actually goes
-   together, and the wall stays where it is with a hole in it. The numbers then
-   run in spatial order — glazing, frame, opening, seal, shelf — so the card's
-   list reads as a section through the assembly, inside to out. */
-const XWALLNUM=3;
-function bay5(t,S,vert,x,vw,sw){
-  const w=WALL, M=m=>m/MU, CW=M(13), cs=(w.W-CW)/2;
-  x=clamp(x||0,0,1); sw=clamp(sw||0,0,1);
-  const at=i=>M(XPART[i].d0)+x*M(XPART[i].dx);
-  const quad=(s0,s1,za,zb,d)=>[wp(s0,za,d,t),wp(s1,za,d,t),wp(s1,zb,d,t),wp(s0,zb,d,t)];
-  const ring=q=>"M "+q.map(v=>v[0].toFixed(2)+" "+v[1].toFixed(2)).join(" L ")+" Z";
-  const zb=i=>w.z0+i*ST;
-  /* PAINTER'S ORDER, NOT WRITING ORDER. Every piece went down in the order the
-     code happened to mention it, which put the glazing over the frame it sits
-     behind and the wall under parts that are behind the wall. Worse, no fixed
-     order can be right for both states: the explode sends the frame and the
-     glass BACKWARD and the seal and shelf FORWARD, so the stacking has to
-     invert halfway through. Each piece is emitted with the offset it is drawn
-     at and the whole set is sorted far-to-near before it is joined — the same
-     thing prism() does for the massing, one scale down. */
-  const P=[], put=(d,g)=>P.push({d,g});
-  put(0, `<path d="${ring(quad(cs,cs+CW,w.z0-ST*.5,w.z0+ST*2.5,0))
-      +[0,1].map(i=>ring(quad(0,w.W,zb(i)+M(.6),zb(i)+M(3.0),0))).join("")}"
-      fill-rule="evenodd" fill="var(--s1)" fill-opacity=".62" stroke="var(--t2)"
-      stroke-width="1.1" stroke-opacity=".8" ${S}/>`
-   + [0,1,2].map(i=>{const z=w.z0+i*ST;
-      return `<path d="M ${wp(cs,z,0,t).map(v=>v.toFixed(2)).join(" ")} L ${
-        wp(cs+CW,z,0,t).map(v=>v.toFixed(2)).join(" ")}" stroke="var(--t2)"
-        stroke-opacity=".3" stroke-width=".7" fill="none" ${S}/>`;}).join(""));
-  let g="";
-  // the leaders: each part back to the hole it came out of, only while apart
-  if(x>.02){
-    /* EVERY PART GETS ITS OWN ANCHOR, and the ghost of where it sat.
-       All four leaders used to start at one height — the sill of the lower
-       window — which is right for the three that live in the opening and wrong
-       for the shelf, which is fixed at each window HEAD two metres above it. Its
-       leaders pointed at empty air, and a part with nothing tying it back reads
-       as floating rather than as taken off. The faint outline left behind at the
-       home position is the other half of that: it says the gap is where the
-       piece came from.
-       vector-effect DOES NOT INHERIT, so each path carries it — set on the group
-       these kept a 0.6 USER UNIT stroke, 41 px at a ten-unit viewBox. */
-    const leg=(sv,z,da,db)=>{const a1=wp(sv,z,da,t), b1=wp(sv,z,db,t);
-      return `<path d="M ${a1[0].toFixed(2)} ${a1[1].toFixed(2)} L ${b1[0].toFixed(2)} ${b1[1].toFixed(2)}" ${S}/>`;};
-    const shelfZ=j=>w.z0+j*ST-M(.1);
-    g+=`<g stroke="var(--t3)" stroke-opacity="${(.55*x).toFixed(2)}" stroke-width=".6"
-        stroke-dasharray="1.4 1.4" fill="none">`;
-    XPART.forEach((P,i)=>{
-      if(P.k==="shelf"){ for(let j=1;j<=2;j++)
-        [0,w.W].forEach(sv=>{ g+=leg(sv,shelfZ(j),0,at(i)-M(1.0)); }); }
-      else [0,w.W].forEach(sv=>{ g+=leg(sv,zb(0)+M(.6),M(P.d0),at(i)); });
-    });
-    g+=`</g>`;
-    // the ghosts of where each piece sits when it is built, at a whisper —
-    // they are geometry, not annotation, so they sort with everything else
-    const GH=`fill="none" stroke="var(--t3)" stroke-opacity="${(.34*x).toFixed(2)}"
-        stroke-width=".7" ${S}`;
-    for(let j=1;j<=2;j++){ const z=shelfZ(j);
-      put(M(SHELFP)/2, `<polygon points="${pstr([wp(0,z,0,t),wp(w.W,z,0,t),
-          wp(w.W,z,M(SHELFP),t),wp(0,z,M(SHELFP),t)])}" ${GH}/>`
-       + `<polygon points="${pstr([wp(0,z,M(SHELFP),t),wp(w.W,z,M(SHELFP),t),
-          wp(w.W,z-M(.12),M(SHELFP),t),wp(0,z-M(.12),M(SHELFP),t)])}" ${GH}/>`); }
-    for(let j=0;j<2;j++)
-      put(M(XPART[2].d0), `<polygon points="${
-        pstr(quad(0,w.W,zb(j)+M(.6),zb(j)+M(3.0),M(XPART[2].d0)))}" ${GH}/>`);
-  }
-  /* 2. THE SEAL. A drained and vented joint, drawn as an open line rather than
-        a solid bead, because that is the point of it here: it sheds water, it
-        does not shut air out. */
-  for(let i=0;i<2;i++) put(at(0), `<path d="${ring(quad(-M(.14),w.W+M(.14),
-      zb(i)+M(.46),zb(i)+M(3.14),at(0)))}" fill="none" stroke="var(--t2)"
-      stroke-opacity=".75" stroke-width=".9" stroke-dasharray="2.4 1.6" ${S}/>`);
-  /* 3. THE FRAME, as a ring with the light hole out of it, so the glazing has
-        somewhere to go when the two come apart. */
-  for(let i=0;i<2;i++) put(at(1), `<path d="${ring(quad(-M(.10),w.W+M(.10),
-        zb(i)+M(.50),zb(i)+M(3.10),at(1)))
-      +ring(quad(0,w.W,zb(i)+M(.6),zb(i)+M(3.0),at(1)))}"
-      fill-rule="evenodd" fill="var(--t2)" fill-opacity=".42" stroke="var(--t2)"
-      stroke-width=".9" ${S}/>`);
-  /* 4. THE GLAZING — AND THE PART THAT COMES IN TO REPLACE IT. What leaves is
-        an insulated unit: two panes and the gap between them, drawn as two
-        outlines rather than one. What arrives is a single pane. The old one
-        rises out while the new one flies up into the slot, so they are never
-        in the same place and the reader can see which is which on the way
-        past. Both storeys swap together — swapping one and leaving the other
-        would read as two different specifications rather than one decision. */
-  /* the one that leaves lifts, slides off to the right and comes toward the
-     reader; the one that replaces it crosses in from well off the left, so the
-     two pass each other rather than trading places on the spot */
-  for(let i=0;i<2;i++){ const zz=zb(i);
-    const pane=(dz,ds,dd,op,dbl,shade)=>{
-      const d=at(2)+dd, z0=zz+M(.6)+dz, z1=zz+M(3.0)+dz;
-      let q=`<polygon points="${pstr(quad(ds,w.W+ds,z0,z1,d))}"
-          fill="var(--bga)" fill-opacity="${(.85*op).toFixed(2)}" stroke="var(--ta)"
-          stroke-width=".9" stroke-opacity="${op.toFixed(2)}" ${S}/>`;
-      if(dbl) q+=`<polygon points="${pstr(quad(ds,w.W+ds,z0,z1,d+M(.16)))}"
-          fill="none" stroke="var(--ta)" stroke-width=".8"
-          stroke-opacity="${(.9*op).toFixed(2)}" ${S}/>`;
-      /* THE SHADE IS THE REASON THE CHEAPER ONE IS A CANDIDATE, so the pane that
-         arrives carries it: a 1 m shelf at 68 degrees throws 2.5 m down a 2.4 m
-         band: the whole of it. Geometry, and the card prints the numbers. */
-      if(shade) q+=`<polygon points="${pstr(quad(ds,w.W+ds,z0,z1,d+M(.02)))}"
-          fill="var(--warn)" fill-opacity="${(.13*op).toFixed(3)}" stroke="none"/>`;
-      q+=`<path d="M ${wp(w.W/2+ds,z0,d,t).map(v=>v.toFixed(2)).join(" ")} L ${
-          wp(w.W/2+ds,z1,d,t).map(v=>v.toFixed(2)).join(" ")}"
-          stroke="var(--ta)" stroke-opacity="${(.55*op).toFixed(2)}" stroke-width=".7"
-          fill="none" ${S}/>`;
-      return q;};
-    // each pane carries the offset it is actually at, so the one flying out
-    // toward the reader passes in FRONT of the wall it is leaving
-    if(sw<.995) put(at(2)+sw*M(2.2), pane(sw*M(3.2), sw*w.W*1.3, sw*M(2.2), 1-sw, true, false));
-    if(sw>.005) put(at(2), pane(0, -(1-sw)*w.W*3.0, 0, sw, false, true));
-  }
-  /* 5. THE DEVICE THE SECTION ASKS FOR, AS A SLAB. Drawn as one flat quad it
-        read as a sheet of paper the moment it left the wall — against the wall
-        the eye supplies the thickness, and in mid-air it does not. Top face,
-        outer edge and one end, 120 mm thick: enough to say "this is a piece of
-        concrete" at the size it is seen. */
-  const blade=q=>`<polygon points="${pstr(q)}" fill="var(--s2)"
-      fill-opacity=".92" stroke="var(--t2)" stroke-width="1" ${S}/>`;
-  const TH=M(.12);
-  const slab=(z,d0,d1)=>blade([wp(0,z,d0,t),wp(w.W,z,d0,t),wp(w.W,z,d1,t),wp(0,z,d1,t)])
-    + `<polygon points="${pstr([wp(0,z,d1,t),wp(w.W,z,d1,t),wp(w.W,z-TH,d1,t),wp(0,z-TH,d1,t)])}"
-        fill="var(--s1)" fill-opacity=".86" stroke="var(--t2)" stroke-width="1" ${S}/>`
-    + `<polygon points="${pstr([wp(0,z,d0,t),wp(0,z,d1,t),wp(0,z-TH,d1,t),wp(0,z-TH,d0,t)])}"
-        fill="var(--s1)" fill-opacity=".70" stroke="var(--t2)" stroke-width="1" ${S}/>`;
-  const sh=at(3)-M(SHELFP);       // the shelf carries its own projection
-  if(vert){ const d=M(SHELFP);
-    for(let i=0;i<=4;i++){ const sv=w.W*i/4;
-      put(sh+d/2, blade([wp(sv,w.z0,sh,t),wp(sv,w.z0,sh+d,t),
-        wp(sv,w.z0+2*ST,sh+d,t),wp(sv,w.z0+2*ST,sh,t)])); } }
-  else { const d=M(SHELFP);       // the depth the card states, derived above
-    // sorted on the slab's MIDDLE, not its face: a 1.2 m shelf is deep enough
-    // that which end you measure decides whether it passes in front of the wall
-    for(let i=1;i<=2;i++) put(sh+d/2, slab(w.z0+i*ST-M(.1), sh, sh+d)); }
-  /* and only now is any of it written down. Stable sort, far first — two pieces
-     at the same offset keep the order they were put in, which is what holds the
-     shelf's own three faces together. */
-  g = P.sort((a,b)=>a.d-b.d).map(q=>q.g).join("") + g;
-  /* 6. THE NUMBERS. The names live in the card — at a ten-unit viewBox a word
-        on the drawing arrives about as wide as the window it labels. The discs
-        are sized off the view so they stay the same on screen as it closes. */
-  if(x>.25 && vw){
-    const R=vw*0.0155, fs=vw*0.019;
-    g+=`<g opacity="${clamp((x-.25)/.35,0,1).toFixed(2)}">`
-     + XPART.map((P,i)=>{ const c=wp(w.W+M(.5),zb(1)+M(3.0),at(i),t);
-        return `<circle cx="${c[0].toFixed(2)}" cy="${c[1].toFixed(2)}" r="${R.toFixed(3)}"
-            fill="var(--s0)" stroke="var(--t2)" stroke-width=".8" ${S}/>
-          <text x="${c[0].toFixed(2)}" y="${(c[1]+fs*.35).toFixed(2)}" font-size="${fs.toFixed(3)}"
-            fill="var(--t)" text-anchor="middle" font-weight="700">${P.num}</text>`;}).join("")
-     + `<circle cx="${wp(cs+CW+M(.5),zb(1)+M(3.0),0,t)[0].toFixed(2)}" cy="${
-          wp(cs+CW+M(.5),zb(1)+M(3.0),0,t)[1].toFixed(2)}" r="${R.toFixed(3)}"
-          fill="var(--s0)" stroke="var(--t2)" stroke-width=".8" ${S}/>
-        <text x="${wp(cs+CW+M(.5),zb(1)+M(3.0),0,t)[0].toFixed(2)}" y="${
-          (wp(cs+CW+M(.5),zb(1)+M(3.0),0,t)[1]+fs*.35).toFixed(2)}" font-size="${fs.toFixed(3)}"
-          fill="var(--t)" text-anchor="middle" font-weight="700">${XWALLNUM}</text></g>`;
-  }
-  // 7. where the sun comes from, as a vector in the same space as the wall
-  /* where the sun is, for the device that is actually drawn. The horizontal
-     case is the June-solstice noon sun on a north wall at 1.35 N: due north,
-     68 degrees up — 90 - 23.44 + 1.35, the same arithmetic the card quotes.
-     A is measured from +x, and page y runs south, so north is A = 90. */
-  // A is measured from +x and page y runs south, so north is 90 and south 270
-  const A=vert?190:(FACE.south?270:90), al=vert?15:FACE.alt, r=Math.PI/180;
-  const sd=[Math.cos(A*r)*Math.cos(al*r), -Math.sin(A*r)*Math.cos(al*r), Math.sin(al*r)];
-  const ax=WALL.p0[0]+w.u[0]*w.W*.22, ay=WALL.p0[1]+w.u[1]*w.W*.22, za=w.z0+ST*1.55;
-  const tip=axo(ax+sd[0]*.9, ay+sd[1]*.9, za+sd[2]*.9, t);
-  const tal=axo(ax+sd[0]*4.6, ay+sd[1]*4.6, za+sd[2]*4.6, t);
-  const dx=tip[0]-tal[0], dy=tip[1]-tal[1], L=Math.hypot(dx,dy)||1;
-  const ux=dx/L, uy=dy/L, hd=.85, bx=tip[0]-ux*hd, by=tip[1]-uy*hd;
-  g+=`<g opacity="${Math.max(clamp(1-x*1.6,0,1),sw*.9).toFixed(2)}"><path d="M ${tal[0].toFixed(2)} ${tal[1].toFixed(2)} L ${bx.toFixed(2)} ${by.toFixed(2)}"
-      stroke="var(--warn)" stroke-width=".9" ${S}/>
-    <polygon points="${tip[0].toFixed(2)},${tip[1].toFixed(2)}
-      ${(bx-uy*hd*.4).toFixed(2)},${(by+ux*hd*.4).toFixed(2)}
-      ${(bx+uy*hd*.4).toFixed(2)},${(by-ux*hd*.4).toFixed(2)}"
-      fill="var(--warn)" ${S}/></g>`;
-  return g;
-}
-/* THE LAST VIEW, SOLVED FROM THE DRAWING RATHER THAN PICKED. The bay used to
-   be a 9-unit box at a hand-chosen plan coordinate; once the window is
-   projected that coordinate is not where it lands, so the final zoom would
-   have framed empty ground. This walks the same corners the drawing uses and
-   returns the square that contains them. */
-function bayBox(vert){
-  /* 1.0 either way. bay5 projects BOTH devices 1 m off the wall, so solving the
-     final frame from 0.6 framed a bay 40% shallower than the one drawn and cut
-     the blades' own edge off the right of the view. */
-  /* THE WHOLE EXPLODED ENVELOPE, swept rather than listed. Naming a dozen
-     corners by hand left out the one that mattered — the far top-left of the
-     shelf at full travel — so the blades ran off the left of the frame the
-     moment the assembly came apart. Sweeping the extremes of all three axes
-     cannot miss a corner, and it re-solves itself if a part's travel changes.
-     The swap's two panes are deliberately NOT in here: one flies in from off
-     the frame and the other flies out of it, and that is the point of them. */
-  const w=WALL, CW=13/MU, cs=(w.W-CW)/2, pts=[];
-  const dmax=Math.max(SHELFP/MU, ...XPART.map(P=>(P.d0+P.dx)/MU));
-  const dmin=Math.min(-0.25/MU, ...XPART.map(P=>(P.d0+P.dx)/MU));
-  const sx=w.W+0.9/MU;                   // the column of numbers beside them
-  [cs, cs+CW, 0, w.W, sx].forEach(sv=>
-    [w.z0-ST*.5, w.z0+ST*2.5].forEach(zv=>
-      [dmin, 0, dmax].forEach(dv=> pts.push(wp(sv,zv,dv,1)))));
-  const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
-  const x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys);
-  const s=Math.max(x1-x0,y1-y0)+2;
-  /* and then pushed off the card. Measured, not nudged: at 1440 x 900 the
-     drawn bay ran to 1069 px and the card began at 1020, so 49 px of the
-     fins sat under it — 0.76 units at this zoom. 1.4 cleared 1440 and 1920
-     but left 17 px under the card at 1280, where the card takes a larger
-     share of a narrower screen; 2.0 clears all three. On a phone the card is
-     below the drawing, not beside it, so nothing has to be cleared and the
-     bay stays centred. */
-  const off=MOB.matches?0:2.0;
-  return {x:+((x0+x1)/2-s/2+off).toFixed(1), y:+((y0+y1)/2-s/2).toFixed(1),
-          w:+s.toFixed(1), h:+s.toFixed(1)};
-}
-// "x,y x,y" -> [[x,y],...], for the shapes that are stored as point strings
-const pxy=s=>s.split(" ").map(q=>q.split(",").map(Number));
-const gpoly=(P,t,f,fo,st,sw,extra="")=>`<polygon points="${pstr(P.map(q=>axo(q[0],q[1],0,t)))}"
-  fill="${f}" fill-opacity="${fo}" stroke="${st}" stroke-width="${sw}" ${extra}/>`;
-
-function world(){
-  const V=cur(), z=V.w, S='vector-effect="non-scaling-stroke"';
-  const fade=(a,b)=>clamp((z-a)/(b-a),0,1);
-  /* THE BAY ARRIVES EARLY, and on a phone that is the whole point. The card
-     in the last chapter rises over the stage, so by the time the zoom has
-     settled at 10.9 units it covers the drawing completely — measured at
-     390 x 844: 68% of the bay hidden at three-quarters of the way in, 100%
-     after that. Bringing the window up by 15 units instead of 11.5 means it
-     is fully drawn while the card is still low, which is the only stretch of
-     that chapter a phone reader can see it in at all. The mass has already
-     dissolved by then, so this buys a readable window, not a window shown
-     against the wall it came from — that would need the 50's own fade held
-     open longer. */
-  const far=fade(70,150), near=1-fade(90,180), fine=1-fade(13,46);
-  const aBld=seg(P,.06,.28),
-        aGat=seg(P,.14,.40), aCon=seg(P,.20,.48);
-  /* the building zone's hatch. 7 units is 10 m, which at the held 250-unit view
-     is about 32 px apart — dense enough to read as a filled envelope, open
-     enough that the reach's own wash still shows through it. The zone is 97% of
-     the parcel, so this is the largest area of mark on the drawing: at .6 it
-     took the page over and turned the blue reach under it to mud. */
-  let g=`<defs><clipPath id="rclip"><circle cx="150" cy="152" r="${RING}"/></clipPath><clipPath id="pclip"><polygon points="${PARC.map(p=>p.join(',')).join(' ')}"/></clipPath>
-    <pattern id="bz" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-      <line x1="0" y1="-1" x2="0" y2="8" stroke="var(--t3)" stroke-width=".8" stroke-opacity=".42"/>
-    </pattern></defs>`;
-  // the surroundings live INSIDE the ring, the way the tool shows them — the
-  // disc is what the site is read through, not a frame drawn round it after
-  // the lift: plan at the first card of the 50, axonometric by the second
-  /* THE LIFT MOVED. It used to happen the moment the zone arrived, which put
-     the paths and the courts on a tilted ground for no reason -- both are plan
-     facts. It now happens between the two 50 panels, where a plot becomes a
-     building and the third dimension is the thing being decided. The parcel
-     stays until the zoom has left it behind. */
-  const TILT=RM.matches?1:seg(P,4.72,5.18), BG=1-seg(P,7.30,7.80);
-  /* THE GROUND TURNS WITH THE BUILDINGS. The parcel and the context used to be
-     drawn from their plan coordinates and never went through axo(), which was
-     invisible only because the 500's ground used to fade out before the lift
-     began. Now that the 50 keeps the parcel on screen while a plot becomes a
-     building, a flat boundary under a tilted block is two drawings claiming to
-     be one. Both go through the same transform as everything else. */
-  g+=`<g opacity="${BG.toFixed(3)}"><g clip-path="url(#rclip)">`;
-  /* the neighbours step back at the 50. They are the reason the frontage reads
-     the way it does, so they stay; but at a 250-unit view they were at the same
-     weight as the parcel itself and the eye had nowhere to land. */
-  g+=`<g opacity="${(aBld*far*(1-.55*seg(P,3.55,4.15))).toFixed(3)}">`+CTXP.map(c=>`<polygon points="${
-      pstr(c.map(q=>axo(q[0],q[1],0,TILT)))}"
-      fill="var(--t3)" fill-opacity=".14"/>`).join("")+`</g>`;
-  g+=`</g>`;
-  g+=gpoly(PARC,TILT,"var(--s1)","1","var(--t2)","1.4",S);
-
-  // the two gate families, arriving as their cards do: walk first, then the
-  // vehicle positions, then the two that want the same ground
-  // the badges belong to the first panel: they stay on as faint context once
-  // the reading moves to the boundary, but they stop competing with it
-  /* WHAT THE SITE HAS. The cards read vehicle, walk, contested; the plan used
-     to arrive walk-first off the zoom's own progress, so the card and the
-     drawing disagreed about which was which. Keyed to the panel now, in the
-     cards' order, each in a group of its own so one can be spotlighted when
-     the reader stops. They all step back as the reading moves to the boundary. */
-  const G=gset(), back=1-seg(P,0.95,1.30);
-  const aVe=seg(PAP,.05,.20)*back, aWk=seg(PAP,.33,.48)*back, aCt=seg(PAP,.62,.77)*back;
-  GBASE.ent0=aVe*far; GBASE.ent1=aWk*far; GBASE.ent2=aCt*far;
-  /* each mark is CENTRED ON the edge it sits on rather than held off it: the
-     disc's own centre is the entrance position, so where it lands is the thing
-     being read, not the drawing's clearance from the line. */
-  const GK=16.5/48;
-  g+=`<g id="ent0" class="asp" opacity="${aVe*far}">`+G.v.map(p=>
-      badge("car",p[0],p[1],GK,"var(--t2)")).join("")+`</g>`;
-  g+=`<g id="ent1" class="asp" opacity="${aWk*far}">`+G.w.map((p,i)=>
-      (aCt>.3&&CONTESTED.indexOf(i)>=0)?"":badge("walk",p[0],p[1],GK,"var(--ta)")
-    ).join("")+`</g>`;
-  /* THE TWO THAT CLASH. A pair, so it is the pair's CENTROID that goes on the
-     boundary and the two discs that split either side of it. They stay SIDE BY
-     SIDE, the way the card's icon shows them, rather than turning to follow the
-     edge: the card and the plan have to read as the same object, and a pair
-     that rotates with the boundary stops looking like the pair in the column. */
-  const GSEP=16.3, GBRS=8.4;
-  g+=`<g id="ent2" class="asp" opacity="${aCt*far}">`+CONTESTED.map(i=>{
-      const p=G.w[i], h=GSEP/2;
-      const a=[p[0]-h, p[1]], b=[p[0]+h, p[1]];
-      const P2=PRIM.eBurst, bk=GK*.5;
-      const c=[p[0], p[1]-GBRS];
-      return badge("walk",a[0],a[1],GK,"var(--warn)","none")
-           + badge("car", b[0],b[1],GK,"var(--warn)","none")
-           + `<g style="color:var(--warn)" transform="translate(${
-               (c[0]-(P2.x+P2.w/2)*bk).toFixed(2)},${
-               (c[1]-(P2.y+P2.h/2)*bk).toFixed(2)}) scale(${bk.toFixed(4)})">${
-               P2.m}</g>`;})
-      .join("")+`</g>`;
-  // WHAT IT CALLS FOR: the boundary that stands apart, then what the reader
-  // chose to make of it. Both live at the site scale and leave with the ring.
-  // the field belongs to the recommendation, not to the reading that produced
-  // it: it arrives as that panel comes up and leaves with the ring
-  /* THE FRONT DOES NOT LEAVE WITH THE RING, IT CHANGES STATE. Everything else at
-     the 500 goes; the front's reach is the reason the 50 takes the plot it takes,
-     so it carries into the first panel of the 50 and becomes the ground the plots
-     are cut out of. The two readings TRADE PLACES rather than sit on each other:
-     the heatmap is a gradient, which is the right drawing for "how far does this
-     carry" and the wrong one for "this is the ground" -- it has no edge, and a
-     zone drawn underneath it only ever looked like more weather. So the gradient
-     goes out over the panel's first sixth and the contour comes in over its
-     second, and only one of them is ever at full weight. */
-  const zc=ease(seg(PPP,.05,.24)), zg=1-seg(PPP,.00,.16);
-  /* THE BLUE LEAVES WHEN THE GREEN ARRIVES. The third card puts a build zone on
-     one cell, and a green wash on top of a blue field is two answers to the same
-     question. The FIELD goes; the two frontage lines do not, because the front
-     is the reason the cell is the one taken and the reader still needs it. */
-  const zf=zc*(1-seg(PPP,.56,.80));
-  const aHe=seg(P,2.20,2.56)*(1-seg(P,4.15,4.62));
-  GBASE.pth0=aHe;
-  if(aHe>.002){
-    let h=`<g id="pth0" class="asp" opacity="${aHe.toFixed(3)}">`;
-    if(zg>.004){
-      const F=field();
-      h+=`<g opacity="${zg.toFixed(3)}" clip-path="url(#pclip)">`;
-      for(const c of F.cells){
-        const o=0.03+0.74*Math.pow(c[2],1.25);
-        if(o<.05) continue;
-        h+=`<rect x="${(c[0]-F.C/2).toFixed(1)}" y="${(c[1]-F.C/2).toFixed(1)}"
-          width="${F.C}" height="${F.C}" fill="var(--ta)" fill-opacity="${o.toFixed(3)}"/>`;
-      }
-      h+=`</g>`;
-    }
-    /* the contour: one shape, one weight, and an edge you can point at. The two
-       stretches come with it, in the colour the recommendation drew them in --
-       the 500's copy is at zero by the time this one starts, so they never double. */
-    if(zf>.004) h+=`<polygon points="${SITE.zone}" fill="var(--ta)" fill-opacity=".24"
-        stroke="var(--ta)" stroke-opacity=".85" stroke-width="1.6"
-        opacity="${zf.toFixed(3)}" ${S}/>`;
-    if(zc>.004) h+=`<g opacity="${zc.toFixed(3)}">
-      <g fill="none" ${S} stroke-linecap="round" stroke="${OCOL.frontage}">
-      <polyline points="${G.ne}" stroke-width="7.5" stroke-opacity=".26"/>
-      <polyline points="${G.ne}" stroke-width="2.6"/>
-      <polyline points="${G.n}" stroke-width="7.5" stroke-opacity=".26"/>
-      <polyline points="${G.n}" stroke-width="2.6"/></g></g>`;
-    g+=h+`</g>`;
-  }
-  /* WHAT IT CALLS FOR. Scrolling brings the three aspects on one at a time and
-     leaves them on — the reading is cumulative, the way the cards are. Each
-     lives in a group of its own so the panel can spotlight one when the reader
-     stops (see cycle()). Keyed to the panel's own progress, so card and drawing
-     can never drift apart. Card k lights at (k+0.2)/3.5. */
-  const gone=1-seg(P,3.22,3.62);
-  const aFr=seg(PBP,.05,.20)*gone;
-  const aFn=seg(PBP,.33,.48)*gone*(1-.62*seg(P,2.20,2.56));
-  const aSg=seg(PBP,.62,.77)*gone*(1-seg(P,2.20,2.56));
-  GBASE.asp0=aFr; GBASE.asp1=aFn; GBASE.asp2=aSg; GBASE.asp3=aSg;
-  /* the 50's last panel: the run, the ground, the section — cumulative on
-     scroll, one at a time when the reader stops */
-  GBASE.sug0=seg(PDP,.05,.20); GBASE.sug1=seg(PDP,.33,.48);
-  GBASE.sug2=seg(PDP,.62,.77);
-  /* and the panel before it. The three step BACK as the next arrives, the way
-     the boundary panel's do: five desire lines, a court and four plots all at
-     full weight at once was the mess -- everything shouting, nothing leading.
-     By the third card the paths sit at .45 and the court at .55, so the plots
-     are read against them rather than through them. */
-  /* pth0 is the front, set with the field above: it arrives from the 500 rather
-     than from this panel, so it is the one layer here that is not keyed to a
-     card's own progress. The other two are. */
-  GBASE.pth1=seg(PPP,.33,.48)*(1-.45*seg(PPP,.63,.83));
-  GBASE.pth2=seg(PPP,.62,.77);
-  if(aFr>.002) g+=`<g id="asp0" class="asp" opacity="${aFr.toFixed(3)}" fill="none" stroke-linecap="round"
-      stroke="var(--ta)" ${S}>
-    <polyline points="${G.ne}" stroke-width="8.5" stroke-opacity=".30"/>
-    <polyline points="${G.ne}" stroke-width="2.6"/>
-    <polyline points="${G.n}"  stroke-width="8.5" stroke-opacity=".18"/>
-    <polyline points="${G.n}"  stroke-width="2.6" stroke-opacity=".62"/></g>`;
-  // the back reads as a wall, not as an accent: neutral, with hatch ticks
-  // turned into the site
-  if(aFn>.002){
-    let h="", pl="";
-    for(const run of FENCE){
-      const fp=run.split(" ").map(q=>q.split(",").map(Number));
-      pl+=`<polyline points="${run}" stroke-width="10" stroke-opacity=".20"
-        stroke-linecap="round"/><polyline points="${run}" stroke-width="2.8"
-        stroke-opacity=".8"/>`;
-      for(let i=0;i<fp.length-1;i++){
-        const p0=fp[i], p1=fp[i+1], dx=p1[0]-p0[0], dy=p1[1]-p0[1], L=Math.hypot(dx,dy)||1;
-        const nx=-dy/L, ny=dx/L, sgn=((150-p0[0])*nx+(152-p0[1])*ny)<0?-1:1;
-        for(let d=5;d<L-2;d+=11){
-          const px=p0[0]+dx*d/L, py=p0[1]+dy*d/L;
-          h+=`<path d="M ${px.toFixed(1)} ${py.toFixed(1)} L ${(px+nx*sgn*6).toFixed(1)}
-            ${(py+ny*sgn*6).toFixed(1)}"/>`;
-        }
-      }
-    }
-    g+=`<g id="asp1" class="asp" opacity="${aFn.toFixed(3)}" fill="none" stroke="var(--t2)" ${S}>
-      ${pl}<g stroke-width="1.3" stroke-opacity=".55">${h}</g></g>`;
-  }
-  /* THE LEADING APPROACH, AS GROUND RATHER THAN LINEWORK. Three schemes drawn
-     over each other — a circle, a curve and two lines — was a diagram of the
-     list, not of the site. The plan shows the one the run ranked first: the
-     band of the parcel the NE front actually reaches, from the same measured
-     stretches and the same falloff the recommendation uses, cut at 70 m so it
-     reads as a zone rather than a gradient. The other two stay in the card,
-     where a ranking belongs. */
-  if(aSg>.002){
-    const F=field(), CUT=Math.exp(-(70*0.690)/FALL);
-    let z=`<g id="asp2" class="asp" opacity="${aSg.toFixed(3)}" clip-path="url(#pclip)">`;
-    for(const c of F.cells){
-      const k=clamp((c[2]-CUT)/.16,0,1);
-      if(k<=.02) continue;
-      z+=`<rect x="${(c[0]-F.C/2).toFixed(1)}" y="${(c[1]-F.C/2).toFixed(1)}"
-        width="${F.C}" height="${F.C}" fill="${OCOL.frontage}"
-        fill-opacity="${(.06+.20*k).toFixed(3)}"/>`;
-    }
-    g+=z+`</g><g id="asp3" class="asp" opacity="${aSg.toFixed(3)}" fill="none" ${S} stroke-linecap="round"
-      stroke="${OCOL.frontage}" stroke-width="5.5">
-      <polyline points="${G.ne}"/><polyline points="${G.n}" stroke-opacity=".7"/></g>`;
-  }
-  const aOr=seg(P,2.28,2.62)*gone, OC=OCOL[ORGK];
-  if(aOr>.002){
-    g+=`<g opacity="${aOr.toFixed(3)}" fill="none" ${S}>`;
-    if(ORGK==="frontage")
-      g+=`<polyline points="${G.n}" stroke="${OC}" stroke-width="6.5" stroke-linecap="round"/>
-          <polyline points="${G.ne}" stroke="${OC}" stroke-width="6.5" stroke-linecap="round"/>`;
-    else if(ORGK==="centre")
-      g+=`<circle cx="152" cy="160" r="34" stroke="${OC}" stroke-width="3.4"/>`
-        +G.w.filter((_,i)=>i%2===0).map(p=>`<path d="M 152 160 L ${p[0].toFixed(1)}
-           ${p[1].toFixed(1)}" stroke="${OC}" stroke-width="1.5" stroke-opacity=".5"
-           stroke-dasharray="2 4"/>`).join("");
-    else
-      g+=`<path d="M 150 38 Q 128 150 146 266" stroke="${OC}" stroke-width="5.4"
-           stroke-linecap="round"/>`;
-    g+=`</g>`;
-  }
-  // everything at the 500's scale leaves with the ground
-  g+=`</g>`;
-  /* the 100 x 78 case that used to stand in for the block is gone: the zone
-     is the block now, and the case's dashed cut line was still ghosting into
-     the 50 behind it */
-  /* THE 50, IN TWO PANELS. The first works on the whole parcel in plan --
-     paths, then courts, then plots. The second takes one plot and lifts it.
-     The first leaves as the second arrives, so the two never argue about
-     which scale the drawing is at. */
-  /* the paths start drawing while the 500's marks are still fading, so the
-     two cross on the same parcel instead of leaving a blank stage between
-     them -- that gap was the whole of the old ways/arch stretch */
-  /* ONE CHANGE AT A TIME. The site layers used to leave across P 4.60-5.00
-     while the lift ran 4.55-5.05, so the reader met a fade and a rotation in
-     the same scroll and could not tell which was the point. The zoom owns the
-     leaving: the paths, the court and the plots go while the view is still
-     closing in on one of them, and the ground is clear before it turns. */
-  const aSit=seg(P,3.20,3.62)*(1-seg(P,4.15,4.62));
-  /* and the plot leaves as the bay arrives. Without this the blocks were
-     still at full weight inside an 11-unit view, so the reader met the
-     19-storey block's own storey lines and the bay's, at two scales, on the
-     same wall. */
-  /* the plot arrives QUICKLY, at the head of the lift rather than across all
-     of it: the rotation is what shows the buildings, so they should be on the
-     ground turning rather than materialising through it. What each card adds
-     is then gated by the panel's own progress, not by this. */
-  /* THE MASS LEAVES ON THE PANEL, NOT ON THE ZOOM. It has to be gone by the
-     time the parts separate — a whole face at this scale reads as a sixth part
-     with no number — and "gone by then" is a statement about the second card,
-     not about a scroll position. PE2 is 0 everywhere before that panel, so the
-     block at the 50 is untouched. */
-  const aSug=seg(P,4.66,4.86)*(1-seg(PE2,.00,.22));
-  if(aSit>.004) g+=siteLayers(S,aSit);
-  if(aSug>.004) g+=building(TILT,S,aSug);
-  // the bay is drawn at the page's own tilt, so it turns in with everything
-  // else rather than arriving flat on top of a tilted drawing
-  // false = the horizontal device: this is a north wall now, not a west one
-  /* GEOMETRY FIRST, THEN THE CUT — the same rule the screenshot handoff uses.
-     The panel the bay is cut into is marked on the wall while the view is still
-     wide enough to see the block round it, and it goes as the bay itself
-     resolves, so the last zoom lands on something already pointed at. On at
-     about 100 units, full by 60, gone by 18, which brackets the wall stop. */
-  const aim=seg(P,6.95,7.20)*fade(18,30);
-  if(aim>.004){
-    const W2=WALL, CW=13/MU, cs=(W2.W-CW)/2;
-    g+=`<g opacity="${aim.toFixed(3)}"><polygon points="${pstr([
-        wp(cs,W2.z0-ST*.5,0,TILT), wp(cs+CW,W2.z0-ST*.5,0,TILT),
-        wp(cs+CW,W2.z0+ST*2.5,0,TILT), wp(cs,W2.z0+ST*2.5,0,TILT)])}"
-      fill="var(--ta)" fill-opacity=".14" stroke="var(--ta)" stroke-width="1.5"
-      stroke-linejoin="round" ${S}/></g>`;
-  }
-  /* THE EXPLODE RUNS ON THE DETAIL CARD, NOT ON THE ZOOM. P caps at 8 while the
-     card is still rising, so anything keyed to the zoom would have finished
-     before the list naming the parts was on screen. */
-  // beat 2 takes it apart, beat 3 swaps a part out — both on the panel's own
-  // progress, so each lands as the card that explains it lights
-  // one panel takes it apart, the next swaps a part out
-  const XP=RM.matches?1:ease(seg(PE2,.06,.36));
-  const SW=RM.matches?1:ease(seg(PE3,.30,.72));
-  if(fine>.004) g+=`<g id="bay" opacity="${fine.toFixed(3)}">${
-      bay5(TILT,S,false,XP,V.w,SW)}</g>`;
-  return g+`</g>`+instrument();
-}
-
-/* ---- THE 50's FIRST PANEL: THE FRONT, THE OPEN GROUND, THE PLOTS --------
-   Three layers, one per card, cumulative on scroll and readable one at a time
-   when the reader stops. All of it in plan: a frontage and a court are
-   plan facts, and tilting them would only make them harder to read. The lift
-   into axonometric waits until the next panel, where a plot becomes a
-   building and the third dimension is the thing being decided. */
-function siteLayers(S,w){
-  let g=`<g opacity="${w.toFixed(3)}">`;
-  /* 1. THE FRONT is drawn with the field, above — it comes from the 500 and is
-        already on the ground by the time this panel opens.
-     2. THE ROOMS ON IT: four, one family, one colour, drawn as a series so the
-        public face reads as something you move along rather than one place you
-        arrive at. Only the two ends carry a word. */
-  g+=`<g id="pth1" class="asp" opacity="${(GBASE.pth1||0).toFixed(3)}">`
-   + SITE.rooms.map(r=>`<polygon points="${r}" fill="var(--ct)" fill-opacity=".42"
-        stroke="var(--ct)" stroke-width="1.7" ${S}/>`).join("")
-   + `</g>`;
-  /* 3. THE BUILDING ZONE IS WHAT THE REACH HAS LEFT, not what the site has left.
-        Drawn over the whole parcel it said "build anywhere except here", which is
-        not a decision; held to the reach it says where the mass that answers this
-        front can stand — 20,400 m2 of the 23,038, with the four rooms punched out
-        of it. It sits ON the reach's edge and never outside it: pushing it past
-        that line to win the rooms' area back in depth was answering a question
-        nobody asked, and it made the drawing carry two boundaries that meant
-        almost the same thing. A HATCH rather than a wash: the reach under it is
-        already a blue field and a second fill only muddied it, and a hatch is
-        what a development envelope is drawn with anyway. Subpaths plus evenodd
-        make the holes. */
-  const ring=p=>"M "+p.map(q=>q[0]+" "+q[1]).join(" L ")+" Z";
-  const d=ring(pxy(SITE.zone))+SITE.rooms.map(r=>ring(pxy(r))).join("");
-  /* GROUND, IN ONE CELL. The build zone is drawn where the building goes and
-     nowhere else: the taken cell's share of the reach, with its courts out of
-     it — 10,316 m2 of the cell's 13,304. Washed over the whole reach it was a
-     statement about the parcel; here it is a statement about a plot, and the
-     next panel is that plot. The rest of the parcel keeps its own ground, so
-     nothing has to be faded to make this read: there is only one green.
-     No mass is drawn. Solid ink figures made a figure-ground plan, which
-     answers what stands there — and standing it up is the next panel's job.
-
-     THE SPLIT RUNS ACROSS THE WHOLE SITE, because the quarter being taken
-     cannot be judged without the other three beside it. Only the seams are
-     drawn: an edge another cell also has, reversed, is a line between owners;
-     one no other cell has is the parcel edge, and a dash along that just makes
-     the boundary look dashed. The exact Voronoi shares its vertices to the
-     digit, so the test is a string compare, and each seam is drawn once. */
-  const seams=()=>{
-    const k=(a,b)=>a[0]+","+a[1]+"|"+b[0]+","+b[1], all=new Set(), done=new Set(), out=[];
-    SITE.cells.forEach(c=>{for(let i=0;i<c.length;i++) all.add(k(c[i],c[(i+1)%c.length]));});
-    SITE.cells.forEach(c=>{for(let i=0;i<c.length;i++){
-      const a=c[i], b=c[(i+1)%c.length];
-      if(!all.has(k(b,a))) continue;
-      const id=[k(a,b),k(b,a)].sort()[0];
-      if(done.has(id)) continue; done.add(id); out.push([a,b]);}});
-    return out;};
-  g+=`<g id="pth2" class="asp" opacity="${(GBASE.pth2||0).toFixed(3)}">
-      <defs><clipPath id="tkc"><polygon points="${
-        SITE.cells[SITE.ne].map(q=>q[0]+","+q[1]).join(" ")}"/></clipPath></defs>
-      <g clip-path="url(#tkc)"><path d="${d}" fill-rule="evenodd"
-        fill="var(--ct)" fill-opacity=".30"/></g>
-      <g fill="none" stroke="var(--t2)" stroke-opacity=".45" stroke-width="1"
-        stroke-dasharray="5 4" ${S}>${seams().map(([a,b])=>
-        `<path d="M ${a[0]} ${a[1]} L ${b[0]} ${b[1]}"/>`).join("")}</g>
-      <path d="${ring(SITE.cells[SITE.ne])}" fill="none" stroke="var(--warn)"
-        stroke-width="1.8" ${S}/>      </g>`;
-  /* the two words last, outside every layer: they sit on rooms in cells the
-     third card fades, and a label greyed out with the ground under it reads as
-     a mistake rather than as emphasis. No id, so the pause-cycler leaves them
-     alone and a reader who stops can still tell which room is which. */
-  g+=`<g opacity="${(GBASE.pth1||0).toFixed(3)}">`
-   + SITE.rlab.map(([t,x,y])=>`<text class="anno gl" x="${x}" y="${y+2}"
-        style="fill:var(--ct)">${t}</text>`).join("")
-   + `</g></g>`;
-  return g;
-}
-
-/* ---- THE 50's LAST PANEL: ONE PLOT RESOLVED -----------------------------
-   The court on the path that crosses the plot, then a block front and back of
-   it, then the section those two land at. Three layers again, one per card. */
-/* WHICH SCHEME IS SHOWING, AND HOW IT CHANGES. Not on the scroll: a reader
-   moving through the chapter was changing the drawing with the same gesture
-   they were reading with, so the alternatives read as an artefact of scrolling
-   rather than as three answers. It is the page's own pause rule instead — the
-   one the derivation panels already use. Stand still on the reference chapter
-   for half a second and the three cycle; touch the wheel and the resolved
-   scheme comes straight back, because that is the one the bay is cut from and
-   the detail is two chapters away. A dissolve already in flight always
-   finishes, so a flick of the wheel can never leave two schemes half drawn. */
-let ACUR=0, ANXT=0, AK=0, ADWELL=0, ABLEND=0;
-/* 3.4 s, not 2. The card used to name each alternative and print its section
-   and footprint, so a glance was enough to tell them apart; with that gone the
-   drawing is the only thing to read, and reading four or five pieces re-arrange
-   themselves takes longer than reading a line of type. */
-const AHOLD=3400, AFADE=640;
-function altTick(now){
-  const el=document.getElementById("arch");
-  if(!el || RM.matches) return false;
-  const r=el.getBoundingClientRect();
-  const on = r.top<innerHeight*.62 && r.bottom>innerHeight*.34;
-  const before=ACUR+":"+ANXT+":"+AK.toFixed(3);
-  if(AK>0){
-    AK=clamp((now-ABLEND)/AFADE,0,1);
-    if(AK>=1){ ACUR=ANXT; AK=0; ADWELL=now; }
-  } else if(on && now-ASCROLL>500){
-    if(!ADWELL) ADWELL=now;
-    if(now-ADWELL>AHOLD){ ANXT=(ACUR+1)%SITE.alts.length; AK=1e-4; ABLEND=now; }
-  } else {
-    ADWELL=0;
-    if(ACUR!==0){ ANXT=0; AK=1e-4; ABLEND=now; }
-  }
-  return before!==ACUR+":"+ANXT+":"+AK.toFixed(3);
-}
-function altMix(){
-  if(AK<=0) return [[ACUR,1]];
-  const k=ease(AK);
-  // heavier first, so the one carrying the ids is the one being read
-  return k<.5 ? [[ACUR,1-k],[ANXT,k]] : [[ANXT,k],[ACUR,1-k]];
-}
-/* ---- THE 50's LAST PANEL: ONE PLOT RESOLVED -----------------------------
-   The court on the path that crosses the plot, then a block front and back of
-   it, then the section those two land at. Three layers again, one per card. */
-/* ---- THE 50's LAST PANEL: ONE PLOT RESOLVED -----------------------------
-   The courts, then what stands round them, then the section those land at.
-   Three layers, one per card — and the whole thing is drawn per SCHEME, so
-   the reference chapter can put another one in its place without any of the
-   layer logic knowing that happened. */
-function scheme(A,t,S,k,prime){
-  const B=A.bars, id=n=>prime?` id="sug${n}" class="asp"`:' class="asp"';
-  const op=n=>((GBASE["sug"+n]||0)*k).toFixed(3);
-  /* 1. THE OPEN GROUND, BOTH KINDS. The 500's rooms come over with the view
-        rather than being left behind at the other scale — they are the reason
-        this plot's blocks start where they do, and a reader who cannot see them
-        here has to take the step back on trust. The plot's own court joins them
-        in the same green: at this scale the question is how much ground stays
-        open, not which panel decided it. A scheme with no enclosed court draws
-        the rooms alone, which is exactly what it is claiming. */
-  let g=`<g${id(0)} opacity="${op(0)}">`
-   + SITE.rooms.map(r=>gpoly(pxy(r),t,"var(--ct)",".26","var(--ct)","1.2",S)).join("")
-   + A.pcourts.map(c=>gpoly(c,t,"var(--ct)",".42","var(--ct)","1.6",S)).join("")
-   + `</g>`;
-  /* 2. THE BUILDING ZONE AT THIS SCALE, then what stands in it. The 500 drew a
-        zone over the whole reach; here it is one plot's share of it with both
-        kinds of court punched out. Drawing the zone and the footprints in the
-        same layer is the point: the gap between them IS the height. Clipped to
-        the plot, because the rooms run past its edges and evenodd would
-        otherwise fill what it subtracts out there. */
-  const PZ=SITE.cells[SITE.ne];
-  const ring=p=>"M "+p.map(q=>axo(+q[0],+q[1],0,t).map(v=>v.toFixed(1)).join(" ")).join(" L ")+" Z";
-  const bd=ring(PZ)+SITE.rooms.map(r=>ring(pxy(r))).join("")+A.pcourts.map(ring).join("");
-  // the clip id has to be unique per scheme or the second one drawn reuses the
-  // first one's path and the two schemes are clipped to the same outline
-  const cid="pzc"+(prime?"":"b");
-  g+=`<g${id(1)} opacity="${op(1)}">
-      <defs><clipPath id="${cid}"><polygon points="${
-        pstr(PZ.map(q=>axo(q[0],q[1],0,t)))}"/></clipPath></defs>
-      <g clip-path="url(#${cid})"><path d="${bd}" fill-rule="evenodd" fill="url(#bz)"/></g>`
-   + B.map(b=>gpoly(b.poly,t,"var(--ta)",".30","var(--ta)","1.2",S)).join("")
-   + `</g>`;
-  // 3. THE SECTION. White massing: at this size a colour on a volume reads as
-  //    a material decision, and no material has been decided.
-  g+=`<g${id(2)} opacity="${op(2)}">`
-   /* painter's order off the PROJECTED centroid, not the plan one. With two
-      parallel bars those agreed; with pieces at three heights they do not, and
-      a piece drawn after the one in front of it puts a nine-storey face through
-      a fifteen-storey one. At t=0 axo returns the plan, so this is the same sort
-      it used to be until the ground turns. */
-   + B.map(b=>{const n=b.poly.length;
-       const cx=b.poly.reduce((a,p)=>a+p[0],0)/n, cy=b.poly.reduce((a,p)=>a+p[1],0)/n;
-       return [b, axo(cx,cy,0,t)[1]];})
-      .sort((a,b)=>a[1]-b[1])            // far block first, so the near one covers it
-      .map(([b])=>prism(b.poly, b.st*ST, t, S, b.st)).join("")
-   + `</g>`;
-  return g;
-}
-function building(t,S,w){
-  let g=`<g opacity="${w.toFixed(3)}">`;
-  // the plot it is happening in, held under all three cards
-  // .03, not .07: at 250 units the plot is most of the frame, and a wash that
-  // reads as nothing over a parcel reads as a colour over a plot
-  g+=gpoly(SITE.cells[SITE.ne],t,"var(--warn)",".03","var(--warn)","1",
-           'stroke-dasharray="4 3" '+S);
-  altMix().forEach(([ai,k],n)=>{ g+=scheme(SITE.alts[ai],t,S,k,n===0); });
-  return g+`</g>`;
-}
-
-/* THE INSTRUMENT SURVIVES THE HANDOFF. The screenshot dissolves but the ring
-   stays: compass, scale, and two arrows that say what lies beyond an edge in
-   two words instead of a paragraph. It is a 500-scale instrument, so it leaves
-   when the rail moves to the block. LETR is the tool's own ring-to-parcel
-   ratio, so the compass lands on the compass at the moment of the cross-fade. */
-/* set from the tool, not by eye: in the dial the compass letters sit at 520 px
-   with the parcel 643 px wide, so at this drawing's 176.6 the letters land at
-   142.8 — which is why the two compasses coincide at the moment of the swap */
-const RING=138.7, LETR=142.8;
-const CMP=[["N",270],["E",0],["S",90],["W",180]];
-function instrument(){
-  const a=RM.matches?1:(1-seg(P,3.22,3.62));
-  if(a<=.002) return "";
-  const S='vector-effect="non-scaling-stroke"';
-  let s=`<g opacity="${a.toFixed(3)}">
-    <circle cx="150" cy="152" r="${RING}" fill="none" stroke="var(--t3)"
-      stroke-opacity=".32" stroke-width="1" ${S}/>`;
-  s+=CMP.map(([c,d])=>{
-    const t=d*Math.PI/180;
-    return `<text class="cmp" x="${(150+Math.cos(t)*LETR).toFixed(1)}"
-      y="${(152+Math.sin(t)*LETR).toFixed(1)}">${c}</text>`;}).join("");
-  // 100 m is 69 units at this scale; it sits outside the ring on the clear
-  // side, because the chapter card covers the corner the tool puts it in
-  // the scale bar carried a .85 group on top of the label's own fade, which
-  // put the one dimension on the drawing at 1.6 against the paper
-  s+=`<g><path d="M 214 306 L 283 306 M 214 303 L 214 309
-      M 283 303 L 283 309" stroke="var(--t3)" stroke-width="1" ${S}/>
-    <text class="cmp scl" x="248.5" y="298">100 m</text></g>`;
-  return s+`</g>`;
-}
-
-function cur(){
-  const K=KEY.map(k=>k===null?HELD:(k==="bay"?bayBox(false):k));
-  /* THE LAST LEG LANDS EARLY. The detail is three beats now — arrive on the
-     wall, take it apart, swap a part — and only the first is a zoom, so the
-     view has to be still by the time the second card lights. 0.55 of the last
-     interval puts it at about P 7.55, a third of the way into the panel. */
-  const i=clamp(Math.floor(P),0,K.length-2);
-  const f=ease(clamp((P-i)/(i===LASTZOOM?0.46:1),0,1));
-  const a=K[i], b=K[i+1];
-  const lw=Math.exp(Math.log(a.w)*(1-f)+Math.log(b.w)*f);   // log space, or it lurches
-  const k=(a.w===b.w)?f:(a.w-lw)/(a.w-b.w||1);
-  return {x:a.x+(b.x-a.x)*k, y:a.y+(b.y-a.y)*k, w:lw, h:lw};
-}
-
-/* THE PLAN LEANS AWAY FROM WHICHEVER CARD IS LIVE. The first chapter's card
-   sits on the left and the ring's west label sits under it, so the drawing
-   moves right while that card is up and left again for the chapter after,
-   where side by side is the whole point — the parameter and the drawing it
-   changes have to be in one glance, not stacked with one hidden behind. */
-function shift(){
-  const el=document.getElementById("world");
-  // nothing moves until the two pictures have traded places, or the swap
-  // happens between a drawing that has drifted and a screenshot that has not
-  // the panels hold one column on the right for the whole of the 500, so the
-  // drawing moves out from under them once and stays put until the block —
-  // where the column crosses to the LEFT, and the drawing has to cross with it.
-  // Wide screens only: below 1060 the CSS re-centres that column over the
-  // drawing, and leaning away from a card that is no longer beside you just
-  // pushes the plan off the right-hand edge.
-  const rt=innerWidth>=1320 ? seg(P,4.50,4.92)*(1-seg(P,6.08,6.32)) : 0;
-  // the drawing leans left for the whole of the 500 — the panels own the
-  // right column — and comes back to centre when the block card takes over
-  const lf=Math.min(seg(P,AT(.30,.50),AT(.46,.78)), 1-seg(P,3.45,3.85));
-  // it used to shrink 15% as it moved, so the reader saw the circle grow into
-  // place and then immediately give some of it back. Translation alone clears
-  // the panel column at full size, so the size the handoff landed on is kept.
-  el.style.transform = innerWidth>760
-    ? `translateX(${(19*rt-19*lf).toFixed(2)}%)`
-    // on a phone the card rises over the lower half, so the ring climbs out
-    // of its way rather than doing its pointing behind a sheet of paper —
-    // by moving only, like the wide layout
-    : `translateY(${(-34*lf).toFixed(2)}%)`;
-}
-
-
-
-/* ONE ANSWER, NOT TWO. The bay used to switch on the 500's spine, which read
-   as a live link between the scales and was not one: the same wall was being
-   given two different devices for two different reasons, and only the words
-   changed. This wall is the tall bar's north face — the one the plan put there
-   — and a north wall at 1.35 N has a single honest answer.
-   The answer CHANGED when the plan did: it was vertical fins while this was a
-   west wall. Nothing about the detail was rewritten to make that happen; the
-   block turned and the face it offers turned with it. */
-const D5={h:"Sun from overhead wants a horizontal shelf",
-  /* EVERY FIGURE IN HERE IS A BLANK. Which face, which way it looks, which
-     solstice, how high the sun gets and how deep the shelf has to be are all
-     filled from FACE and SHELFP at render — so when the wall the view shows
-     changes, the sentence changes with it and nobody edits the detail. */
-  p:`the <b>__FACE__</b> face of the tall bar, over __OVER__. At <b>1.35° N</b> the sun is
-     __FACE__ of overhead for about __MTHS__ months of the year, and at noon on the
-     __SOLS__ solstice it is <b>__ALT__&deg;</b> up &mdash; so a <b>__P__ m shelf</b> takes the
-     light, not the view.`,
-  /* WHAT THE ASSEMBLY IS, and then the one part the last beat replaces. The
-     list stays descriptive — it says what is drawn, including the insulated
-     unit that is about to go — so the swap is something the reader watches
-     happen rather than something the list has already given away. */
-  /* numbered the way the assembly stacks, inside to out, so the list and the
-     exploded drawing can be read against each other without matching names */
-  parts:[["Glazing","an insulated unit, as drawn"],
-         ["Frame","aluminium, no thermal break"],
-         ["Opening","in the structure"],
-         ["Seal","drained, not airtight"],
-         ["Shelf","__P__ m, and the part that works"]],
-  /* the climate is the REASON to look at a cheaper part, never a claim about
-     what it costs. What it costs is a quote, and the page never invents one. */
-  q:`of this one part &mdash; <b>__BAYS__ bays</b> across <b>__LEN__ m</b> of face, <b>__ST__</b>
-     storeys up. And a <b>__P__ m</b> shelf at <b>__ALT__&deg;</b> throws <b>__SHAD__ m</b> of
-     shadow down a <b>__BAND__ m</b> band, so the glass is fully shaded at noon &mdash; which
-     is what puts the plainer units on the list at all.`,
-  /* the blanks are the content. Count and shading are the drawing's and printed;
-     price is the supplier's, and the page has never been told one. */
-  /* THE COLUMN THE SUPPLIER FILLS IN IS THE POINT. The count and the shading
-     are the drawing's and are printed; what any of these costs has never been
-     told to the page, so it stays blank the way the height cap does. */
-  opts:[["quoted","",1],
-        ["Insulated unit","two panes, coated &mdash; as drawn",0],
-        ["Single pane","one pane, coated",0],
-        ["Single pane","one pane, clear",0]]};
-/* ONE TABLE, ONE PASS. Nothing in the detail's copy is typed twice, so a figure
-   cannot be right in one sentence and stale in the next — and every one of them
-   comes from the geometry rather than from a writer. */
-const FILL={__FACE__:FACE.name, __OVER__:FACE.over, __MTHS__:FACE.mths,
-  __SOLS__:FACE.sols, __ALT__:FACE.alt.toFixed(0), __P__:SHELFP.toFixed(1),
-  __SHAD__:SHAD.toFixed(1), __BAND__:BANDH, __BAYS__:BAYS.n,
-  __LEN__:BAYS.len.toFixed(0), __ST__:BAYS.st};
-const fill=t=>String(t).replace(/__[A-Z]+__/g,m=>FILL[m]!==undefined?FILL[m]:m);
-function d5(){
-  // no label on this card: the headline is a sentence and already says which
-  // wall, so a right-aligned 'wall' only bought itself a third line
-  const H=document.getElementById("d5h");
-  if(H) H.innerHTML=D5.h;
-  const Pp=document.getElementById("d5p"), L=document.getElementById("d5l"),
-        Q=document.getElementById("d5q"), N=document.getElementById("d5n"),
-        O=document.getElementById("d5o");
-  if(Pp) Pp.innerHTML=fill(D5.p);
-  if(L) L.innerHTML=D5.parts.map(([n,w])=>`<li><b>${n}</b> &mdash; ${fill(w)}</li>`).join("");
-  if(Q) Q.innerHTML=fill(D5.q);
-  if(N) N.innerHTML=BAYN+'<small>units</small>';
-  // the headline figure is the same altitude the sentence quotes — it was typed
-  // into the markup as 68 and went on saying 68 after the wall changed to a
-  // south face at 65, which is the exact failure the fill table exists to stop
-  const A=document.getElementById("d5a");
-  if(A) A.innerHTML=FACE.alt.toFixed(0)+'<small>&deg; at noon</small>';
-  /* THE PRICE IS THE UNKNOWN, AND THERE ARE THREE OF THEM. Three identical
-     blanks read as one placeholder repeated; x, y and z read as three
-     different prices, which is the actual shape of the question — the page
-     cannot rank these until a supplier says what each one costs. Counted off
-     the rows rather than the index, so the header can sit anywhere. */
-  const QSYM="xyz"; let qi=0;
-  if(O) O.innerHTML=D5.opts.map(([n,w,h])=>h
-        ? `<li class="qh"><span>candidate</span><i>${n}</i></li>`
-        : `<li><b>${n}</b><span>${fill(w)}</span><i>${QSYM[qi++]||"?"}</i></li>`).join("");
-}
-
-/* THE NUMERAL, SCRUBBED WITH THE ZOOM. The zeros leave in two phases: the
-   digit falls and fades first, and only then does its box close up — so the
-   number never looks like it is being squeezed, it looks like a zero dropped
-   off and the rest slid together. Width is in `ch`, which is the advance of
-   a "0" in the current font, so it is exact without measuring anything. */
-const Z1=document.getElementById("z1"), Z2=document.getElementById("z2"),
-      RSEC=document.getElementById("rsec"), RAIL=document.getElementById("rail");
-function numeral(){
-  const fall=(el,t)=>{
-    const f=seg(t,0,.55), c=seg(t,.5,1);
-    el.style.opacity=1-f;
-    el.style.transform=`translateY(${(f*0.42).toFixed(3)}em)`;
-    el.style.width=(1-c).toFixed(3)+"ch";
-  };
-  /* trailing zero first: 500 -> 50 -> 5, tied to the two descents.
-     THE 500 HOLDS THROUGH THE ZONES. The numeral used to drop as the first of
-     the 50's panels arrived, which put "50 · the block" over a drawing that was
-     still doing masterplan work: a frontage reach, two rooms and a building
-     envelope are 500 decisions, drawn on the whole parcel. It drops where the
-     drawing actually changes scale — when one corner of the building zone
-     becomes a plot with buildings standing in it. */
-  const d1=RM.matches?(P>=4.6?1:0):seg(P,4.42,4.98);
-  /* the 50 hands over to the 5 where the DRAWING changes scale, which is now
-     where the last leg of the zoom lands (P 7.46) rather than at the very end
-     of the page. At 7.35–8.00 the zero was still fading off the rail while the
-     reader was three cards into the detail. */
-  const d2=RM.matches?(P>=7.5?1:0):seg(P,7.20,7.62);
-  fall(Z2,d1); fall(Z1,d2);
-  const i = d2>.5 ? 2 : d1>.5 ? 1 : 0;
-  if(RSEC.textContent!==SEC[i]) RSEC.textContent=SEC[i];
-  const n = ["500","50","5"][i];
-  RAIL.setAttribute("aria-label","Groundwork "+n+" — "+SEC[i]);
-  // the rail belongs to the journey, not to the hero or the close
-  // the rail steps aside when the close arrives: the close shows all three
-  // numerals itself, and the rail's single one would repeat it
-  const endIn=document.querySelector(".end").getBoundingClientRect().top<innerHeight*.85;
-  RAIL.classList.toggle("on", (P>0.04 || HAND>=.98) && !endIn);
-}
-
-const svg=document.getElementById("world");
-const TSHOT=document.getElementById("toolshot"), TSIMG=TSHOT.querySelector("img");
-/* where Ubi sits inside the dial crop, measured off the image itself: centre
-   and width as fractions of the frame. The crop is the tool's own ring, square
-   and centred on the parcel, so the zoom begins inside the instrument rather
-   than on a picture of a screen. */
-const SHOTP={cx:.4996,cy:.4993,w:.4728};
-function toolshot(){
-  // ONE PARCEL, TWO PICTURES. The screenshot zooms until its parcel is exactly
-  // the size of the drawn one and sits exactly where it sits — then they
-  // cross-fade, so the tool becomes the drawing without the site moving. The
-  // drawn ring is set to the tool's own ring-to-parcel ratio, so the compass
-  // lands on the compass at the same moment.
-  // GEOMETRY FIRST, THEN THE SWAP. One progress moved both the zoom and the
-  // fade, so the pictures traded places at about half the travel and the two
-  // compasses were a fifth of a turn apart when they did. The zoom now lands
-  // first and the dissolve happens afterwards, on a picture already in register.
-  /* IF THE FRAME IS NOT THERE, DO NOT HOLD ITS PLACE. The image box is sized
-     in CSS, so a missing frames/dial.jpg left a 738 px hole exactly where the
-     tool's ring should be and the drawing then dissolved in out of nothing --
-     which looks like the screenshot is missing, because it is. When the file
-     does not load the page skips the handoff and opens on the drawing, which
-     is the one thing here that never depends on a file. */
-  const z1=AT(.26,.40), f0=AT(.26,.40), f1=AT(.10,.18);
-  const gone=TSIMG.dataset.gone==="1" || (TSIMG.complete && !TSIMG.naturalWidth);
-  const q =(RM.matches||gone)?1:ease(clamp(P/z1,0,1));   // where and how big
-  const qf=(RM.matches||gone)?1:clamp((P-f0)/f1,0,1);    // which one you see
-  const iw=TSIMG.offsetWidth, ih=TSIMG.offsetHeight;
-  const R=document.getElementById("world").getBoundingClientRect();
-  // the SVG holds a square viewBox in a box that is not square, so the scale
-  // is set by the SHORTER side — using the width overstated it by a fifth
-  const s=Math.min(R.width,R.height)/HELD.w;
-  const drawnW=176.6*s;                        // the drawn parcel, on screen
-  const zEnd=clamp(iw*SHOTP.w?drawnW/(iw*SHOTP.w):1, .6, 6);
-  // both start at 1: the held view is fitted to the picture, so there is
-  // nothing left to travel and the handoff is a dissolve on both layouts
-  const z0=1;
-  const z=z0+(zEnd-z0)*q;
-  // where each parcel's centre sits on screen — the drawing's is offset by the
-  // rail's column, so the two are matched by measurement, not by assumption
-  const T=TSHOT.getBoundingClientRect();
-  const sx=T.left+T.width/2+(SHOTP.cx-.5)*iw*z, sy=T.top+T.height/2+(SHOTP.cy-.5)*ih*z;
-  const tx=R.left+R.width/2 +(150-(HELD.x+HELD.w/2))*s,
-        ty=R.top +R.height/2+(152-(HELD.y+HELD.h/2))*s;
-  const dx=(tx-sx)*q, dy=(ty-sy)*q;
-  TSIMG.style.transform=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) scale(${z.toFixed(3)})`;
-  TSHOT.style.opacity=(1-qf).toFixed(3);
-  TSHOT.style.display=qf>=.995?"none":"flex";
-  document.getElementById("world").style.opacity=qf.toFixed(3);
-}
-/* ---- THE 50's SECOND CARD: what the twenty-five are for -----------------
-   Beat 1  the archive arrives — 25 record marks, the architect's own.
-   Beat 2  measurement — a pass crosses them, each emits a dot, the dots land
-           in a profile that names what was measured. The marks stay put.
-   Beat 3  suggestions shaped by it — three skeletons sized from the profile,
-           and a fourth that falls outside it and is not offered.
-   The four features are the ones the extraction actually returns off the 25;
-   no values are printed, because none have been exported to this page yet. */
-const AFEAT=["Unit","Corridor","Core","Positioning"];
-const AFIG=document.getElementById("afig");
-const AS='vector-effect="non-scaling-stroke"';
-/* ONE FIGURE, TWO LAYOUTS. On a wide screen the reference and the features
-   sit side by side; on a phone that would put 6 px type in a 326 px box, so
-   they stack instead. Every coordinate comes from L, so the drawing code is
-   written once. The viewBox is sized so both render the type at about 10 px. */
-const ALAY={
- d:{vb:"0 0 225 100", tx:6,ty:20,tw:12,th:10,gx:16,gy:14,
-    swA:15,swB:91,swX:4,swW:82,
-    px:118,py:20,pw:78,ph:72, ry:34,rd:16, dx:130,lx:140,
-    hA:[6,13], hB:[118,13]},
- /* the phone keeps the same two columns — reference left, features right —
-    and gets there by narrowing the drawing space instead of stacking it.
-    At 176 units across a 326 px card the type lands at 12 px and the tiles
-    at 18 px, which is what the wide layout renders too: one figure, one
-    size, half the height. */
- m:{vb:"0 0 176 92", tx:4,ty:20,tw:10,th:8,gx:13,gy:11.5,
-    swA:15,swB:78,swX:2,swW:68,
-    px:92,py:20,pw:82,ph:62, ry:32,rd:14, dx:103,lx:112,
-    hA:[4,13], hB:[92,13]}};
-const AL=()=>MOB.matches?ALAY.m:ALAY.d;
-/* THE IDLE PASS. Once the two beats are done and the reader is still here,
-   plans keep going to the features: one shrinks to a small square and travels
-   to one of the four, at random, for as long as the card is on screen. It is
-   the measurement beat, running rather than remembered. */
-let ADUST=[], ABUSY=new Set(), AT_=0, ASPAWN=0;
-function dustSVG(now){
-  const L=AL(); let g=""; ABUSY=new Set();
-  for(const d of ADUST){
-    const u=clamp((now-d.t0)/d.dur,0,1), e=ease(u);
-    if(u<.55) ABUSY.add(d.i);
-    const c=d.i%5, r=(d.i/5)|0;
-    const sx=L.tx+c*L.gx, sy=L.ty+r*L.gy;
-    const tx=L.dx-2.2, ty=L.ry+d.j*L.rd-2.2;
-    const k=Math.min(1,e*1.7);
-    const w=L.tw+(4.4-L.tw)*k, h=L.th+(4.4-L.th)*k;
-    const o=u<.10?u/.10:(u>.86?(1-u)/.14:1);
-    g+=`<rect x="${(sx+(tx-sx)*e).toFixed(1)}" y="${(sy+(ty-sy)*e).toFixed(1)}"
-      width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="var(--ta)"
-      fill-opacity="${(.5*o).toFixed(2)}" stroke="var(--ta)"
-      stroke-opacity="${(.85*o).toFixed(2)}" stroke-width=".8" ${AS}/>`;
-    if(u>.80) g+=`<circle cx="${L.dx}" cy="${(L.ry+d.j*L.rd).toFixed(1)}"
-      r="${(2.6+8*(u-.80)/.20).toFixed(1)}" fill="none" stroke="var(--ta)"
-      stroke-opacity="${(.5*(1-(u-.80)/.20)).toFixed(2)}" stroke-width="1" ${AS}/>`;
-  }
-  return g;
-}
-function archFig(t){
-  const L=AL(); let g="";
-  // 1 — the reference, arriving
-  const hA=seg(t,.03,.14);
-  if(hA>.002) g+=`<text class="ah" x="${L.hA[0]}" y="${L.hA[1]}"
-    opacity="${hA.toFixed(3)}">REFERENCE</text>`;
-  for(let i=0;i<25;i++){
-    const c=i%5, r=(i/5)|0, x=L.tx+c*L.gx, y=L.ty+r*L.gy;
-    const a=seg(t,.03+c*.018+r*.018,.15+c*.018+r*.018)*(ABUSY.has(i)?.25:1);
-    if(a<=.002) continue;
-    g+=`<g opacity="${a.toFixed(3)}"><rect x="${x}" y="${y}" width="${L.tw}" height="${L.th}"
-      rx="1.5" fill="var(--s1)" stroke="var(--t3)" stroke-opacity=".45" stroke-width=".9" ${AS}/>
-      <path d="M ${x+2.4} ${y+L.th*.37} H ${x+L.tw-2.4} M ${x+2.4} ${y+L.th*.67}
-      H ${x+L.tw-5} " stroke="var(--t3)" stroke-opacity=".5" stroke-width=".9" ${AS}/></g>`;
-  }
-  // 2 — the pass, and what it sends. Nothing leaves: the reference is still there.
-  const pa=seg(t,.30,.40);
-  if(pa>.002)
-    g+=`<g opacity="${pa.toFixed(3)}"><rect x="${L.px}" y="${L.py}" width="${L.pw}"
-      height="${L.ph}" rx="5" fill="var(--bga)" fill-opacity=".5" stroke="var(--ta)"
-      stroke-opacity=".5" stroke-width="1" ${AS}/>
-      <text class="ah" x="${L.hB[0]}" y="${L.hB[1]}">DESIGN FEATURES</text></g>`;
-  const sw=seg(t,.32,.62);
-  if(sw>.004&&sw<.996)
-    g+=`<path d="M ${(L.swX+sw*L.swW).toFixed(1)} ${L.swA} V ${L.swB}" stroke="var(--ta)"
-      stroke-width="1" stroke-opacity=".45" ${AS}/>`;
-  for(let i=0;i<25;i++){
-    const c=i%5, r=(i/5)|0, j=i%4;
-    const a=seg(t,.34+c*.05,.62+c*.05);
-    if(a<=.002||a>=.998) continue;
-    const sx=L.tx+c*L.gx+L.tw/2, sy=L.ty+r*L.gy+L.th/2, dx=L.dx, dy=L.ry+j*L.rd;
-    g+=`<circle cx="${(sx+(dx-sx)*a).toFixed(1)}" cy="${(sy+(dy-sy)*a).toFixed(1)}"
-      r="1.4" fill="var(--ta)"/>`;
-  }
-  AFEAT.forEach((f,j)=>{
-    const a=seg(t,.62+j*.05,.74+j*.05);
-    if(a<=.002) return;
-    const y=L.ry+j*L.rd;
-    g+=`<g opacity="${a.toFixed(3)}"><text class="an" x="${L.dx}" y="${y+2.4}"
-      text-anchor="middle">${j+1}</text>
-      <text class="al" x="${L.lx}" y="${y+2.4}">${f}</text></g>`;
-  });
-  return g;
-}
-/* ---- TWO WAYS IN, AS A CIRCUIT ----------------------------------------
-   Four slots in a row said what the block takes and nothing about where it
-   sits, which is the thing that needed to be obvious. This draws the ladder
-   instead: the masterplan feeds the block, the block feeds the detail, and
-   there is a door into the middle you can use today. Both paths are on screen
-   at once, so nothing has to alternate for the picture to be understood.
-   Built once and on a layout change — not per scroll, or the travelling heads
-   would restart on every wheel notch. */
-const CIRC={
- d:{vb:"0 0 190 113", sub:["MASTERPLAN","THE BLOCK","DETAIL"],
-    p5:[1,6,62,32], blk:[83,4,52,36], p5b:[155,10,32,24],
-    you:[1,88,62,22], rise:109},
- /* the phone gets the same circuit, not a stack — just tighter boxes */
- m:{vb:"0 0 160 113", sub:["PLAN","BLOCK","DETAIL"],
-    p5:[1,6,50,32], blk:[69,4,40,36], p5b:[127,10,30,24],
-    you:[1,88,50,22], rise:89}};
-/* every arrowhead stops the same distance short of the box it points at */
-const CGAP=5, CHEAD=6;
-function buildCircuit(){
-  const F=document.getElementById("ifig"); if(!F) return;
-  const C=MOB.matches?CIRC.m:CIRC.d, R=RM.matches;
-  F.setAttribute("viewBox",C.vb);
-  const bl=C.blk[0], br=C.blk[0]+C.blk[2], bb=C.blk[1]+C.blk[3];
-  const cy=C.blk[1]+C.blk[3]/2;
-  const box=(b,fill,stroke,w,cls)=>`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}"
-    height="${b[3]}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="${w}"
-    ${cls?`class="${cls}"`:""} vector-effect="non-scaling-stroke"/>`;
-  const num=(b,col,op)=>`<text class="cn" x="${b[0]+b[2]/2}"
-    y="${(b[1]+b[3]*.55).toFixed(1)}" text-anchor="middle" fill="${col}"
-    ${op?`opacity="${op}"`:""}>`;
-  const wordY=b=>b[1]+b[3]-5;
-  // a head that stops CGAP short of `to`, pointing right or up
-  const rightArrow=(from,to,col)=>{
-    const tip=to-CGAP, base=tip-CHEAD;
-    return {path:`M ${from} ${cy} H ${base}`,
-      head:`<path d="M ${base} ${cy-3.5} L ${tip} ${cy} L ${base} ${cy+3.5} Z" fill="${col}"/>`};
-  };
-  let g=`<defs><filter id="iglowf" x="-45%" y="-70%" width="190%" height="240%">
-    <feGaussianBlur stdDeviation="2.4"/></filter></defs>`;
-  // the glow sits behind everything
-  if(!R) g+=`<g filter="url(#iglowf)" fill="none" stroke-width="3">
-    ${box(C.blk,"none","var(--t)",3,"gA").replace('rx="5"','rx="6"')}
-    ${box(C.blk,"none","var(--ta)",3,"gB").replace('rx="5"','rx="6"')}</g>`;
-  // the masterplan, and the link that is not built yet
-  g+=box(C.p5,"var(--bga)","var(--ta)",1.2);
-  g+=num(C.p5,"var(--ta)")+`500</text>
-    <text class="cs" x="${C.p5[0]+C.p5[2]/2}" y="${wordY(C.p5)}" text-anchor="middle"
-      fill="var(--ta)">${C.sub[0]}</text>`;
-  const A1=rightArrow(C.p5[0]+C.p5[2], bl, "var(--ta)");
-  g+=`<path d="${A1.path}" fill="none" stroke="var(--ta)" stroke-width="1.6"
-      stroke-dasharray="4 3"/>`+A1.head;
-  // the block
-  g+=box(C.blk,"var(--s2)","var(--t)",1.5,R?"":"blk");
-  g+=num(C.blk,"var(--t)")+`50</text>
-    <text class="cs" x="${C.blk[0]+C.blk[2]/2}" y="${wordY(C.blk)}" text-anchor="middle"
-      fill="var(--t)">${C.sub[1]}</text>`;
-  // what comes out, and the scale it hands to
-  const A2=rightArrow(br, C.p5b[0], "var(--t2)");
-  g+=`<path d="${A2.path}" fill="none" stroke="var(--t2)" stroke-width="1.5"/>`+A2.head;
-  g+=box(C.p5b,"none","var(--t3)",1)+num(C.p5b,"var(--t3)",".75")+`5</text>
-    <text class="cs" x="${C.p5b[0]+C.p5b[2]/2}" y="${wordY(C.p5b)}" text-anchor="middle"
-      fill="var(--t3)" opacity=".7">${C.sub[2]}</text>`;
-  // the door you can use today: along, then up into the block's underside
-  g+=box(C.you,"var(--s1)","var(--t2)",1);
-  g+=`<text class="cy" x="${C.you[0]+C.you[2]/2}"
-      y="${(C.you[1]+C.you[3]/2+3.6).toFixed(1)}" text-anchor="middle"
-      fill="var(--t2)">YOU</text>`;
-  const yY=C.you[1]+C.you[3]/2, tipY=bb+CGAP, baseY=tipY+CHEAD;
-  const ywire=`M ${C.you[0]+C.you[2]} ${yY} H ${C.rise} V ${baseY}`;
-  g+=`<path d="${ywire}" fill="none" stroke="var(--t2)" stroke-width="1.6"/>
-    <path d="M ${C.rise-3.5} ${baseY} L ${C.rise} ${tipY} L ${C.rise+3.5} ${baseY} Z"
-      fill="var(--t2)"/>`;
-  // the two travelling heads, 1.1 s apart, so the block's flash is an arrival
-  if(!R){
-    const trav=(path,col,begin)=>`<g><path d="M -3.2 -2.8 L 3.2 0 L -3.2 2.8 Z"
-      fill="${col}"/><animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto"
-      path="${path}" begin="${begin}"/><animate attributeName="opacity"
-      values="0;1;1;0" keyTimes="0;.14;.8;1" dur="2.2s" repeatCount="indefinite"
-      begin="${begin}"/></g>`;
-    g+=trav(ywire,"var(--t2)","0s")+trav(A1.path,"var(--ta)","1.1s");
-  }
-  F.innerHTML=g;
-}
-let CMOB=null;
-function circuitCheck(){
-  if(CMOB!==MOB.matches){ CMOB=MOB.matches; buildCircuit(); }
-}
-/* the beats are keyed to the CARD, not to its section: the section is 112svh
-   tall and centres the card inside it, so timing off the section ran the whole
-   figure out before the card had arrived on screen */
-const ARCH=document.querySelector("#arch .chin");
-let AVB="";
-function archive(){
-  if(!AFIG||!ARCH) return;
-  const L=AL();
-  if(AVB!==L.vb){ AVB=L.vb; AFIG.setAttribute("viewBox",L.vb); }
-  const r=ARCH.getBoundingClientRect();
-  AT_=RM.matches?1:clamp((innerHeight*.82-r.top)
-    /Math.max(1,r.height*.55+innerHeight*.20),0,1);
-  AFIG.innerHTML=archFig(AT_)+(ADUST.length?dustSVG(performance.now()):"");
-}
-(function aframe(now){
-  requestAnimationFrame(aframe);
-  // the alternatives run off this loop too, so it cannot bail before them
-  if(RM.matches) return;
-  if(!AFIG||!ARCH){ if(altTick(now)) paint(); return; }
-  const r=ARCH.getBoundingClientRect();
-  const live = AT_>=.90 && r.bottom>60 && r.top<innerHeight-40;
-  if(live && now-ASPAWN>260 && ADUST.length<5){
-    ADUST.push({i:(Math.random()*25)|0, j:(Math.random()*4)|0,
-                t0:now, dur:1100+Math.random()*600});
-    ASPAWN=now;
-  }
-  cycle(now);
-  // the alternatives are not on the scroll, so nothing else would repaint them
-  if(altTick(now)) paint();
-  const n=ADUST.length;
-  ADUST=ADUST.filter(d=>now-d.t0<d.dur);
-  if(!live){ if(n){ ADUST=[]; ABUSY=new Set(); AFIG.innerHTML=archFig(AT_); } return; }
-  AFIG.innerHTML=archFig(AT_)+dustSVG(now);
-})(performance.now());
-function paint(){
-  heldFit();
-  toolshot(); shift();
-  const V=cur();
-  svg.setAttribute("viewBox",`${V.x} ${V.y} ${V.w} ${V.h}`);
-  svg.innerHTML=world();
-  numeral();
-}
-function onScroll(){
-  const z=document.getElementById("zoom"), r=z.getBoundingClientRect();
-  P=clamp((-r.top/Math.max(1,z.offsetHeight-innerHeight))*(N-1),0,N-1);
-  panels(); archive();
-  paint();
-  document.querySelectorAll(".ch").forEach(c=>{
-    const b=c.getBoundingClientRect();
-    c.classList.toggle("on", b.top<innerHeight*.62 && b.bottom>innerHeight*.30);});
-}
-/* THE THREE OPTIONS. The order is the run's; the page states which leads and
-   keeps the other two one click away, each with its own case against it. */
-function shareBar(){
-  const el=document.getElementById("rank"); if(!el) return;
-  el.innerHTML=ORG.filter(o=>!o.off).map((o,i)=>
-    `<li${i?"":' class="top"'}><span class="dot" style="background:${OCOL[o.k]}"></span>${o.n2||o.n}
-      <b>${o.share}%</b></li>`).join("")
-   +`<li class="off"><span class="dot" style="background:${OCOL.web}"></span>Web
-      <b>not supported here</b></li>`;
-}
-function reasons(){
-  const o=ORG.find(x=>x.k===ORGK), z=document.getElementById("ozone");
-  if(!z) return;
-  /* ONE LINE FOR AND ONE AGAINST, MARKED RATHER THAN HEADED. Two headings over
-     two single lines was more furniture than content, and the mark says which
-     is which faster than the word did; the pair then reads as one judgement
-     instead of two lists. Still mapped, so a scheme with more than one of
-     either still renders — it just gets its own mark per line. */
-  z.innerHTML=`<div class="rzv">`
-    + o.why.map(t=>`<span class="m for">&#10003;</span><span class="for">${t}</span>`).join("")
-    + o.bad.map(t=>`<span class="m ag">&#10007;</span><span class="ag">${t}</span>`).join("")
-    + `</div>`
-    + `<div class="rzh">constraints<em>from the brief, not the site</em></div>`
-    + `<ul class="rz con">${CONS.map(t=>`<li>${t}</li>`).join("")}</ul>`;
-  const hd=document.getElementById("ohead");
-  if(hd) hd.textContent=o.n2||o.n;
-
-}
-function options(){
-  const box=document.getElementById("opts"); if(!box) return;
-  const lead=ORG.filter(o=>!o.off).reduce((a,b)=>b.share>a.share?b:a);
-  box.innerHTML=ORG.filter(o=>!o.off).map(o=>`<button data-k="${o.k}"
-    class="${o.k===ORGK?"on":""}">${o.n}</button>`
-    +(o.k===lead.k?'<span class="hold">recommended</span>':'')).join("");
-  reasons();
-}
-document.getElementById("opts").addEventListener("click",e=>{
-  const b=e.target.closest("button"); if(!b||b.disabled) return;
-  ORGK=b.dataset.k;
-  SPINE=(ORG.find(o=>o.k===ORGK)||{}).face||"ns";
-  document.querySelectorAll("#opts button").forEach(x=>
-    x.classList.toggle("on",x===b));
-  reasons(); d5(); paint();
-});
-shareBar(); options();
-
-/* the cards arrive one at a time and stay: the derivation is cumulative, so
-   "2 contested" needs the eight still above it */
-let PAP=0, PBP=0, PPP=0, PDP=0, PE1=0, PE2=0, PE3=0;
-function panels(){
-  document.querySelectorAll(".panel").forEach(p=>{
-    const r=p.getBoundingClientRect();
-    const prog=clamp((innerHeight*.74-r.top)/Math.max(1,r.height*.50),0,1);
-    const cs=p.querySelectorAll(".card");
-    /* A PANEL MAY HOLD ITS CARDS BACK. The column is sticky from the panel's own
-       top, so early in a panel it sits low on the screen — fine for the short
-       columns everywhere else, and not fine for the swap panel, whose one card
-       is the tallest on the page and was lighting 114 px below the fold at
-       1440x680. data-lit pushes that panel's thresholds down the panel's travel,
-       by which point its top has risen far enough to hold the whole card. */
-    const off=+p.dataset.lit||0;
-    let now=0;
-    cs.forEach((c,i)=>{ const on=prog>=off+(1-off)*(i+.2)/(cs.length+.5);
-      c.classList.toggle("lit",on); if(on) now=i; });
-    cs.forEach((c,i)=>c.classList.toggle("now", i===now));
-    // the drawing answers THIS panel card by card, so its progress leaves here
-    if(p.id==="pA") PAP=prog;
-    if(p.id==="pB") PBP=prog;
-    if(p.id==="pP") PPP=prog;
-    if(p.id==="pD") PDP=prog;
-    if(p.id==="pE1") PE1=prog;
-    if(p.id==="pE2") PE2=prog;
-    if(p.id==="pE3") PE3=prog;
-    const note=p.querySelector(".pcol>.cs");
-    if(note) note.classList.toggle("lit", prog>=.84);
-    p.classList.toggle("gone", r.bottom<innerHeight*.62);
-  });
-}
-/* A PANEL READS ITSELF WHEN YOU STOP. Scrolling leaves every card lit and
-   every layer on the plan, unchanged. Stand still for half a second and the
-   panel takes over: each note lights in turn and the plan lights with it, so
-   what the run found gets read one thing at a time without spending any more
-   scroll on it. The first touch of the wheel hands it straight back.
-   Each card owns the drawing groups it is about — the third card of "what it
-   calls for" owns two, the zone and the line on its edge. */
-function cycle(now){
-  const WSVG=document.getElementById("world"); if(!WSVG) return;
-  let any=false;
-  for(const C of CYCS){
-    const el=document.getElementById(C.id); if(!el) continue;
-    const st=CYCST[C.id]||(CYCST[C.id]={sel:-1,t0:0});
-    const r=el.getBoundingClientRect(), cs=[...el.querySelectorAll(".card")];
-    const lit=cs.reduce((a,c,i)=>(c.classList.contains("lit")&&a.push(i),a),[]);
-    // two lit cards is the minimum for a turn to mean anything
-    const on=!RM.matches && lit.length>1 && now-ASCROLL>500
-      && r.top<innerHeight*.55 && r.bottom>innerHeight*.40;
-    if(!on){
-      if(st.sel>=0||st.t0){
-        st.sel=-1; st.t0=0; el.classList.remove("cyc");
-        cs.forEach(c=>c.classList.remove("act"));
-        C.groups.forEach(gs=>gs.forEach(id=>{
-          const e=document.getElementById(id); if(e) e.style.opacity="";}));
-      }
-      continue;
-    }
-    any=true;
-    if(!st.t0){ st.t0=now; el.classList.add("cyc"); }
-    const sel=lit[Math.floor((now-st.t0)/2100)%lit.length];
-    if(sel!==st.sel){ st.sel=sel; cs.forEach((c,i)=>c.classList.toggle("act", i===sel)); }
-    // written every frame, not only on the change: an option click repaints
-    // the drawing and the inline opacities would be gone with it
-    /* THE DIM IS .40, NOT .18. At .18 the layers that were not being spotlit
-       composited back into whichever ground they sat on -- 1.31 on paper and
-       1.37 on dark for the walk entrances, 1.32 and 1.45 for the gates. That is
-       not subordinate, it is gone, and a reader who stopped scrolling to read
-       one card watched the other two marks leave the plan. .40 keeps them at
-       about 1.9-2.5 while the lit layer stays at full, so the spotlight still
-       reads as a spotlight and the rest of the derivation stays on the page.
-       It matches the .42 the dimmed CARDS already use. */
-    /* THE CYCLE OVERRIDES THE RECESSION rather than compounding with it. As a
-       multiplier, a layer that had already stepped back to .45 for the card
-       after it landed at .18 when it was also the one not being spotlit --
-       which is the level that made the gates vanish in the first place. The
-       cycle is the emphasis mechanism while the reader is still, so it sets
-       the level outright: full for the one being read, .40 for the rest, and
-       nothing for a layer whose card has not arrived. */
-    C.groups.forEach((gs,i)=>gs.forEach(id=>{
-      const e=document.getElementById(id); if(!e) return;
-      const base=GBASE[id]||0;
-      e.style.opacity=(base<.02?0:(i===sel?1:.40)).toFixed(3);
-    }));
-  }
-  WSVG.classList.toggle("cyc", any);
-}
-/* THE HANDOFF. As the three scales scroll up, the big 500 is carried to the
-   rail's numeral — measured, not guessed, so it lands exactly on the digits
-   it becomes — while the 50 and the 5 step back. When it lands, the rail
-   takes over and the big one is gone. */
-const BIG=document.getElementById("big500"), RNUM=document.querySelector(".rnum"),
-      SREST=[...document.querySelectorAll("#scales h2,#scales p,#scales .sl,#scales .st,#scales .tl3,#s50 .sn,#s5 .sn")];
-let HAND=0;
-function handoff(){
-  if(RM.matches){ HAND=1; return; }
-  const row=BIG.parentElement.getBoundingClientRect();
-  // start once the last of the three scales has been read: the bottom of the
-  // row, not the 500 — on a phone the 50 and 5 sit below it
-  const endY=document.querySelector("#scales .srow").getBoundingClientRect().bottom;
-  const q=ease(clamp((innerHeight*.62-endY)/(innerHeight*.30),0,1));
-  HAND=q;
-  const t=RNUM.getBoundingClientRect(), k=t.height/row.height;
-  const dx=t.left-row.left, dy=t.top-row.top;
-  BIG.style.transform=`translate(${(dx*q).toFixed(1)}px,${(dy*q).toFixed(1)}px) scale(${(1+(k-1)*q).toFixed(4)})`;
-  BIG.style.opacity = q>=.98 ? 0 : 1;
-  // everything but the 500 steps back first, so the rail never lands on text
-  const o=clamp(1-q*1.8,0,1).toFixed(3);
-  SREST.forEach(el=>el.style.opacity=o);
-}
 /* ---- THE SWEEP (sample). The unnamed plans draw first, faint and scattered;
    the named concepts arrive after, bright and bunched — so the picture shows
    the finding (a minority of the sweep shares a logic) before anything says it.
@@ -3363,15 +1421,156 @@ function wordHand(){
    nearest the middle of the screen */
 const HDR=document.getElementById("hdr");
 function chrome(){
-  const sc=document.getElementById("scales").getBoundingClientRect();
-  HDR.classList.toggle("lit", sc.top<innerHeight*.5);
+  /* the header takes the ground it is over, and the ground turns where the
+     dark intro ends. The film sits INSIDE that dark field now — it plays two
+     sections before the paper arrives — so this is keyed to the scales again,
+     which is once more the first thing printed on paper. Key it to .film and
+     the header goes light while it is still standing on black. */
+  const t=document.getElementById("scales");
+  HDR.classList.toggle("lit", t.getBoundingClientRect().top<innerHeight*.5);
 }
-const onAll=()=>{ASCROLL=performance.now();wordHand();opening();handoff();chrome();onScroll();};
-addEventListener("resize",circuitCheck,{passive:true});
-circuitCheck();
+/* WHAT THE PAGE STILL DRIVES ON SCROLL. The hero's word handing over to the
+   subject, the opening's own reveal, and the header taking the ground it is
+   over. Everything else on this list — the handoff to the rail, the zoom's
+   paint, the panel progress, the detail card — went with the scroll the film
+   replaced, and calling any of it would be calling into nothing. */
+const onAll=()=>{ wordHand(); opening(); chrome(); };
 addEventListener("scroll",onAll,{passive:true});
 addEventListener("resize",onAll,{passive:true});
-d5(); onAll();
+onAll();
+
+/* ---- THE FILM PLAYS ITSELF ----
+   Muted, when it reaches the screen, and it stops again when it leaves. Every
+   clause of that is load-bearing.
+
+   MUTED, because no browser starts audio without a gesture, and one that is
+   asked to does not ask the reader first — it refuses the play() and leaves a
+   still frame that reads as a broken film. So the film opens silent and the
+   pill is the gesture. The pill also has to be visible: a reader hearing
+   nothing has no way to know there is anything to hear. What silence costs
+   here is a music bed — continuous, bass-led, not one word spoken over it —
+   so it is the argument that arrives either way.
+
+   WHEN IT REACHES THE SCREEN, not on load. The `autoplay` attribute fires the
+   moment the page is ready, and a 52-second film begun in the hero is a third
+   over before anyone has scrolled to it.
+
+   AND IT STOPS WHEN IT LEAVES, resuming where it was rather than restarting.
+   A film playing on to the scales section is a battery and a bandwidth bill
+   for an empty room; a film that jumps back to the top of something you were
+   halfway through is worse than either. */
+(function(){
+  const V=document.getElementById("film"), W=document.getElementById("filmw"),
+        B=document.getElementById("snd");
+  if(!V||!W) return;
+  const LAB=B&&B.querySelector(".lab");
+  let on=false, hand=false, hold=0;
+
+  function paint(){
+    const loud=!V.muted && V.volume>0;
+    W.classList.toggle("loud",loud);
+    if(!B) return;
+    B.setAttribute("aria-pressed",loud?"true":"false");
+    B.setAttribute("aria-label",loud?"Turn the sound off":"Turn the sound on");
+    if(LAB) LAB.textContent=loud?"Sound on":"Sound off";
+  }
+  if(B) B.addEventListener("click",()=>{
+    V.muted=!V.muted;
+    if(!V.muted&&!V.volume) V.volume=1;   // the native slider may have been pulled to 0
+    paint();
+    if(V.paused&&!V.ended) V.play().catch(()=>{});
+  });
+  V.addEventListener("volumechange",paint);   // the native control counts too
+  V.addEventListener("play",()=>{ hand=false; clearTimeout(hold); W.classList.add("live"); });
+  /* OUR pause only ever happens off screen, so a pause arriving while the film
+     is on screen is the reader's — and from then on the film is theirs and we
+     stop restarting it. That one test does the whole job; no flag set around
+     our own call, and no timer racing the media events to clear it. The
+     currentTime clause is there because a pause at nought seconds is nobody
+     stopping anything: it is the media stack tidying up, and reading it as
+     intent is how the film ends up permanently refusing to start. */
+  V.addEventListener("pause",()=>{ if(on&&V.currentTime&&!V.ended) hand=true; });
+  paint();
+
+  /* NOT IF THEY HAVE ASKED US NOT TO. Reduced motion and Save-Data are the two
+     ways the platform lets someone say "don't", and something that starts
+     moving on its own is precisely what the first one is about. Then the
+     poster stays, the controls do the work, and the pill stays hidden until
+     there is a running film to unmute. */
+  const C=navigator.connection||{};
+  if(RM.matches||C.saveData===true||/(^|-)2g$/.test(C.effectiveType||"")) return;
+  if(!("IntersectionObserver" in window)) return;
+
+  /* IT LOOPS, BUT IT LANDS FIRST. The `loop` attribute would do this in one
+     word and is the wrong word: it cuts from the last frame to the first with
+     no gap at all, so the card the whole film is built towards — 500 LIVE,
+     50 EARLY ACCESS — never gets to be read. A second of held last frame is
+     the difference between an ending and a seam.
+
+     The beat is a timer, so everything that can happen during it has to be
+     handled: scrolled away (the `on` test at fire time), taken over by the
+     reader, or pressed play manually — each of those cancels it, and a restart
+     cancels any beat still pending so a quick scroll out and back cannot
+     land two rewinds a few frames apart. */
+  const restart=()=>{
+    clearTimeout(hold);
+    try{ V.currentTime=0; }catch(e){}
+    const p=V.play(); if(p&&p.catch) p.catch(()=>{});
+  };
+  V.addEventListener("ended",()=>{
+    clearTimeout(hold);
+    hold=setTimeout(()=>{ if(on&&!hand) restart(); },1000);
+  });
+
+  /* FETCH A SCREEN EARLY, PLAY ON ARRIVAL. Arming the download at play() puts
+     a stall exactly where the film is supposed to begin; arming it in the
+     markup charges every reader 2.5 MB for a film most of them scroll past. A
+     screen out is the moment those stop being in tension.
+
+     RAISING preload IS THE WHOLE INSTRUCTION — no load() beside it. One flick
+     on a phone carries the film past this margin and onto the screen inside a
+     single frame, so both observers deliver in one batch and load() lands
+     immediately before the play() below it. It then does what it is specified
+     to do: tear the element back down and fire a pause — at nought seconds,
+     over a film that was starting. Setting preload alone buffers to
+     readyState 4 on its own, which is all this ever wanted. */
+  /* AND THE MARGIN IS ARMED BY THE FIRST SCROLL, not by the page. The film
+     used to sit at three-quarters depth, where a margin of one screen meant
+     "they are nearly there". It now sits one screen below the fold, so that
+     same margin covers it the instant the page loads — and every visit that
+     bounced without touching anything would have pulled 2.5 MB of a film
+     nobody watched. One scroll of any size is the whole signal needed, and it
+     still arrives a screen before the film does. */
+  const arm=()=>new IntersectionObserver((es,o)=>{
+    if(!es[es.length-1].isIntersecting) return;
+    V.preload="auto";
+    o.disconnect();
+  },{rootMargin:"120% 0px"}).observe(V);
+  addEventListener("scroll",arm,{once:true,passive:true});
+
+  new IntersectionObserver(es=>{
+    /* THE LAST ENTRY, NOT THE FIRST. A callback carries every crossing since
+       the previous one, oldest first, so a fast scroll that clears two
+       thresholds in a frame delivers two — and reading es[0] answers "where
+       was it?" rather than "where is it?". On a phone, where one flick covers
+       the whole film, that read left it sitting paused and fully on screen. */
+    const e=es[es.length-1];
+    on=e.isIntersecting&&e.intersectionRatio>=.4;
+    if(!on){ if(!V.paused) V.pause(); return; }
+    if(hand) return;
+    /* it ended while they were away, so the beat's timer declined to restart
+       it off screen; coming back to a finished film is the one state this
+       must never leave them in */
+    if(V.ended){ restart(); return; }
+    const p=V.play();
+    /* play() can be refused even muted — iOS in Low Power Mode does, and so
+       does a data-saver the Network Information API never mentioned. Swallow
+       it and the reader is left looking at a poster that looks broken, so the
+       .live class never lands and the frame stays honestly a poster with a
+       play button on it. */
+    if(p&&p.catch) p.catch(()=>{});
+  },{threshold:[0,.4,.75]}).observe(V);
+})();
 
 /* ---- THE MAILING LIST ----
    Three triggers, one dialog, one POST. The endpoint is the SAME <meta> the
@@ -3428,19 +1627,16 @@ MLF.addEventListener("submit",e=>{
     sid:(window.GWSID||""),
     device:innerWidth<=760?"mobile":"desktop",
     ref:(document.referrer||"").slice(0,200),
-    query:(location.search||"").slice(0,200),
-    /* how far they had read when they asked — the one thing a signup row can
-       say that an address on its own cannot */
-    maxScroll:Math.round(((scrollY+innerHeight)/Math.max(1,document.body.scrollHeight))*100),
-    maxP:+(typeof P==="number"?P:0).toFixed(2),
-    /* ONLY WHILE THE RAIL IS UP. #rsec reads "the parcel" from page load,
-       before the rail is even on screen, so taking it unconditionally records
-       a scale for a reader who has seen nothing — which is exactly the trap
-       the per-scale seconds already guard against. Blank means they signed up
-       before reaching the drawing, and blank is the honest answer. */
-    scale:(()=>{ const r=document.getElementById("rail");
-      return (r && r.classList.contains("on"))
-        ? ((document.getElementById("rsec")||{}).textContent||"").trim() : ""; })()});
+    /* HOW MUCH OF THE FILM THEY HAD WATCHED WHEN THEY ASKED — the one thing a
+       signup row can say that an address on its own cannot. This used to be
+       maxScroll, maxP and the rail's current scale; the zoom and the rail
+       both went with the scroll, so two of those sent zero and the third sent
+       an empty string on every row. The film is what persuades now, so the
+       film is what the row should carry. */
+    film:(()=>{ const v=document.getElementById("film");
+      const w=(window.GWFILM&&window.GWFILM.watched)||0;
+      return { watched:Math.round(w),
+               pct:(v&&v.duration)?Math.round(100*w/v.duration):0 }; })()});
   const beacon=()=>{ try{ return !!(navigator.sendBeacon &&
     navigator.sendBeacon(ep,new Blob([body],{type:"text/plain;charset=UTF-8"}))); }
     catch(err){ return false; } };
@@ -3461,23 +1657,23 @@ MLF.addEventListener("submit",e=>{
 
 
 /* ============================================================================
-   GROUNDWORK — SCROLL PAGE TRACKING
+   GROUNDWORK — PAGE TRACKING                        v4, lean
    Paste this at the very END of the page's existing script block, just above
-   its closing tag. It has to be inside (or after) that block because it
-   reads the page's own `P` and `seg` rather than recomputing them — the
-   number logged and the numeral on screen then cannot disagree.
+   its closing tag. build.py does that injection; this file is the source.
+
+   THREE THINGS, AND NOTHING ELSE: where the time goes, who signs up, who
+   clicks the demo. v3 carried the scroll's chapter timers, the zoom's
+   progress, the tab strip's counters and a viewport fingerprint. The page
+   those measured no longer exists.
 
    Two rows per session: "arrive" on load, "leave" when the tab is hidden or
    closed. Dwell is sampled on a timer, NOT on scroll — a reader who stops to
    read fires no scroll events, and stopping to read is the thing you most
    want to measure.
-
-   Before using: set ENDPOINT, and give the last chapter an id:
-       <section class="ch right" id="detail">
    ========================================================================= */
 (function () {
   /* THE ENDPOINT LIVES IN A <meta> TAG AT THE TOP OF THE PAGE, not down here.
-     Hunting for one line near the bottom of a 158 KB file is a good way to
+     Hunting for one line near the bottom of a 120 KB file is a good way to
      paste it into the wrong place; the tag is the third line of the head. */
   var ENDPOINT = ((document.querySelector('meta[name="gw-endpoint"]') || {}).content || "").trim();
   if (ENDPOINT.indexOf("http") !== 0) return;          // not configured yet — do nothing
@@ -3501,44 +1697,43 @@ MLF.addEventListener("submit",e=>{
       return s;
     } catch (e) { return "x" + Date.now().toString(36); }
   })();
-  /* the signup POST carries this too, so a row in the signups tab joins to the
-     session that produced it — you can see how far someone had read when they
-     asked, not just that they asked */
+  /* the signup POST carries this too, so a signup row joins to the session
+     that produced it — you can see how much of the film someone had watched
+     when they asked, not just that they asked */
   window.GWSID = sid;
 
-  /* EVERY BLOCK OF THE PAGE, not just the chapters. Tracking only the chapters
-     left the hero, the opening, the scales and the close uncounted, so the
-     per-section seconds quietly failed to add up to the active time. Anything
-     not covered by a named block lands in "other", which makes the columns sum
-     exactly and turns a silent gap into a visible one. */
+  /* THE PAGE'S FIVE BLOCKS. Anything not covered by one lands in "other",
+     which makes the columns sum exactly to active_s and turns a silent gap
+     into a visible one. Keep this list and SECTIONS in Code.gs in step. */
   var secs = [];
-  [[".hero", "hero"], ["#open", "opening"], ["#scales", "scales"],
-   [".runlead", "runlead"], [".end", "close"]].forEach(function (t) {
+  [[".hero", "hero"], [".film", "film"], ["#open", "opening"],
+   ["#scales", "scales"], [".end", "close"]].forEach(function (t) {
     var e = document.querySelector(t[0]); if (e) secs.push([e, t[1]]);
-  });
-  [].slice.call(document.querySelectorAll(".chapters > section")).forEach(function (e) {
-    secs.push([e, e.id || e.className.trim().replace(/\s+/g, "-") || "sec"]);
   });
 
   var ms = { total: 0, active: 0 };
-  var scaleMs = { "500": 0, "50": 0, "5": 0 };
   var secMs = {};
   secs.forEach(function (x) { secMs[x[1]] = 0; });
   secMs.other = 0;
 
-  var clicks = { demo_header: 0, demo_end: 0, opt_frontage: 0, opt_centre: 0, opt_spine: 0,
-                 ml_open_header: 0, ml_open_end: 0, ml_open_badge: 0,
-                 ml_open_badge_top: 0, ml_submit: 0 };
+  var clicks = { demo_header: 0, demo_end: 0, ml_opens: 0, ml_submit: 0 };
 
-  /* THE MAILING LIST COUNTS RIDE ON THE SESSION ROW, not on send(). Opening the
-     dialog is not leaving the page, so it must not fire a beacon of its own —
-     three opens and an abandon would otherwise look like four sessions. The
-     counts go out with "leave" like everything else. */
+  /* THE MAILING LIST COUNTS RIDE ON THE SESSION ROW, not on a send of their
+     own. Opening the dialog is not leaving the page, so it must not fire a
+     beacon — three opens and an abandon would otherwise look like four
+     sessions. One `ml_opens` rather than one column per trigger: opens minus
+     submits is the abandon, and which of the three buttons was pressed has
+     never once changed a decision. `source` on the signup row still says. */
   window.MLCLICK = function (k) {
-    var key = "ml_" + k;
-    clicks[key] = (clicks[key] || 0) + 1;
+    /* THE PAGE CALLS THIS TWICE WITH DIFFERENT MEANINGS: "open_header" and
+       friends when the dialog opens, "submit" when an address lands. Reading
+       the argument is not optional — ignore it and every signup is also
+       counted as an open, which makes the abandon rate read as zero. */
+    if (k === "submit") clicks.ml_submit++;
+    else clicks.ml_opens++;
   };
-  var maxP = 0, maxScroll = 0, cycles = 0, errs = 0, firstErr = "";
+
+  var errs = 0, firstErr = "";
   var last = performance.now(), lastAct = last, started = Date.now();
   var sentLeave = false;
 
@@ -3549,24 +1744,30 @@ MLF.addEventListener("submit",e=>{
     errs++; if (!firstErr) firstErr = String(e.message || "").slice(0, 120);
   });
 
-  /* THE SCALE THE READER IS ON — READ OFF THE RAIL, NOT RECOMPUTED.
-     The obvious way is to repeat numeral()'s own test, seg(P,3.25,4.00) and
-     seg(P,6.35,7.00). Don't: those thresholds are tuned to the seven chapters
-     that exist today, so adding or removing one at the 50 silently moves the
-     boundary and the log drifts away from the page. Reading the word the rail
-     has already put on screen means retuning the page retunes the tracking,
-     and there is only ever one answer to "which scale was the reader on". */
-  var RSEC = document.getElementById("rsec");
-  var RAIL = document.getElementById("rail");
-  var SCALE_OF = { "the parcel": "500", "the block": "50", "the detail": "5" };
-  function scaleNow() {
-    var w = RSEC && RSEC.textContent.trim().toLowerCase();
-    return SCALE_OF[w] || "500";
+  /* HOW MUCH OF THE FILM ACTUALLY PLAYED. Section time says the block was on
+     screen; this says the film ran. They are different numbers and only this
+     one answers "is the film landing" — a reader can hold it on screen for a
+     minute having watched four seconds. High-water mark, not current time,
+     so a scrub backwards does not lose what they already saw. */
+  var FILM = document.getElementById("film");
+  var film = { watched: 0, loops: 0, sound: 0 };
+  /* the signup form, which lives in the page's own script and not in here,
+     reads the high-water mark off this so its row can say how much of the
+     film the reader had seen when they asked */
+  window.GWFILM = film;
+  if (FILM) {
+    FILM.addEventListener("timeupdate", function () {
+      if (FILM.currentTime > film.watched) film.watched = FILM.currentTime;
+    });
+    FILM.addEventListener("ended", function () { film.loops++; });
+    FILM.addEventListener("volumechange", function () {
+      if (!FILM.muted && FILM.volume > 0) film.sound = 1;
+    });
   }
 
-  /* THE PANEL THE READER IS ON. Whichever section covers the middle of the
-     screen — exactly one at a time, so the per-section times sum cleanly to
-     the total rather than double-counting the overlaps. */
+  /* THE BLOCK THE READER IS ON. Whichever covers the middle of the screen —
+     exactly one at a time, so the per-section times sum cleanly to the total
+     rather than double-counting the overlaps. */
   function liveSection() {
     var mid = innerHeight / 2;
     for (var i = 0; i < secs.length; i++) {
@@ -3582,15 +1783,7 @@ MLF.addEventListener("submit",e=>{
     if (document.visibilityState !== "visible") return;   // tab in the background
     if (now - lastAct > IDLE) return;                     // walked away
     ms.active += dt;
-    /* only while the rail is up. Its text says "the parcel" from page load, so
-       counting it unconditionally charged the hero and the opening to the 500 */
-    if (RAIL && RAIL.classList.contains("on")) scaleMs[scaleNow()] += dt;
     var L = liveSection(); if (L) secMs[L] += dt;
-    if (P > maxP) maxP = P;
-    var d = (scrollY + innerHeight) / Math.max(1, document.body.scrollHeight);
-    if (d > maxScroll) maxScroll = d;
-    // the panel self-reading is a direct signal that someone stopped to read
-    if (document.querySelector(".panel.cyc")) cycles++;
   }, TICK);
 
   document.addEventListener("click", function (e) {
@@ -3598,12 +1791,6 @@ MLF.addEventListener("submit",e=>{
     if (a) {
       clicks[a.classList.contains("cta") ? "demo_end" : "demo_header"]++;
       send("click");                       // they are leaving; send now
-      return;
-    }
-    var b = e.target.closest && e.target.closest("#opts button");
-    if (b && b.dataset.k) {
-      var k = "opt_" + b.dataset.k;
-      clicks[k] = (clicks[k] || 0) + 1;
     }
   }, true);
 
@@ -3615,17 +1802,13 @@ MLF.addEventListener("submit",e=>{
       sid: sid,
       started: new Date(started).toISOString(),
       device: innerWidth <= 760 ? "mobile" : "desktop",
-      vw: innerWidth, vh: innerHeight, dpr: devicePixelRatio || 1,
-      touch: ("ontouchstart" in window) ? 1 : 0,
       ref: (document.referrer || "").slice(0, 200),
-      query: (location.search || "").slice(0, 200),
-      reduced: matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 0,
-      dark: matchMedia("(prefers-color-scheme: dark)").matches ? 1 : 0,
       total: s(ms.total), active: s(ms.active),
-      t500: s(scaleMs["500"]), t50: s(scaleMs["50"]), t5: s(scaleMs["5"]),
-      maxP: +maxP.toFixed(2),
-      maxScroll: Math.round(maxScroll * 100),
-      cycles: cycles,
+      film: {
+        watched: Math.round(film.watched),
+        pct: (FILM && FILM.duration) ? Math.round(100 * film.watched / FILM.duration) : 0,
+        loops: film.loops, sound: film.sound
+      },
       errs: errs, firstErr: firstErr,
       clicks: clicks,
       sections: {}

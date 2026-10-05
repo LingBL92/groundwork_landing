@@ -3,13 +3,103 @@
 Static, one file. No build step, no dependencies, no npm.
 
 ```
-index.html          the page, with tracking AND the endpoint already wired in
-frames/             the three screenshots the page loads
+index.html          THE PAGE: intro, the 52-second film, the three scales,
+                    the close. Tracking and the endpoint already wired in.
+index_old.html      THE ARCHIVE: the scrolling version the film replaced, whole
+                    and still working. Rename it over index.html to go back.
+media/              the film and its poster (2.5 MB)
+frames/             the three screenshots index_old.html loads
 apps-script/Code.gs the Google Sheets receiver — session events and signups
 apps-script/tracking-snippet-standalone.js
                     the same tracking code on its own, if it ever needs to go
                     into a different page
 ```
+
+---
+
+## 0. Two pages
+
+The page is the film now. `index.html` is hero → **52 seconds** → opening →
+three scales → close, about 7,900 px and 116 KB. `index_old.html` is the
+scrolling version it replaced — the 500, the 50 and the 5 at 20,000 px — kept
+whole rather than deleted, with every build guard it ever had. Its builder is
+`build_full.py`.
+
+**The film sits inside the dark field, between the hero and the opening**, and
+it is there for a reason worth keeping. The opening's five beats — surfaces the
+trade-offs, names the conflicts, checks what holds up — are the film said in the
+abstract, and they were built as a ramp into the 500-to-5 scroll that paid them
+off. That scroll is gone and the film is the payoff now, so running the beats
+first spent five screens describing something the reader could have watched.
+Moving it took the film from **75% of page depth to 13%**, one scroll below the
+fold. `.dk` redefines the theme tokens on itself, so the section inherits the
+dark field and needs no styling of its own. Two things are keyed to this: the
+header's light/dark switch reads `#scales` (the first thing printed on paper —
+key it to `.film` and the header goes light while standing on black), and the
+build asserts hero &lt; film &lt; opening &lt; dkfade.
+
+**What the film does not carry: the 5.** Its last beats are "500 LIVE" and
+"50 EARLY ACCESS"; there is no detail chapter in it, so the exploded window and
+the supplier comparison live only in the archive. The close still names the 5 as
+in development, which is true, but nothing on the live page shows it.
+
+The per-panel analytics go quiet with the scroll: `pA_s … pE3_s`, `max_P`,
+`pause_cycles`, `t500/t50/t5` and the `opt_*` columns all measured chapters that
+no longer exist. Sessions and the mailing list are unaffected.
+
+> **The film has no column of its own, and it is now the page.** The tracker
+> names blocks from a list — `.hero`, `#open`, `#scales`, `.end` — and `.film`
+> is not on it, so its dwell falls into `other_s`. That is readable (on this
+> page `other_s` is very nearly film time) but it is implicit, and it is not the
+> number actually worth having, which is **how much of the 52 seconds people
+> watch** — `currentTime` high-water, completed loops, and whether they pressed
+> the sound. Those are four columns and a few lines in the snippet. Ask and I
+> will wire them; it needs one redeploy of `Code.gs`, and because the new
+> columns go on the end the header widens in place and no existing row moves.
+
+### The film starts itself
+
+Muted, when it reaches the screen, and it stops again when it leaves.
+
+**Muted is not a preference, it is the price of admission.** No browser starts
+audio without a gesture first, and one that is asked to does not ask the reader
+— it refuses the `play()` and leaves a still frame that reads as a broken film.
+So the film opens silent, the pill at its top right is the gesture, and the pill
+only appears once the film is actually running, because "sound off" over a
+poster is a puzzle rather than an offer. What silence costs is a music bed;
+nothing is spoken over it, so the argument arrives either way.
+
+**It costs nothing until someone scrolls.** `preload="none"` in the markup,
+raised to `auto` by an observer a screen out — and that observer is itself armed
+by the first scroll event. The gate matters now that the film is one screen
+below the fold: the observer's margin covers it the moment the page loads, so
+without the gate every visit that bounced without touching anything would pull
+2.5 MB of a film nobody watched. Measured: **landed and never scrolled, 0 bytes;
+one 40 px scroll, fully buffered.** There is no `autoplay` attribute either —
+that fires on load, and the film would be running to nobody while the hero is
+still on screen.
+
+**It does not start at all** under `prefers-reduced-motion`, on a Save-Data
+connection, or on 2G — and on those it does not preload either. The poster and
+the controls are then the whole of it, which is where this page started.
+
+Two things to know if you touch this. The observer callback carries *every*
+crossing since the last one, oldest first, so it reads the **last** entry —
+reading the first answers "where was it?" and leaves a phone sitting paused on a
+fully visible film. And raising `preload` is the whole instruction: a `load()`
+beside it tears the element down and fires a `pause` at nought seconds, which
+the reader-took-over test would then believe. Both of those passed every static
+check and failed only on a real scroll.
+
+**It loops on a held last frame.** Not the `loop` attribute: that cuts from the
+last frame to the first with no gap, so the card the whole film is built
+towards — 500 LIVE, 50 EARLY ACCESS — never gets read. Instead `ended` starts a
+one-second timer and the timer rewinds it, which means everything that can
+happen during that second is handled: scrolled away (checked at fire time, and
+it restarts on return instead), taken over by the reader, or pressed manually —
+each cancels the beat, and a restart cancels any beat still pending so a quick
+scroll out and back cannot land two rewinds a few frames apart. Measured at
+1002 ms and 1001 ms over two cycles.
 
 ---
 
@@ -85,32 +175,35 @@ The header row is created automatically on the first write.
 
 ## 3. What lands in the sheet
 
+**v4 is lean.** Three questions — where does the time go, who signs up, who
+clicks the demo — in **26 columns**, down from 53. What went: `pA`..`pE3` were
+the scroll's chapters, `max_P` and `pause_cycles` measured a zoom, `opt_*`
+measured a tab strip, `t500/t50/t5` measured three scales the reader walked
+through, and `sections_raw` duplicated columns that now all exist. Every one of
+those measured a page that no longer exists.
+
 Two rows per session — `arrive` on load, `leave` when the tab is hidden or
-closed — plus one row per demo click. **Dedupe by taking the last row per
-`sid`**; someone who backgrounds the tab and comes back sends another `leave`,
-and the later one is fuller. The `arrive` row is deliberately near-empty: it
-exists so the denominator survives people who bounce in two seconds, which is
-exactly the group a leave-only beacon loses.
+closed — plus one row per demo click and one per signup. **Dedupe by taking the
+last row per `sid` + `started`**; someone who backgrounds the tab and comes
+back sends another `leave`, and the later one is fuller.
 
 | column | what it is |
 |---|---|
-| `kind` | `arrive`, `leave`, a demo click — or `signup` |
-| `email`, `source` | filled only on a `signup` row. `source` is which trigger opened the dialog: `header`, `end`, `badge`, `badge_top`. Third and fourth columns, because on the day you use this sheet you are looking for addresses, not for `dpr` |
+| `received` | when the row landed |
 | `sid` | throwaway per-session id, no personal data — **and the join between a signup row and the session that produced it** |
-| `device`, `vw`, `vh`, `dpr`, `touch` | mobile or desktop, and the numbers behind it |
-| `referrer`, `query` | where they came from, UTM tags |
-| `reduced_motion`, `dark` | both change what they actually saw — filter on these |
+| `kind` | `arrive`, `leave`, a demo click, or `signup` |
+| `email`, `source` | filled only on a `signup` row. `source` is which trigger opened the dialog: `header`, `badge_top`, `end`. Third and fourth columns, because on the day you use this sheet you are looking for addresses |
+| `started` | when the session began, ISO |
+| `device` | `mobile` or `desktop`. Keep this one: phone and desktop dwell differ so much that an un-split average means nothing |
+| `referrer` | where they came from |
 | `total_s`, `active_s` | wall-clock, and time with the tab visible and someone present |
-| `t500_s`, `t50_s`, `t5_s` | **seconds on each scale** |
-| `hero_s … other_s` | **seconds on each panel**, one column each. The list lives in `SECTIONS` at the top of `Code.gs` and is used twice — for the column names and for reading the payload — so a panel cannot have a column without a value or a value without a column. The old header predated four of them: `pP`, `pE1`, `pE2` and `pE3` had no column at all and survived only inside `sections_raw`, while a dead `detail_s` sat there from a chapter that no longer exists. `pP` is the longest dwell on the page, so that was not a small gap. **Add a panel to the page, add its id to `SECTIONS`.** |
-| `max_P`, `max_scroll_pct` | how far they got |
-| `pause_cycles` | samples that caught a panel mid self-read — a direct read on "stopped and read" rather than "scrolled past" |
+| `hero_s`, `film_s`, `opening_s`, `scales_s`, `close_s`, `other_s` | **seconds on each block.** The list lives in `SECTIONS` at the top of `Code.gs` and in the snippet's own list — keep them in step. Exactly one block covers the middle of the screen at a time, so these **sum to `active_s`** rather than double-counting overlaps. `other` catches anything unnamed, which turns a silent gap into a visible one |
+| `film_watched_s`, `film_pct` | **how much of the 60 seconds actually played.** Not the same as `film_s`: that is how long the block sat on screen, and a reader can hold the film in view for a minute having watched four seconds of it. High-water mark, so scrubbing back does not lose what they already saw. This is the number that says whether the film lands |
+| `film_loops` | completed plays. Anything above 1 means they watched it twice |
+| `film_sound` | 1 if they pressed the sound pill. The film opens muted by necessity, so this is the only measure of whether anyone wants the audio |
 | `demo_header`, `demo_end` | the two CTAs, counted separately: the header click is impatience, the end click is persuasion |
-| `ml_open_header`, `ml_open_end`, `ml_open_badge`, `ml_open_badge_top` | which of the four mailing-list triggers was opened — the header link, the button at the close, and the two "early access · on request" badges |
-| `ml_submit` | opens that became addresses. Opens minus this is the abandon, and it is the one number that says whether the ask is landing or just being noticed |
-| `opt_*` | the recommendation tabs |
-| `errors`, `first_error` | a broken page looks like a content problem in the funnel unless you log this |
-| `sections_raw` | every section time as JSON, whatever the section names are |
+| `ml_opens`, `ml_submit` | dialog opened, and addresses given. **Opens minus submits is the abandon**, and it is the one number that says whether the ask is landing or just being noticed. One `ml_opens` rather than one column per trigger — which of the three buttons was pressed has never changed a decision, and `source` on the signup row still says |
+| `errors`, `first_error` | kept against the lean brief on purpose: a broken page looks exactly like a content problem in the funnel unless you log this. Two columns, almost always empty |
 
 Dwell is sampled on a **250 ms timer, not on scroll**. Someone who stops to
 read fires no scroll events at all, and stopping to read is the thing you most
@@ -118,55 +211,36 @@ want to measure. The timer only counts while the tab is visible and gives up
 after 30 s with no input, so a page left open on a second monitor doesn't
 inflate every number.
 
-Because exactly one section covers the middle of the screen at a time, the
-per-section seconds **sum to `active_s`** rather than double-counting overlaps.
-
 ### Signups live in the same tab
 
 One tab, two kinds of row, told apart by `kind`:
 
 ```
 mailing list  = filter kind = "signup", read `email`
-sessions      = filter kind = "leave",  last row per sid
+sessions      = filter kind = "leave",  last row per sid + started
 ```
 
 A signup **appends its own row** rather than being written into the session's
 row. That is not a style choice: the beacons fire `arrive` → `signup` → `leave`,
 so at signup time the only row for that visitor is the near-empty `arrive` one.
 Writing the address there and then reading the sheet by the documented rule —
-last row per `sid` — hands you the `leave` row with no address on it. Appending
-is also the only shape that cannot race the `leave` beacon, since every other
-write in this system is an append too.
+last row per `sid` — hands you the `leave` row with no address on it.
 
 A repeat address is answered `ok dup` and nothing is written; the person is on
-the list, which is what they asked for, so the page still tells them so. The
-check reads one column of the whole tab, which is the price of keeping the list
-in with the sessions — fine into the thousands of rows, and the first thing to
-revisit if this sheet ever gets big.
+the list, which is what they asked for, so the page still tells them so.
 
-The `sid` is on both rows, so a signup joins to the session that produced it:
-an address on its own says someone was interested, while the same address next
-to `max_P 3.7, the parcel` says they asked **before** seeing the 50 or the 5 —
-a different signal about what is doing the persuading.
+The signup row carries `film_watched_s` and `film_pct`, so an address joins to
+how much of the film the reader had seen when they asked. An address on its own
+says someone was interested; the same address next to `film_pct 85` says the
+film did it.
 
-Opening the dialog does **not** send a beacon of its own; the counts ride out on
-the session's `leave` row. Three opens and an abandon would otherwise log as
-four sessions.
+### Going from v3 to v4 parks the old tab
 
-The page reads the endpoint from the same `<meta>` tag the tracking uses, so
-there is no second URL to keep in step. **A copy of the page built without that
-tag will say so in the dialog rather than showing a thank-you it cannot keep.**
-
-### If the header has moved, the old tab is parked
-
-`Code.gs` compares the existing header with its own. If the new one merely
-**grew** — columns added on the end — it widens the header in place and every
-row already written still reads correctly. If the columns have **moved**,
-rewriting the header would relabel every existing row silently, so instead the
-old tab is renamed `events_old` and a clean `events` is started. Nothing is
-lost, nothing is mislabelled, and there is nothing for you to remember to do.
-
----
+`Code.gs` compares the existing header with its own. The columns have **moved**,
+not merely grown, so rewriting the header in place would relabel every row
+already written. Instead the old tab is renamed `events_old` and a clean
+`events` starts. Nothing is lost, nothing is mislabelled, and there is nothing
+for you to remember to do.
 
 ## 4. Editing the 50 and the 5 — what to watch
 
