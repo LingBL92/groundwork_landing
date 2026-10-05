@@ -1,0 +1,260 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Concept Board Wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a crit wall. The site and the pad of wants on the left; the wall of 48 real plans on the right, which answers. */
+:root{
+ --s0:#faf9f7;--s1:#f2f1ed;--s2:#fff;--t:#0b0b0b;--t2:#52514e;--t3:#898781;
+ --b:rgba(11,11,11,.10);--bs:rgba(11,11,11,.20);--ta:#185fa5;--bga:#e6f1fb;
+ --warn:#b3422a;--ok:#4f7d3f;--note:#f1ead3;--noteink:#1b1a17;--cork:#ebe7dc;
+ --card:#fff;--way:#185fa5;--park:rgba(11,11,11,.07);--parkline:rgba(11,11,11,.35);
+ --pin:#b3422a;--shadow:0 1px 2px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;--t2:#c3c2b7;--t3:#8a8880;
+ --b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);--ta:#7db2e8;--bga:#16293c;
+ --warn:#e8836a;--ok:#8fbf87;--note:#e9dfbf;--noteink:#1b1a17;--cork:#1c1b19;
+ --card:#262624;--way:#7db2e8;--park:rgba(240,239,236,.08);--parkline:rgba(240,239,236,.4);
+ --pin:#e8836a;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 14px rgba(0,0,0,.3);color-scheme:dark}}
+:root[data-theme="dark"]{
+ --s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;--t2:#c3c2b7;--t3:#8a8880;
+ --b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);--ta:#7db2e8;--bga:#16293c;
+ --warn:#e8836a;--ok:#8fbf87;--note:#e9dfbf;--noteink:#1b1a17;--cork:#1c1b19;
+ --card:#262624;--way:#7db2e8;--park:rgba(240,239,236,.08);--parkline:rgba(240,239,236,.4);
+ --pin:#e8836a;--shadow:0 1px 2px rgba(0,0,0,.4),0 6px 14px rgba(0,0,0,.3);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--s0);color:var(--t);font:15px/1.6 Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:56px 72px}
+.tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--t3)}
+h2{font-size:clamp(26px,4vw,40px);line-height:1.12;letter-spacing:-.026em;font-weight:600;margin:8px 0 10px;text-wrap:balance}
+.lede{color:var(--t2);max-width:56ch;margin:0 0 30px;font-size:16px}
+.board{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:860px){.board{grid-template-columns:1fr}}
+
+/* left: the site and the pad */
+.side{display:flex;flex-direction:column;gap:18px}
+@media(min-width:861px){.side{position:sticky;top:20px}}
+.sitecard{background:var(--s2);border:1px solid var(--b);border-radius:12px;padding:14px 14px 10px}
+.sitecard .tag{display:flex;justify-content:space-between}
+#site{display:block;width:100%;height:auto;max-height:340px;margin:6px auto 0}
+#site .door{cursor:pointer}
+#site .door circle.hit{fill:transparent}
+#site .door circle.ring{fill:var(--s2);stroke:var(--t);stroke-width:1.6;transition:fill .2s,stroke .2s}
+#site .door text{font-size:10px;font-weight:700;fill:var(--t2);pointer-events:none}
+#site .door.on circle.ring{fill:var(--ta);stroke:var(--ta)}
+#site .door.on text{fill:var(--ta)}
+#site .door:hover circle.ring{stroke:var(--ta)}
+#site .door:focus{outline:none} #site .door:focus-visible circle.ring{stroke:var(--ta);stroke-width:3}
+.hint{font-size:12px;color:var(--t3);margin:4px 0 0}
+.pad{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.want{font:inherit;border:0;cursor:pointer;background:var(--note);color:var(--noteink);border-radius:3px;
+ padding:8px 11px 9px;text-align:left;box-shadow:var(--shadow);transform:rotate(var(--rot,0deg));
+ transition:transform .2s,box-shadow .2s,opacity .2s;font-size:13px;line-height:1.3;max-width:100%}
+.want small{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#185fa5}
+.want b{font-weight:700}
+.want:hover{transform:rotate(0deg) translateY(-2px)}
+.want:focus-visible{outline:2px solid var(--ta);outline-offset:2px}
+.want[aria-pressed="true"]{opacity:.45;transform:rotate(0) scale(.96);box-shadow:none}
+.reset{font:inherit;font-size:12.5px;font-weight:600;background:none;border:1px solid var(--bs);color:var(--t);
+ border-radius:20px;padding:6px 14px;cursor:pointer;align-self:flex-start}
+.reset:hover{border-color:var(--t)}
+
+/* right: the wall */
+.wall{background:var(--cork);border-radius:14px;padding:16px 16px 20px;position:relative;min-width:0}
+.wallhead{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 18px;margin-bottom:14px;min-height:58px}
+.count{display:flex;align-items:baseline;gap:8px}
+.count b{font-size:44px;line-height:1;letter-spacing:-.03em;font-weight:700;font-variant-numeric:tabular-nums}
+.count span{font-size:13px;color:var(--t2)}
+.held{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}
+.hnote{background:var(--note);color:var(--noteink);border-radius:3px;padding:5px 8px 6px;font-size:12px;line-height:1.25;
+ box-shadow:var(--shadow);transform:rotate(var(--rot,0deg));display:flex;gap:7px;align-items:center;
+ animation:stick .35s cubic-bezier(.2,.9,.3,1.3)}
+.hnote em{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums;color:#185fa5}
+.hnote.bad em{color:#b3422a}
+.hnote button{font:inherit;border:0;background:none;color:inherit;opacity:.5;cursor:pointer;padding:0 2px;font-size:13px}
+.hnote button:hover{opacity:1}
+@keyframes stick{from{transform:translateY(-10px) rotate(0) scale(1.1);opacity:0}}
+.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px 10px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px 5px}.plan{padding:3px}.plan .cap{display:none}.plan::before{width:5px;height:5px;margin-left:-2.5px}#site{max-height:230px}.count b{font-size:36px}}
+.plan{position:relative;background:var(--card);border-radius:2px;box-shadow:var(--shadow);padding:5px 5px 3px;
+ transform:rotate(var(--rot)) ;transition:opacity .45s ease,transform .45s ease,filter .45s ease}
+.plan::before{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;
+ background:var(--pin);box-shadow:0 1px 1px rgba(0,0,0,.3);transition:opacity .3s}
+.plan svg{display:block;width:100%;height:auto}
+.plan .cap{font-size:8.5px;color:var(--t3);text-align:center;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan.off{opacity:.13;transform:rotate(calc(var(--rot) * 3)) translateY(8px) scale(.94);filter:grayscale(1)}
+.plan.off::before{opacity:0}
+.plan.near{outline:2px solid var(--warn);outline-offset:2px}
+
+/* the crit note when the wall runs out */
+.crit{position:absolute;left:50%;top:84px;width:min(440px,calc(100% - 24px));transform:translateX(-50%) rotate(-.6deg);
+ background:var(--note);color:var(--noteink);border-radius:4px;padding:16px 18px 18px;box-shadow:0 10px 30px rgba(0,0,0,.25);
+ z-index:3;animation:stick .4s cubic-bezier(.2,.9,.3,1.2)}
+.crit small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b3422a}
+.crit p{margin:4px 0 12px;font-size:15px;line-height:1.4}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.side2{background:#fff;border-radius:3px;padding:8px;box-shadow:0 1px 3px rgba(0,0,0,.15);display:flex;flex-direction:column;gap:6px}
+.side2 svg{display:block;width:100%;height:auto;max-height:170px}
+.side2 .k{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#185fa5}
+.side2 .f{font-size:12px;color:#52514e;line-height:1.35;font-variant-numeric:tabular-nums}
+.side2 button{font:inherit;font-size:12px;font-weight:600;border:1px solid rgba(11,11,11,.25);background:none;color:#1b1a17;
+ border-radius:16px;padding:5px 10px;cursor:pointer}
+.side2 button:hover{border-color:#1b1a17}
+.demo{font-size:11.5px;color:var(--t2);width:100%;order:3}
+.demo[hidden]{display:none}
+.foot{font-size:12px;color:var(--t3);margin-top:14px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+ <div class="tag">the concept board</div>
+ <h2>Pin up every option. Keep what you want.</h2>
+ <p class="lead lede">Every plan the site allows, on one wall. Say what you’d keep, and the wall answers with the plans that still work. When two wants never meet, it tells you, and shows the nearest of each.</p>
+
+ <div class="board">
+  <div class="side">
+   <div class="sitecard">
+    <div class="tag"><span>the site · Ubi, 6.07 ha</span><span>tap a door</span></div>
+    <svg id="site" viewBox="-160 -190 310 390" role="group" aria-label="The Ubi parcel with its seven possible doors"></svg>
+    <p class="hint">Hold a door and only plans that arrive through it stay pinned.</p>
+   </div>
+   <div>
+    <div class="tag" style="margin-bottom:10px">or pin a want</div>
+    <div class="pad" id="pad"></div>
+   </div>
+   <button class="reset" id="reset" type="button">Clear the wall</button>
+  </div>
+
+  <div class="wall" id="wall">
+   <div class="wallhead">
+    <span class="demo" id="demo" hidden>Playing an example. Tap anything to take over.</span>
+    <div class="count"><b id="n">48</b><span id="nl">plans on the wall</span></div>
+    <div class="held" id="held" aria-live="polite"></div>
+   </div>
+   <div class="grid" id="grid"></div>
+   <div id="critslot"></div>
+  </div>
+ </div>
+ <p class="foot">48 real plans from one sweep of the Ubi parcel: six carpark schemes, three ways of organising the walks, seven doors.</p>
+</div>
+
+<script>
+const D={"poly":[[-41,-135],[-50,-164],[-51,-163],[-65,-158],[-76,-155],[-88,-150],[-97,-144],[-100,-143],[-100,-143],[-102,-141],[-102,-141],[-102,-141],[-104,-140],[-116,-136],[-116,-136],[-118,-135],[-118,-135],[-118,-135],[-120,-133],[-120,-133],[-120,-133],[-123,-132],[-125,-130],[-125,-130],[-126,-128],[-127,-128],[-127,-128],[-128,-126],[-128,-126],[-128,-126],[-130,-124],[-130,-124],[-130,-124],[-131,-122],[-132,-120],[-133,-117],[-133,-117],[-133,-117],[-134,-115],[-134,-112],[-135,-110],[-135,-110],[-135,-107],[-135,-104],[-135,-104],[-135,-104],[-134,-102],[-134,-102],[-132,-89],[-132,-89],[-131,-84],[-131,-84],[-120,-32],[-119,-30],[-119,-26],[-64,-37],[-60,-19],[-58,-8],[-54,10],[-47,51],[-102,62],[-102,62],[-97,90],[-88,119],[-81,160],[-81,160],[-80,163],[-80,163],[-80,163],[-80,165],[-80,165],[-80,165],[-79,167],[-77,169],[-76,170],[-76,170],[-76,170],[-75,172],[-73,174],[-73,174],[-73,174],[-71,175],[-71,175],[-71,175],[-69,176],[-69,176],[-69,176],[-67,177],[-65,177],[-65,177],[-65,177],[-62,178],[-62,178],[-62,178],[-60,178],[-60,178],[-60,178],[-58,178],[-58,178],[-58,178],[-58,178],[-56,178],[-4,167],[33,160],[42,158],[45,159],[101,148],[93,108],[81,45],[121,37],[103,-54],[119,-80],[114,-83],[108,-88],[104,-94],[100,-101],[71,-162],[53,-154],[-41,-135],[-41,-135]],"doors":{"NE":[91,-119],"N":[13,-146],"SE":[89,150],"NW":[-131,-122],"SW":[-90,114],"S":[-6,168],"W":[-109,-28]},"schemes":{"B":{"car":207,"blocks":[[89,-38,-1.7642,155,31.2]]},"CIK":{"car":106,"blocks":[[90,5,-1.7378,73,31.2],[-53,77,2.9168,71,31.2],[-63,-62,-0.1941,56,31.2]]},"D":{"car":161,"blocks":[[-36,-17,1.3672,128,31.2]]},"DI":{"car":133,"blocks":[[-35,-16,1.3672,114,31.2],[-54,77,2.9168,59,31.2]]},"CIL":{"car":103,"blocks":[[89,5,-1.7378,66,31.2],[-52,76,2.9168,78,31.2],[-66,-122,-1.8683,47,31.2]]},"EKM":{"car":113,"blocks":[[-71,90,1.3519,61,31.2],[-81,-58,-0.1941,66,31.2],[78,-62,-1.1484,71,31.2]]}},"plans":[{"id":"B#0/fan","s":"B","o":"fan","d":["NE"],"w":328,"l":[[[91,-119],[82,-119],[32,-109],[22,-38]]]},{"id":"B#1/fan","s":"B","o":"fan","d":["N"],"w":332,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"B#2/spine","s":"B","o":"spine","d":["SE","NW"],"w":332,"l":[[[89,150],[92,144],[-131,-122]]]},{"id":"B#3/spine","s":"B","o":"spine","d":["NE","SW"],"w":316,"l":[[[91,-119],[82,-119],[32,-109],[-69,104],[-90,114]]]},{"id":"B#4/spine","s":"B","o":"spine","d":["N","S"],"w":317,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"B#5/centre","s":"B","o":"centre","d":["SE","NW","SW"],"w":330,"l":[[[89,150],[92,144],[12,-8]],[[-131,-122],[12,-8]],[[-90,114],[12,-8]]]},{"id":"B#6/centre","s":"B","o":"centre","d":["NE","SW","NW"],"w":334,"l":[[[91,-119],[82,-119],[32,-109],[12,-28]],[[-90,114],[12,-28]],[[-131,-122],[12,-28]]]},{"id":"B#7/centre","s":"B","o":"centre","d":["N","S","W"],"w":322,"l":[[[13,-146],[12,-139],[12,3]],[[-6,168],[12,3]],[[-109,-28],[-110,-38],[-19,-28],[12,3]]]},{"id":"CIK#0/fan","s":"CIK","o":"fan","d":["NE"],"w":322,"l":[[[91,-119],[82,-119],[22,-38]]]},{"id":"CIK#1/fan","s":"CIK","o":"fan","d":["N"],"w":323,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"CIK#2/spine","s":"CIK","o":"spine","d":["SE","NW"],"w":348,"l":[[[89,150],[92,144],[-39,-109],[-131,-122]]]},{"id":"CIK#3/spine","s":"CIK","o":"spine","d":["NE","SW"],"w":338,"l":[[[91,-119],[82,-119],[-19,114],[-90,114]]]},{"id":"CIK#4/spine","s":"CIK","o":"spine","d":["N","S"],"w":317,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"CIK#5/centre","s":"CIK","o":"centre","d":["SE","NW","SW"],"w":335,"l":[[[89,150],[92,144],[12,3]],[[-131,-122],[-9,-78],[12,3]],[[-90,114],[12,83],[12,3]]]},{"id":"CIK#6/centre","s":"CIK","o":"centre","d":["NE","SW","NW"],"w":342,"l":[[[91,-119],[82,-119],[12,3]],[[-90,114],[12,83],[12,3]],[[-131,-122],[-9,-78],[12,3]]]},{"id":"CIK#7/centre","s":"CIK","o":"centre","d":["N","S","W"],"w":322,"l":[[[13,-146],[12,-139],[12,3]],[[-6,168],[12,3]],[[-109,-28],[-110,-38],[-49,-38],[12,3]]]},{"id":"D#0/fan","s":"D","o":"fan","d":["NE"],"w":381,"l":[[[91,-119],[82,-119],[22,-38]]]},{"id":"D#1/fan","s":"D","o":"fan","d":["N"],"w":357,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"D#2/spine","s":"D","o":"spine","d":["SE","NW"],"w":348,"l":[[[89,150],[92,144],[-39,-109],[-131,-122]]]},{"id":"D#3/spine","s":"D","o":"spine","d":["NE","SW"],"w":367,"l":[[[91,-119],[82,-119],[-39,93],[-90,114]]]},{"id":"D#4/spine","s":"D","o":"spine","d":["N","S"],"w":330,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"D#5/centre","s":"D","o":"centre","d":["SE","NW","SW"],"w":353,"l":[[[89,150],[92,144],[42,-38]],[[-131,-122],[12,-68],[42,-38]],[[-90,114],[22,23],[42,-38]]]},{"id":"D#6/centre","s":"D","o":"centre","d":["NE","SW","NW"],"w":359,"l":[[[91,-119],[82,-119],[42,-38]],[[-90,114],[22,23],[42,-38]],[[-131,-122],[12,-68],[42,-38]]]},{"id":"D#7/centre","s":"D","o":"centre","d":["N","S","W"],"w":345,"l":[[[13,-146],[12,-139],[42,-38]],[[-6,168],[42,-38]],[[-109,-28],[-110,-38],[-39,-98],[42,-38]]]},{"id":"DI#0/fan","s":"DI","o":"fan","d":["NE"],"w":380,"l":[[[91,-119],[82,-119],[22,-38]]]},{"id":"DI#1/fan","s":"DI","o":"fan","d":["N"],"w":355,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"DI#2/spine","s":"DI","o":"spine","d":["SE","NW"],"w":353,"l":[[[89,150],[92,144],[-49,-109],[-131,-122]]]},{"id":"DI#3/spine","s":"DI","o":"spine","d":["NE","SW"],"w":363,"l":[[[91,-119],[82,-119],[-29,114],[-90,114]]]},{"id":"DI#4/spine","s":"DI","o":"spine","d":["N","S"],"w":316,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"DI#5/centre","s":"DI","o":"centre","d":["SE","NW","SW"],"w":343,"l":[[[89,150],[92,144],[42,-28]],[[-131,-122],[22,-48],[42,-28]],[[-90,114],[2,83],[42,-28]]]},{"id":"DI#6/centre","s":"DI","o":"centre","d":["NE","SW","NW"],"w":338,"l":[[[91,-119],[82,-119],[42,-28]],[[-90,114],[2,83],[42,-28]],[[-131,-122],[22,-48],[42,-28]]]},{"id":"DI#7/centre","s":"DI","o":"centre","d":["N","S","W"],"w":345,"l":[[[13,-146],[12,-139],[42,-38]],[[-6,168],[42,-38]],[[-109,-28],[-110,-38],[-39,-98],[42,-38]]]},{"id":"CIL#0/fan","s":"CIL","o":"fan","d":["NE"],"w":322,"l":[[[91,-119],[82,-119],[22,-38]]]},{"id":"CIL#1/fan","s":"CIL","o":"fan","d":["N"],"w":323,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"CIL#2/spine","s":"CIL","o":"spine","d":["SE","NW"],"w":332,"l":[[[89,150],[92,144],[-131,-122]]]},{"id":"CIL#3/spine","s":"CIL","o":"spine","d":["NE","SW"],"w":338,"l":[[[91,-119],[82,-119],[-19,114],[-90,114]]]},{"id":"CIL#4/spine","s":"CIL","o":"spine","d":["N","S"],"w":317,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"CIL#5/centre","s":"CIL","o":"centre","d":["SE","NW","SW"],"w":330,"l":[[[89,150],[92,144],[2,-18]],[[-131,-122],[2,-18]],[[-90,114],[12,83],[2,-18]]]},{"id":"CIL#6/centre","s":"CIL","o":"centre","d":["NE","SW","NW"],"w":326,"l":[[[91,-119],[82,-119],[2,-18]],[[-90,114],[12,83],[2,-18]],[[-131,-122],[2,-18]]]},{"id":"CIL#7/centre","s":"CIL","o":"centre","d":["N","S","W"],"w":322,"l":[[[13,-146],[12,-139],[12,3]],[[-6,168],[12,3]],[[-109,-28],[-110,-38],[-19,-28],[12,3]]]},{"id":"EKM#0/fan","s":"EKM","o":"fan","d":["NE"],"w":322,"l":[[[91,-119],[82,-119],[22,-38]]]},{"id":"EKM#1/fan","s":"EKM","o":"fan","d":["N"],"w":323,"l":[[[13,-146],[12,-139],[22,-38]]]},{"id":"EKM#2/spine","s":"EKM","o":"spine","d":["SE","NW"],"w":339,"l":[[[89,150],[92,144],[-69,-109],[-131,-122]]]},{"id":"EKM#3/spine","s":"EKM","o":"spine","d":["NE","SW"],"w":342,"l":[[[91,-119],[82,-119],[-59,134],[-79,124],[-89,114],[-90,114]]]},{"id":"EKM#4/spine","s":"EKM","o":"spine","d":["N","S"],"w":315,"l":[[[13,-146],[12,-139],[-6,168]]]},{"id":"EKM#5/centre","s":"EKM","o":"centre","d":["SE","NW","SW"],"w":331,"l":[[[89,150],[92,144],[12,13]],[[-131,-122],[-19,-58],[12,13]],[[-90,114],[-89,114],[-69,134],[-19,83],[12,13]]]},{"id":"EKM#6/centre","s":"EKM","o":"centre","d":["NE","SW","NW"],"w":350,"l":[[[91,-119],[82,-119],[2,3]],[[-90,114],[-89,114],[-69,134],[-19,83],[2,3]],[[-131,-122],[-19,-58],[2,3]]]},{"id":"EKM#7/centre","s":"EKM","o":"centre","d":["N","S","W"],"w":332,"l":[[[13,-146],[12,-139],[12,23]],[[-6,168],[12,23]],[[-109,-28],[-99,-38],[-49,-38],[12,23]]]}]};
+const NS="http://www.w3.org/2000/svg";
+const poly=D.poly.map(p=>p.join(",")).join(" ");
+const ORG={spine:"a spine through the middle",centre:"a centre court",fan:"walks fanning out"};
+const CAR_MAX=110;
+const WANTS=[
+ {k:"org:spine",t:"organise",b:"a spine",s:"through the middle"},
+ {k:"org:centre",t:"organise",b:"a centre court",s:""},
+ {k:"org:fan",t:"organise",b:"walks fanning out",s:""},
+ {k:"car",t:"car park",b:"within "+CAR_MAX+" m",s:"of the blocks"}];
+const SHORT={spine:"a spine",centre:"a centre court",fan:"walks fanning out"};
+const label=k=>k.startsWith("door:")?"door "+k.slice(5):k==="car"?"car park within "+CAR_MAX+" m":SHORT[k.slice(4)];
+const test=(k,p)=>k.startsWith("door:")?p.d.includes(k.slice(5)):k==="car"?D.schemes[p.s].car<=CAR_MAX:p.o===k.slice(4);
+const rot=i=>(((i*97)%13)-6)*0.35;
+
+function planSVG(p,{stroke=1}={}){
+  let g=`<polygon points="${poly}" fill="none" stroke="var(--parkline)" stroke-width="${3*stroke}"/>`;
+  for(const [x,y,a,l,w] of D.schemes[p.s].blocks){
+    const deg=a*180/Math.PI;
+    g+=`<rect x="${-l/2}" y="${-w/2}" width="${l}" height="${w}" transform="translate(${x} ${y}) rotate(${deg})" fill="var(--park)" stroke="var(--parkline)" stroke-width="${2*stroke}"/>`;
+  }
+  for(const line of p.l) g+=`<polyline points="${line.map(q=>q.join(",")).join(" ")}" fill="none" stroke="var(--way)" stroke-width="${7*stroke}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  for(const d of p.d){const [x,y]=D.doors[d]; g+=`<circle cx="${x}" cy="${y}" r="${11*stroke}" fill="var(--way)"/>`;}
+  return `<svg viewBox="-160 -190 310 390" aria-hidden="true">${g}</svg>`;
+}
+
+/* the wall */
+const grid=document.getElementById("grid");
+D.plans.forEach((p,i)=>{
+  const el=document.createElement("div"); el.className="plan"; el.style.setProperty("--rot",rot(i)+"deg");
+  el.innerHTML=planSVG(p)+`<div class="cap">${p.o} · ${p.d.join("+")}</div>`;
+  el.title=`${ORG[p.o]}, doors ${p.d.join(", ")}, mean walk ${p.w} m`;
+  grid.appendChild(el); p.el=el;
+});
+
+/* the site */
+const site=document.getElementById("site");
+site.innerHTML=`<polygon points="${poly}" fill="var(--s1)" stroke="var(--bs)" stroke-width="2"/>`;
+for(const [d,[x,y]] of Object.entries(D.doors)){
+  const g=document.createElementNS(NS,"g"); g.setAttribute("class","door"); g.setAttribute("tabindex","0");
+  g.setAttribute("role","button"); g.setAttribute("aria-pressed","false"); g.setAttribute("aria-label","Hold door "+d);
+  const ox=x>40?20:x<-40?-20:0, oy=y>40?24:y<-40?-18:0;
+  g.innerHTML=`<circle class="hit" cx="${x}" cy="${y}" r="24"/><circle class="ring" cx="${x}" cy="${y}" r="11"/><text x="${x+ox}" y="${y+oy+3}" text-anchor="middle">${d}</text>`;
+  g.addEventListener("click",()=>{takeover(); toggle("door:"+d);});
+  g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();takeover();toggle("door:"+d);}});
+  site.appendChild(g); g.dataset.k="door:"+d;
+}
+
+/* the pad */
+const pad=document.getElementById("pad");
+WANTS.forEach((w,i)=>{
+  const b=document.createElement("button"); b.type="button"; b.className="want"; b.dataset.k=w.k;
+  b.style.setProperty("--rot",[-1.5,1.2,-.6,1.8][i]+"deg"); b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<small>${w.t}</small><b>${w.b}</b>${w.s?" "+w.s:""}`;
+  b.addEventListener("click",()=>{takeover(); toggle(w.k);});
+  pad.appendChild(b);
+});
+
+/* the state: an ordered list of holds, each with the count it left */
+let holds=[];
+const keepers=ks=>D.plans.filter(p=>ks.every(k=>test(k,p)));
+function toggle(k){
+  const i=holds.findIndex(h=>h.k===k);
+  if(i>=0) holds.splice(i,1); else holds.push({k});
+  render();
+}
+function render(){
+  let run=[]; holds.forEach(h=>{run.push(h.k); h.n=keepers(run).length;});
+  const keep=new Set(keepers(holds.map(h=>h.k)));
+  D.plans.forEach(p=>{p.el.classList.toggle("off",!keep.has(p)); p.el.classList.remove("near");});
+  document.getElementById("n").textContent=keep.size;
+  document.getElementById("nl").textContent=keep.size===1?"plan still works":holds.length?"plans still work":"plans on the wall";
+  document.getElementById("held").innerHTML=holds.map((h,i)=>
+    `<span class="hnote${h.n?"":" bad"}" style="--rot:${[-1.4,1,-.5,1.6][i%4]}deg">${label(h.k)} <em>→ ${h.n}</em><button type="button" aria-label="Drop ${label(h.k)}" data-drop="${h.k}">×</button></span>`).join("");
+  document.querySelectorAll("[data-drop]").forEach(b=>b.addEventListener("click",()=>{takeover();toggle(b.dataset.drop);}));
+  document.querySelectorAll("#site .door").forEach(g=>{const on=holds.some(h=>h.k===g.dataset.k); g.classList.toggle("on",on); g.setAttribute("aria-pressed",on);});
+  document.querySelectorAll(".want").forEach(b=>b.setAttribute("aria-pressed",holds.some(h=>h.k===b.dataset.k)));
+  crit(keep.size);
+}
+
+/* when the wall runs out: name the two wants that never meet, and the nearest plan for each */
+function crit(n){
+  const slot=document.getElementById("critslot"); slot.innerHTML="";
+  if(n||!holds.length) return;
+  const ks=holds.map(h=>h.k), last=ks[ks.length-1];
+  let other=null;
+  for(const k of ks.slice(0,-1)) if(keepers(ks.filter(x=>x!==k)).length){other=k;break;}
+  const best=list=>list.slice().sort((a,b)=>a.w-b.w)[0];
+  let html;
+  if(other){
+    const A=best(keepers(ks.filter(x=>x!==other))), B=best(keepers(ks.filter(x=>x!==last)));
+    A.el.classList.add("near"); B.el.classList.add("near");
+    const side=(p,keep,drop)=>`<div class="side2"><span class="k">keep ${label(keep)}</span>${planSVG(p,{stroke:1})}
+      <span class="f">${ORG[p.o]} · doors ${p.d.join(", ")}<br>mean walk ${p.w} m · car ${D.schemes[p.s].car} m</span>
+      <button type="button" data-drop="${drop}">Drop ${label(drop)}</button></div>`;
+    html=`<small>named conflict</small><p><b>${label(last)}</b> and <b>${label(other)}</b> never meet in these ${D.plans.length} plans. The nearest of each:</p>
+      <div class="pair">${side(A,last,other)}${side(B,other,last)}</div>`;
+  } else {
+    html=`<small>named conflict</small><p>These ${ks.length} wants never meet together. Drop one to bring plans back.</p>`;
+  }
+  const c=document.createElement("div"); c.className="crit"; c.innerHTML=html; slot.appendChild(c);
+  c.querySelectorAll("[data-drop]").forEach(b=>b.addEventListener("click",()=>{takeover();toggle(b.dataset.drop);}));
+}
+document.getElementById("reset").addEventListener("click",()=>{takeover(); holds=[]; render();});
+
+/* the example: plays once when the wall comes into view, until the reader touches anything */
+const demo=document.getElementById("demo");
+let timers=[], playing=false, played=false;
+function takeover(){ if(playing){timers.forEach(clearTimeout); timers=[]; playing=false; demo.hidden=true; holds=[];} }
+function play(){
+  if(played||matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  played=playing=true; demo.hidden=false; holds=[]; render();
+  const steps=["org:spine","car","door:W"];
+  steps.forEach((k,i)=>timers.push(setTimeout(()=>{holds.push({k}); render(); if(i===steps.length-1){playing=false; demo.hidden=true;}},1400+i*1900)));
+}
+new IntersectionObserver((es,o)=>{ if(es.some(e=>e.isIntersecting)){ o.disconnect(); play(); } },{threshold:.35}).observe(document.getElementById("wall"));
+render();
+</script>
+</html>

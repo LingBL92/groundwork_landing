@@ -67,6 +67,22 @@ button.mlbig{font:inherit;display:inline-flex;align-items:center;gap:9px;cursor:
  border:1px solid var(--bs);border-radius:26px;transition:.25s}
 button.mlbig:hover{border-color:var(--t);background:color-mix(in oklab,var(--t) 6%,transparent)}
 /* the badge becomes the request it names */
+#doors{margin-top:64px}
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px}
+.door{border:1px solid var(--bs);border-radius:14px;padding:20px 20px 22px;display:flex;flex-direction:column;align-items:flex-start}
+.door small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);font-weight:700}
+.door h3{margin:8px 0 8px;font-size:18px;line-height:1.25;letter-spacing:-.015em}
+.door p{margin:0 0 18px;font-size:14px;line-height:1.5;color:var(--t2);flex:1}
+.door button.mlbig{font-size:14px;padding:10px 18px}
+@media(max-width:760px){.doors{grid-template-columns:1fr}}
+button.tylink{font:inherit;font-size:12.5px;background:none;border:0;padding:0;margin-top:6px;color:var(--ta);cursor:pointer;font-weight:600}
+button.tylink:hover{text-decoration:underline}
+#mlo,#mls{flex:1 1 100%;min-width:0;font:inherit;font-size:14px;padding:11px 13px;
+ border:1px solid var(--bs);border-radius:10px;background:var(--s0);color:var(--t)}
+#mlo[hidden],#mls[hidden]{display:none}
+#mlo:focus,#mls:focus{outline:2px solid var(--ta);outline-offset:1px;border-color:transparent}
+.mlsub{margin:-10px 0 16px;font-size:13.5px;line-height:1.5;color:var(--t2)}
+.mlsub:empty{display:none}
 button.st{font-family:inherit;cursor:pointer;transition:background .25s,border-color .25s}
 button.st.early:hover{background:var(--bga)}
 button.st .mlar{margin-left:5px;opacity:.75}
@@ -197,6 +213,9 @@ button.st .mlar{margin-left:5px;opacity:.75}
 .cc b{display:block;font-size:16px;letter-spacing:-.01em;color:var(--t)}
 .cc p{margin:4px 0 8px;font-size:12px;line-height:1.45;color:var(--t2)}
 .cc .why{display:flex;gap:6px;flex-wrap:wrap}
+.cc .parts{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;margin:0 0 9px;font-size:11px;line-height:1.35}
+.cc .parts dt{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ta);padding-top:1px}
+.cc .parts dd{margin:0;color:var(--t2)}
 .cc .why span{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
  border-radius:9px;padding:1px 7px;border:1px solid}
 @keyframes fadein{to{opacity:1}}
@@ -772,7 +791,7 @@ svg#world.cyc .asp{transition:opacity .55s}
   .nt{font-size:10.5px;padding:6px 8px 7px;width:48%} .nt small{font-size:8.5px}
   #nt4{left:50%!important;top:34%!important}
   .cc{padding:7px 9px;bottom:9%;left:-2%;width:48%} .cc b{font-size:13px} .cc p{font-size:10px;margin:2px 0 5px}
-  .cc .why span{font-size:8px;padding:0 5px}
+  .cc .why span{font-size:8px;padding:0 5px} .cc .parts{font-size:9px;gap:1px 6px;margin-bottom:6px} .cc .parts dt{font-size:7.5px}
   .srow{gap:12px;margin-top:34px} .sl{font-size:13px}
   /* with lists under them the three scales need full width on a phone */
   #scales .srow{grid-template-columns:1fr;gap:34px}
@@ -825,7 +844,7 @@ svg#world.cyc .asp{transition:opacity .55s}
 <header class="hdr" id="hdr">
   <span class="hw">Groundwork<small>500 · 50 · 5</small></span>
   <span class="hact">
-    <button type="button" class="ml" data-ml="header">Join the list</button>
+    <button type="button" class="ml" data-go="header">Work with us</button>
     <a class="try" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">Try the demo</a>
   </span>
 </header>
@@ -836,14 +855,8 @@ svg#world.cyc .asp{transition:opacity .55s}
   <h1 class="hh"><span class="hwrap"><span id="hword">Groundwork</span></span><span class="hfade"> suggests,<br>you design.</span></h1>
   <p class="lead hfade">Groundwork reads the problem, works through what it allows, and
   hands the designer suggestions: <b><span class="hl k1" id="hl1">a trade-off</span>, <span class="hl k2" id="hl2">a
-  conflict</span>, <span class="hl k3" id="hl3">a stress test</span>, <span class="hl k4" id="hl4">a gap</span>.</b> The design stays theirs.</p>
-  <!-- THE HANDOFF. This line used to read "check out an example and try the
-       demo, scroll for more", which was the entrance to a twenty-thousand-pixel
-       journey. What is below it now is a 52-second film that starts itself, so
-       the line says what is there instead of asking for a scroll the film is
-       about to reward anyway. The demo is not named here on purpose: the header
-       button is sticky and on screen the whole way down, and the close asks
-       again — three asks above the fold was one too many. -->
+  conflict</span>, <span class="hl k3" id="hl3">a stress test</span>, <span class="hl k4" id="hl4">a gap</span>.</b> Each one says the move, the reason, the price and the range. The design stays theirs.</p>
+  
   <p class="hfade">Below: one parcel taken from masterplan to block, in 60&nbsp;seconds.</p>
   <div class="cue hfade"><span></span>60 seconds</div>
  </div>
@@ -859,35 +872,12 @@ svg#world.cyc .asp{transition:opacity .55s}
      <b>No route reaches</b> the park edge.</div>
    <div class="cc" id="cc"><small>concept</small><b>The station walk</b>
      <p>North–south, from the station.</p>
+     <dl class="parts"><dt>move</dt><dd>front the walk north–south</dd><dt>reason</dt><dd>most walks start at the station</dd><dt>price</dt><dd>the busiest edge can&rsquo;t also be walled</dd><dt>range</dt><dd>holds however many decks</dd></dl>
      <div class="why"><span style="color:var(--ta)">trade-off</span><span style="color:var(--warn)">conflict</span><span style="color:var(--hl3)">stress test</span><span class="open" style="color:var(--hl4)">gap · still open</span></div></div>
    <div class="hcap" id="hcap">129 ways across one parcel</div></div>
 </section>
 
-<!-- THE ARGUMENT IN 52 SECONDS. It replaces the scroll that used to run from
-     the 500 to the 5: the same parcel, the same figures, the same three
-     scales, told once and quickly.
 
-     IT SITS INSIDE THE DARK FIELD, between the hero and the opening, and it is
-     there because of what the opening is. Those five beats — surfaces the
-     trade-offs, names the conflicts, checks what holds up — are the film said
-     in the abstract, and they used to be a ramp into the 500-to-5 scroll that
-     paid them off. That scroll is gone; the film is the payoff now. Run the
-     beats first and the page spends five screens describing something the
-     reader could have watched. Run the film first and the beats become the
-     index of what they just saw. .dk redefines the theme tokens on itself, so
-     the section needs no dark styling of its own — it inherits the field.
-
-     IT STARTS ITSELF, MUTED, WHEN IT REACHES THE SCREEN — see "THE FILM PLAYS
-     ITSELF" in the script. `muted` is in the markup and not negotiable: a
-     browser asked to start audio without a gesture does not ask the reader, it
-     refuses the play() outright and leaves a still frame that looks like a
-     broken film. The sound is a music bed with nothing spoken over it, so
-     muted costs the reader no part of the argument, and the pill puts it one
-     click away. `preload="none"` stays because the fetch is armed by the
-     observer a screen early, and no `autoplay` attribute: that one fires on
-     page load, which is now only a screen above — the film would be running
-     to nobody while the hero is still on screen, and a reader arriving at it
-     would join halfway through. The poster is the film's own eighth second. -->
 <section class="film">
   <div class="filmin">
     <div class="filmhd">Learn about Groundwork in 60s<em>one parcel, three scales</em></div>
@@ -949,9 +939,9 @@ svg#world.cyc .asp{transition:opacity .55s}
       <div class="tl3"><small>design trade-offs</small><ul><li>space planning</li><li>efficiency</li><li>edges &amp; outlook</li></ul></div></div>
     <div class="scol" id="s50"><div class="sn">50</div>
       <div class="sl">block</div>
-      <button type="button" class="st early ml" data-ml="badge_top">early access ·
+      <button type="button" class="st early ml" data-ml="badge_top" data-door="pilot">early access ·
         on request<span class="mlar">&rarr;</span></button>
-      <div class="tl3"><small>design trade-offs</small><ul><li>circulation</li><li>efficiency</li><li>daylight &amp; wind</li></ul></div></div>
+      <div class="tl3"><small>design trade-offs</small><ul><li>depth &amp; corridor</li><li>cores</li><li>efficiency</li></ul></div></div>
     <div class="scol" id="s5"><div class="sn">5</div>
       <div class="sl">detail</div>
       <span class="st">in development</span>
@@ -966,17 +956,13 @@ svg#world.cyc .asp{transition:opacity .55s}
 
 
 <section class="end">
-  <!-- the close repeats the three scales: the reader has now SEEN each one,
-       so the same three numerals mean something they didn't the first time -->
-  <!-- the close used to repeat the three scales because the reader had just
-       SCROLLED through each one; with the film carrying that job the repeat is
-       twenty lines below the section it repeats, so it earns nothing. The
-       "on request" trigger it carried moves up to the scales section, which is
-       where the badge now lives. -->
+  
+  
   <h2 class="scales-h">One tool, more than one thing to build.</h2>
   <div class="tyrow">
     <div class="tl3"><small>running today</small><ul><li>Residential</li></ul></div>
-    <div class="tl3"><small>coming soon</small><ul><li>Hospitality</li></ul></div>
+    <div class="tl3"><small>coming soon</small><ul><li>Hospitality</li></ul>
+      <button type="button" class="tylink ml" data-ml="hosp" data-door="study">one-site studies on request<span class="mlar">&rarr;</span></button></div>
     <div class="tl3"><small>in development</small>
       <ul><li>Mixed-use</li><li>Commercial</li><li>Office</li><li>Education</li>
       <li>Healthcare</li></ul></div>
@@ -985,18 +971,35 @@ svg#world.cyc .asp{transition:opacity .55s}
   <div class="ctarow">
     <a class="cta" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">
       Open the demo <small>groundwork-lilac.vercel.app</small></a>
-    <button type="button" class="mlbig ml" data-ml="end">Join the mailing list</button>
+  </div>
+  <h2 class="try" id="doors">Work with us.</h2>
+  <div class="doors">
+    <div class="door"><small>small practices</small>
+      <h3>Explore, S$50 a month</h3>
+      <p>The concept board on the masterplan, self-serve. Early access: nothing is charged now.</p>
+      <button type="button" class="mlbig ml" data-ml="explore" data-door="explore">Get early access</button></div>
+    <div class="door"><small>practices</small>
+      <h3>Pilot the 50 on a live project</h3>
+      <p>Block suggestions and the concept board on one of your projects, for about ten weeks.</p>
+      <button type="button" class="mlbig ml" data-ml="pilot" data-door="pilot">Ask about a pilot</button></div>
+    <div class="door"><small>developers</small>
+      <h3>Before a land bid: a one-site study</h3>
+      <p>Strategies for one site, side by side, each with what it gives and what it gives up.</p>
+      <button type="button" class="mlbig ml" data-ml="study" data-door="study">Ask about a study</button></div>
   </div>
 </section>
 
-<!-- THE DIALOG ITSELF. Native <dialog>, so Escape, the backdrop and the focus
-     trap are the browser's job rather than three more things to get wrong, and
-     focus returns to whichever of the three triggers opened it. -->
+
 <dialog class="mld" id="mld" aria-labelledby="mldh">
   <div class="mlin">
     <form method="dialog" class="mlx"><button aria-label="Close">&#10005;</button></form>
     <h3 id="mldh">Hear when 50 opens.</h3>
+    <p class="mlsub" id="mlsub"></p>
     <form id="mlf" novalidate>
+      <label class="vh" for="mlo">Organisation</label>
+      <input id="mlo" type="text" name="org" autocomplete="organization" hidden>
+      <label class="vh" for="mls">Type</label>
+      <select id="mls" name="detail" hidden></select>
       <label class="vh" for="mle">Email address</label>
       <input id="mle" type="email" name="email" required autocomplete="email"
              spellcheck="false" placeholder="you@studio.com">
@@ -1581,19 +1584,42 @@ onAll();
 const MLD=document.getElementById("mld"), MLF=document.getElementById("mlf"),
       MLE=document.getElementById("mle"), MLB=document.getElementById("mlb"),
       MLM=document.getElementById("mlm");
-let MLSRC="", MLSENT=false;
+let MLSRC="", MLSENT=false, MLDOOR="";
+const MLO=document.getElementById("mlo"), MLS=document.getElementById("mls"),
+      MLH=document.getElementById("mldh"), MLSUB=document.getElementById("mlsub");
+/* THREE DOORS, ONE DIALOG. Each door changes the question and the field or two
+   beside the address. The door, organisation and type ride in `source`
+   ("pilot | Firm | Private residential"), so the deployed Code.gs needs no change. */
+const DOORS={
+  explore:{h:"Explore tier: early access.", sub:"S$50 a month when it opens. Nothing is charged now.",
+           org:"Practice name", opts:null},
+  pilot:{h:"Pilot the 50 on a live project.", sub:"Tell us where to reach you and we will set up a call.",
+         org:"Firm", opts:["Project type","Public housing","Private residential","Hotel","Other"]},
+  study:{h:"A one-site study before a land bid.", sub:"Tell us where to reach you and we will set up a call.",
+         org:"Company", opts:["Site type","Residential","Hotel","Mixed-use","Other"]},
+  "":{h:"Hear when 50 opens.", sub:"", org:null, opts:null}};
+function mlDoor(k){
+  const d=DOORS[k]||DOORS[""]; MLDOOR=DOORS[k]?k:"";
+  MLH.textContent=d.h; MLSUB.textContent=d.sub;
+  MLB.textContent=(k==="pilot"||k==="study")?"Send":"Join";
+  MLO.hidden=!d.org; MLO.value=""; if(d.org) MLO.placeholder=d.org;
+  MLS.hidden=!d.opts; MLS.innerHTML=d.opts?d.opts.map((o,i)=>`<option value="${i?o:""}">${o}</option>`).join(""):"";
+}
 const mlEP=()=>((document.querySelector('meta[name="gw-endpoint"]')||{}).content||"").trim();
 const mlSay=(t,k)=>{ MLM.textContent=t; MLM.className="mlmsg"+(k?" "+k:""); };
 const mlClose=()=>{ MLD.close ? MLD.close() : MLD.removeAttribute("open"); };
 
-function mlOpen(src){
-  MLSRC=src; mlSay("",""); MLF.hidden=false; MLB.disabled=false; MLSENT=false;
+function mlOpen(src,door){
+  mlDoor(door||""); MLSRC=src; mlSay("",""); MLF.hidden=false; MLB.disabled=false; MLSENT=false;
   if(MLD.showModal) MLD.showModal(); else MLD.setAttribute("open","");
   setTimeout(()=>{try{MLE.focus();}catch(e){}},40);
   if(window.MLCLICK) MLCLICK("open_"+src);
 }
 document.querySelectorAll("[data-ml]").forEach(b=>
-  b.addEventListener("click",e=>{ e.preventDefault(); mlOpen(b.dataset.ml); }));
+  b.addEventListener("click",e=>{ e.preventDefault(); mlOpen(b.dataset.ml,b.dataset.door); }));
+document.querySelectorAll("[data-go]").forEach(b=>
+  b.addEventListener("click",e=>{ e.preventDefault();
+    const t=document.getElementById("doors"); if(t) t.scrollIntoView({behavior:"smooth",block:"center"}); }));
 
 /* backdrop click. e.target is the dialog for BOTH the backdrop and the dialog's
    own padding, so the hit has to be tested against the box; detail 0 is a
@@ -1623,7 +1649,9 @@ MLF.addEventListener("submit",e=>{
     return; }
   MLSENT=true; MLB.disabled=true; mlSay("Sending…","note");
   const body=JSON.stringify({
-    kind:"signup", email:em, source:MLSRC,
+    kind:"signup", email:em,
+    source:[MLDOOR||MLSRC, MLO.hidden?"":MLO.value.trim().slice(0,120), MLS.hidden?"":MLS.value]
+             .filter(Boolean).join(" | "),
     sid:(window.GWSID||""),
     device:innerWidth<=760?"mobile":"desktop",
     ref:(document.referrer||"").slice(0,200),
@@ -1642,7 +1670,10 @@ MLF.addEventListener("submit",e=>{
     catch(err){ return false; } };
   const done=ok=>{
     if(ok){ MLF.hidden=true;
-      mlSay("On the list. You'll get a note when 50 opens.","ok");
+      mlSay({explore:"You're on the early-access list. Nothing is charged until it opens.",
+             pilot:"Thanks. We'll be in touch to set up a call about a pilot.",
+             study:"Thanks. We'll be in touch to set up a call about a study."}[MLDOOR]
+            ||"On the list. You'll get a note when 50 opens.","ok");
       if(window.MLCLICK) MLCLICK("submit"); }
     else { MLSENT=false; MLB.disabled=false;
       mlSay("That didn't send. Try again in a moment.","bad"); }
