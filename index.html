@@ -2,21 +2,27 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- analytics: the Apps Script WEB APP url. Must end in /exec -->
-<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbyisup_PYrTP5crzXjDHr3dnTBk7s_LcizwNi2x2dNQOnIFVbzIgnEsmUlEf3DpvCGd/exec">
+<meta name="gw-endpoint" content="https://script.google.com/macros/s/AKfycbw_GmWf8e_ArDx8DLRFBmSZVLEWbtuAjOGrqkNsdQ1k63o1kgAPFwwbt03IRlGl0AQ/exec">
 <title>Groundwork — 500 · 50 · 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--s0:#faf9f7;--s1:#f2f1ed;--s2:#fff;--t:#0b0b0b;--t2:#52514e;--t3:#898781;
  --b:rgba(11,11,11,.10);--bs:rgba(11,11,11,.20);--ta:#185fa5;--bga:#e6f1fb;
- --warn:#C64C31;--gr:#8aa87c;--ct:#4f7a4a;--r:8px;--pg:#faf9f7}
+ --warn:#C64C31;--gr:#8aa87c;--ct:#4f7a4a;--bgc:#e8f2e6;--r:8px;--pg:#faf9f7;
+ /* the Crit board's third note type. --hl1..4 are scoped to .hero, so they do
+    not resolve down here, and one unresolved colour voids a whole gradient —
+    which is how the board's rail vanished entirely rather than losing a third.
+    The hero's amber is also tuned for a dark field and is unreadable on white
+    at 9.5px, so this is a themed pair rather than a reused one. */
+ --gap:#8a6410;--bgg:#faf1da;--bgw:#fbe9e4}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
  --s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;--t2:#c3c2b7;--t3:#8a8880;
  --b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);--ta:#7db2e8;--bga:#16293c;
- --warn:#e8836a;--ct:#8fbf87;--pg:#121211}}
+ --warn:#e8836a;--ct:#8fbf87;--bgc:#192a18;--pg:#121211;--gap:#e0b45a;--bgg:#33290f;--bgw:#3a221c}}
 :root[data-theme="dark"]{--s0:#121211;--s1:#1a1a19;--s2:#212120;--t:#f0efec;
  --t2:#c3c2b7;--t3:#8a8880;--b:rgba(240,239,236,.12);--bs:rgba(240,239,236,.24);
- --ta:#7db2e8;--bga:#16293c;--warn:#e8836a;--ct:#8fbf87;--pg:#121211}
+ --ta:#7db2e8;--bga:#16293c;--warn:#e8836a;--ct:#8fbf87;--bgc:#192a18;--pg:#121211;--gap:#e0b45a;--bgg:#33290f;--bgw:#3a221c}
 *{box-sizing:border-box}
 body{margin:0;padding-top:47px;background:var(--s0);color:var(--t);font-size:15px;line-height:1.6;
  font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
@@ -34,6 +40,10 @@ body{margin:0;padding-top:47px;background:var(--s0);color:var(--t);font-size:15p
  border-bottom-color:var(--b)}
 .hdr .hw{font-size:14px;font-weight:700;letter-spacing:-.01em;color:#f0efec;transition:color .4s}
 .hdr .hw small{font-weight:500;opacity:.6;margin-left:3px}
+/* the engines, then the board: a hairline rather than a typed "|", which would read as
+   punctuation and be announced as "vertical bar". Phones hide the whole <small> below. */
+.hdr .hsep{display:inline-block;width:1px;height:.95em;background:currentColor;opacity:.55;
+  margin:0 8px;vertical-align:-.13em}
 .hdr.lit .hw{color:var(--t)}
 .hdr a.try{font-size:12.5px;font-weight:600;text-decoration:none;border-radius:20px;
  padding:6px 14px;border:1px solid rgba(240,239,236,.35);color:#f0efec;transition:.3s}
@@ -403,7 +413,217 @@ svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-
 .scales h2{font-size:clamp(26px,4.2vw,40px);line-height:1.15;letter-spacing:-.028em;
  font-weight:700;margin:0 0 12px}
 .scales p{font-size:clamp(15px,1.8vw,17.5px);color:var(--t2);max-width:52ch;margin:0}
-.srow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:48px}
+/* CRIT: THREE CROPS OF THE BOARD, ONE PER WAY IN.
+   These are not drawings of the product and not a whole-screen shot either.
+   Each is a tight crop of the real board mid-interaction — a route dragged
+   gate to gate, a question typed and answered, two pins recombined — framed
+   so the mechanism is legible and faded at the foot so it reads as a glimpse
+   rather than a boxed screenshot. A full-board grab had to sit at 63% to fit
+   the column and turned into unreadable confetti; a crop sits at full size.
+   Backgrounds rather than <img> so light and dark swap on the page's own
+   cascade (a <picture> follows the OS only and would be wrong if the host
+   sets data-theme), and only the matching file is fetched. */
+.critkick{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+.critkick i{width:6px;height:6px;border-radius:50%;background:var(--ta);flex:0 0 auto}
+
+.crops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;
+  margin:32px 0 0;padding:0;list-style:none}
+.crops li{min-width:0}
+/* the crop needs a positioned box of its own: the pencil is placed in per
+   cent of the IMAGE, and the <li> is taller than it (label and caption) and
+   wider than it (the crop is 76.5%), so percentages against the li would miss
+   on both axes. */
+.cw{position:relative;width:76.5%;aspect-ratio:1}
+.crop{position:absolute;inset:0;background:center top/cover no-repeat;
+  /* the fade is the point: the crop has to look cut out of something larger */
+  -webkit-mask-image:linear-gradient(to bottom,#000 0 55%,rgba(0,0,0,.3) 82%,transparent 100%);
+          mask-image:linear-gradient(to bottom,#000 0 55%,rgba(0,0,0,.3) 82%,transparent 100%)}
+/* THE STILLS, BY THEME. Custom properties so one rule per tile can name both
+   layers it needs; only the URLs the current theme's rules actually use are
+   fetched. The geometry still carries no stroke any more — the route is drawn
+   live on top of it, so there is one source of truth for where it runs. */
+.crops{--geo:url("media/crit-geoblank-light.webp");--txt0:url("media/crit-txtblank-light.webp");
+  --txt1:url("media/crit-txt-light.webp");--rul:url("media/crit-rul-light.webp");--trace:#185fa5}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .crops{
+  --geo:url("media/crit-geoblank-dark.webp");--txt0:url("media/crit-txtblank-dark.webp");
+  --txt1:url("media/crit-txt-dark.webp");--rul:url("media/crit-rul-dark.webp");--trace:#b5d4f4}}
+:root[data-theme="dark"] .crops{--geo:url("media/crit-geoblank-dark.webp");
+  --txt0:url("media/crit-txtblank-dark.webp");--txt1:url("media/crit-txt-dark.webp");
+  --rul:url("media/crit-rul-dark.webp");--trace:#b5d4f4}
+.crops li:nth-child(1) .crop{background-image:var(--geo)}
+.crops li:nth-child(2) .crop{background-image:var(--txt0)}
+.crops li:nth-child(3) .crop{background-image:var(--rul)}
+/* the label sits just inside the faded tail, close enough that the tile and
+   its name read as one object. Pulling it a full 54px up put GEOMETRY and
+   RULES on top of live pixels — the fade is not opaque enough that high, and
+   the rules tile had a cork board running under its label. */
+.crops h4{margin:-18px 0 0;position:relative;font-size:11px;letter-spacing:.11em;
+  text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px}
+.crops h4::before{content:"";width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+.crops li:nth-child(1) h4{color:var(--ta)} .crops li:nth-child(1) h4::before{background:var(--ta)}
+.crops li:nth-child(2) h4{color:var(--ct)} .crops li:nth-child(2) h4::before{background:var(--ct)}
+.crops li:nth-child(3) h4{color:var(--gap)} .crops li:nth-child(3) h4::before{background:var(--gap)}
+.crops h4{font-size:12px}
+.crops p{margin:7px 0 0;font-size:15px;color:var(--t2)}
+/* ======================== THE THREE TILES, MOVING ========================
+   Each still is the real board; what moves is drawn over it, on measurements
+   taken from the board itself (anim-geom.json, from the capture script):
+     geometry  the route the board RECORDED for a drag, replayed as an SVG
+               path drawn by its own pencil. Stroke colour, width, opacity and
+               caps are the board's computed values, not a guess.
+     text      a second still with the question typed, revealed letter by
+               letter. A pixel diff of the two stills found the letters and
+               nothing else above the answer, so the wipe can only ever show
+               typing; the answer is the board's real reply, faded in after.
+     rules     a pointer that presses Pin on one recombination, arcs down and
+               presses the other, and rests there — which is where the next
+               loop picks it up, so it never leaves the tile.
+   One 6s cycle, staggered 0 / .6 / 1.2s. The first cut ran 7s with long holds
+   and went completely still for three seconds in every seven, which read as
+   "played once and stopped". Holds are now short and the pointer is never off
+   stage, so at every instant at least one tile is moving.
+   Without JS, or with reduced motion asked for, none of this is armed and each
+   tile shows its finished state: route drawn with the pencil resting on it,
+   question asked and answered, pointer on the first Pin. */
+
+/* geometry — the route lives inside .crop so it fades with the still under
+   it; the pencil lives outside so it does not */
+.trace{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.trace path{fill:none;stroke:var(--trace);stroke-width:.46;stroke-linecap:round;
+  stroke-linejoin:round}
+.nib{position:absolute;inset:0;width:100%;height:100%;overflow:visible;
+  pointer-events:none;filter:drop-shadow(0 1px 2px rgba(11,11,11,.28))}
+.nib .pb{fill:var(--t);stroke:var(--s0);stroke-width:1.1;stroke-linejoin:round}
+.nib .nl{fill:none;stroke:var(--s0);stroke-width:1.3;stroke-linecap:round}
+
+/* text — the typed still, clipped to the bar; the answer, clipped below it */
+.typed,.answer{position:absolute;inset:0;background:var(--txt1) center top/cover no-repeat}
+.typed{clip-path:inset(16.00% 25.28% 71.78% 5.56%)}
+.answer{clip-path:inset(31.55% 0 0 0)}
+.caret{position:absolute;display:none;left:74.72%;top:19.38%;width:1.5px;height:5.69%;
+  background:var(--t);border-radius:1px}
+
+/* rules — a pointer, a press tint on each real Pin button, a ripple on each.
+   Both buttons were measured on the board in the same state the still was
+   shot in; a run with a different flag set put them 3px lower. */
+.ptr{position:absolute;left:61.23%;top:38.82%;width:7%;height:auto;translate:-12.5% -8.3%;
+  transform-origin:12.5% 8.3%;pointer-events:none;overflow:visible;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.ptr path{fill:#111;stroke:#fff;stroke-width:1.4;stroke-linejoin:round}
+.press{position:absolute;left:54.33%;width:13.80%;height:7.50%;border-radius:99px;
+  background:rgba(11,11,11,.16);opacity:0;pointer-events:none}
+.press.p1{top:35.07%} .press.p2{top:61.18%}
+.ripple{position:absolute;left:61.23%;width:16%;aspect-ratio:1;translate:-50% -50%;
+  border-radius:50%;border:2px solid var(--gap);opacity:0;pointer-events:none}
+.ripple.r1{top:38.82%} .ripple.r2{top:64.93%}
+
+/* ARMED: only when motion is allowed. Each animation starts paused on its
+   first frame, which is the "before" state, so arming causes no visible jump;
+   .play is added when the row scrolls into view. */
+.crops.anim .typed{animation:cr-type 6s .6s infinite both paused linear}
+.crops.anim .answer{animation:cr-answer 6s .6s infinite both paused}
+.crops.anim .caret{display:block;animation:cr-caret 6s .6s infinite both paused linear,
+  cr-blink 6s .6s infinite both paused}
+.crops.anim .ptr{animation:cr-ptr 6s 1.2s infinite both paused}
+.crops.anim .press.p1{animation:cr-press1 6s 1.2s infinite both paused}
+.crops.anim .press.p2{animation:cr-press2 6s 1.2s infinite both paused}
+.crops.anim .ripple.r1{animation:cr-ripple1 6s 1.2s infinite both paused ease-out}
+.crops.anim .ripple.r2{animation:cr-ripple2 6s 1.2s infinite both paused ease-out}
+.crops.anim.play .typed,.crops.anim.play .answer,.crops.anim.play .caret,
+.crops.anim.play .ptr,.crops.anim.play .press,.crops.anim.play .ripple{
+  animation-play-state:running}
+
+/* 31 characters, so 31 steps: each step uncovers one letter's worth */
+@keyframes cr-type{
+  0%{clip-path:inset(16.00% 89.58% 71.78% 5.56%)}
+  5%{clip-path:inset(16.00% 89.58% 71.78% 5.56%);animation-timing-function:steps(31,end)}
+  40%,86.7%{clip-path:inset(16.00% 25.28% 71.78% 5.56%);opacity:1}
+  93.3%,100%{clip-path:inset(16.00% 25.28% 71.78% 5.56%);opacity:0}}
+@keyframes cr-caret{
+  0%{left:10.42%}
+  5%{left:10.42%;animation-timing-function:steps(31,end)}
+  40%,100%{left:74.72%}}
+@keyframes cr-blink{
+  0%,2.4%{opacity:1} 2.5%,4.9%{opacity:0} 5%,41.6%{opacity:1} 41.7%,43.3%{opacity:0}
+  43.4%,44.9%{opacity:1} 45%,93.3%{opacity:0} 93.4%,100%{opacity:1}}
+@keyframes cr-answer{
+  0%,45%{opacity:0;transform:translateY(1.5%)}
+  50%,86.7%{opacity:1;transform:none}
+  93.3%,100%{opacity:0;transform:none}}
+/* rest on Pin 2 -> arc up to Pin 1, press -> hold -> arc down to Pin 2,
+   press -> rest. Ends where it starts, so the loop has no seam. The arc's
+   midpoint sits 4% to the right: a hand does not travel a plumb line. */
+@keyframes cr-ptr{
+  0%{left:61.23%;top:64.93%;transform:none}
+  3.3%{left:61.23%;top:64.93%;animation-timing-function:cubic-bezier(.45,0,1,1)}
+  11.7%{left:65.23%;top:51.88%;animation-timing-function:cubic-bezier(0,0,.3,1)}
+  20%{left:61.23%;top:38.82%;transform:none}
+  21.7%{transform:scale(.8)}
+  24.2%{transform:none}
+  50%{left:61.23%;top:38.82%;animation-timing-function:cubic-bezier(.45,0,1,1)}
+  58.3%{left:65.23%;top:51.88%;animation-timing-function:cubic-bezier(0,0,.3,1)}
+  66.7%{left:61.23%;top:64.93%;transform:none}
+  68.3%{transform:scale(.8)}
+  70.8%{transform:none}
+  100%{left:61.23%;top:64.93%;transform:none}}
+@keyframes cr-press1{0%,20%{opacity:0} 21.7%{opacity:1} 26%,100%{opacity:0}}
+@keyframes cr-press2{0%,66.7%{opacity:0} 68.3%{opacity:1} 72.5%,100%{opacity:0}}
+@keyframes cr-ripple1{
+  0%,20%{opacity:0;transform:scale(.2)} 20.3%{opacity:.55;transform:scale(.25)}
+  31.7%,100%{opacity:0;transform:scale(1.8)}}
+@keyframes cr-ripple2{
+  0%,66.7%{opacity:0;transform:scale(.2)} 67%{opacity:.55;transform:scale(.25)}
+  78.3%,100%{opacity:0;transform:scale(1.8)}}
+
+
+/* THREE COLUMNS CONVERGING ON ONE BOARD. Running the other way this had to be
+   a bus — one stem, one bar, three drops — with a note that the drops were not
+   a pairing of way-in to scale. In this direction the shape is the claim: the
+   risers leave the engine columns, meet on one bar, and a single stem carries
+   them into Crit. The risers use .srow's own track list and gap, so they start
+   on the column centres by construction (build.py compares the two). */
+.conv{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;height:30px;margin:52px 0 0}
+.conv i{justify-self:center;width:1px;height:100%;background:var(--bs)}
+.conv::before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--bs)}
+.conv::after{content:"";position:absolute;left:50%;bottom:-20px;width:1px;height:20px;
+  background:var(--bs)}
+.conv+.critkick{margin-top:34px}
+/* the product name at numeral size, with the same 1.5px rule the engine
+   columns carry under 500 / 50 / 5 — one rule, full width, because the board
+   is one surface over all three ways in */
+.critmark{margin-top:38px}
+.critmark::after{content:"";display:block;margin-top:12px;border-top:1.5px solid var(--t)}
+.critmark+.crops{margin-top:18px}
+.critkick.eng i{background:var(--t3)}
+
+/* MOBILE: three crops side by side would be 100px each and illegible, so they
+   stack full width — which makes each one BIGGER than on desktop, the one
+   thing a phone column gives you back. */
+@media(max-width:760px){
+  /* THE NAME AND ITS LINE SIT ON THEIR OWN TILE, not under it. Stacked, a
+     caption under one crop sat closer to the next crop than to its own, and
+     read as that one's title. So the fade runs longer here (clear from 75%),
+     the label is pulled up into it by a share of the tile's own width (the
+     tile is square, so that is the same share of its height at every phone
+     size), and the tiles are spaced well apart. The pencil is masked with the
+     same fade so it never draws across the words. */
+  .crops{grid-template-columns:1fr;gap:52px;margin-top:28px}
+  .crops li{display:block;position:relative}
+  .cw{width:100%}
+  .crop,.nib{-webkit-mask-image:linear-gradient(to bottom,#000 0 50%,rgba(0,0,0,.28) 64%,transparent 75%);
+                     mask-image:linear-gradient(to bottom,#000 0 50%,rgba(0,0,0,.28) 64%,transparent 75%)}
+  .crops h4{margin-top:-22%;font-size:13px}
+  .crops p{margin:8px 0 0;font-size:16.5px;line-height:1.45;max-width:30ch}
+  .conv{grid-template-columns:1fr;height:22px;margin-top:38px}
+  .conv::before{display:none}
+  .conv::after{bottom:-16px;height:16px}
+  .conv i:nth-child(n+2){display:none}
+  .conv+.critkick{margin-top:30px}
+  .crop{width:100%}}
+.srow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:38px}
 .sn{font-size:clamp(58px,10vw,124px);font-weight:600;letter-spacing:-.03em;line-height:1;
  font-variant-numeric:tabular-nums}
 .sn span{display:inline-block;transform-origin:0 0;will-change:transform}
@@ -823,7 +1043,7 @@ svg#world.cyc .asp{transition:opacity .55s}
   .rsec{margin:0} .rtick{display:none}}
 </style></head><body>
 <header class="hdr" id="hdr">
-  <span class="hw">Groundwork<small>500 · 50 · 5</small></span>
+  <span class="hw">Groundwork<small>500 · 50 · 5<i class="hsep" aria-hidden="true"></i>Crit</small></span>
   <span class="hact">
     <button type="button" class="ml" data-ml="header">Join the list</button>
     <a class="try" href="https://groundwork-lilac.vercel.app/" target="_blank" rel="noopener">Try the demo</a>
@@ -839,13 +1059,13 @@ svg#world.cyc .asp{transition:opacity .55s}
   conflict</span>, <span class="hl k3" id="hl3">a stress test</span>, <span class="hl k4" id="hl4">a gap</span>.</b> The design stays theirs.</p>
   <!-- THE HANDOFF. This line used to read "check out an example and try the
        demo, scroll for more", which was the entrance to a twenty-thousand-pixel
-       journey. What is below it now is a 52-second film that starts itself, so
+       journey. What is below it now is a 65-second film that starts itself, so
        the line says what is there instead of asking for a scroll the film is
        about to reward anyway. The demo is not named here on purpose: the header
        button is sticky and on screen the whole way down, and the close asks
        again — three asks above the fold was one too many. -->
-  <p class="hfade">Below: one parcel taken from masterplan to block, in 60&nbsp;seconds.</p>
-  <div class="cue hfade"><span></span>60 seconds</div>
+  <p class="hfade">Below: one parcel, read, tested and talked through, in 65&nbsp;seconds.</p>
+  <div class="cue hfade"><span></span>65 seconds</div>
  </div>
  <div class="hart hfade"><svg id="sweep" class="sweep" viewBox="22 18 264 264" role="img"
    aria-label="129 ways across one parcel, drawn over each other"></svg>
@@ -863,7 +1083,7 @@ svg#world.cyc .asp{transition:opacity .55s}
    <div class="hcap" id="hcap">129 ways across one parcel</div></div>
 </section>
 
-<!-- THE ARGUMENT IN 52 SECONDS. It replaces the scroll that used to run from
+<!-- THE ARGUMENT IN 65 SECONDS. It replaces the scroll that used to run from
      the 500 to the 5: the same parcel, the same figures, the same three
      scales, told once and quickly.
 
@@ -890,12 +1110,13 @@ svg#world.cyc .asp{transition:opacity .55s}
      would join halfway through. The poster is the film's own eighth second. -->
 <section class="film">
   <div class="filmin">
-    <div class="filmhd">Learn about Groundwork in 60s<em>one parcel, three scales</em></div>
+    <div class="filmhd">Learn about Groundwork in 65s<em>one parcel, three scales</em></div>
     <div class="filmw" id="filmw">
       <video id="film" controls playsinline muted preload="none"
         poster="media/groundwork-open.jpg" width="900" height="900"
-        aria-label="Groundwork reading the Ubi Avenue parcel, deriving ways across it,
-        making a suggestion with its reasons, and carrying it from masterplan to block">
+        aria-label="Groundwork reading the Ubi Avenue parcel, suggesting an organisation,
+        heights and what is feasible, comparing every plan it tested, then Groundwork Crit:
+        sketching, asking and pinning to get new suggestions across masterplan, block and detail">
         <source src="media/groundwork.mp4" type="video/mp4">
         Your browser cannot play this video.
       </video>
@@ -940,8 +1161,16 @@ svg#world.cyc .asp{transition:opacity .55s}
 </div><!-- /.dk — the page turns to paper here, as the site arrives -->
 
 <section class="scales" id="scales">
-  <h2>One tool, three scales.</h2>
-  <p>The suggestions follow you from the masterplan to the block to the detail; and vice versa.</p>
+  <!-- WHAT IT KNOWS COMES BEFORE WHAT YOU CAN DO TO IT. Crit led this
+       section while the engines were a footnote to it, which asked the reader
+       to care about a way in before there was anything to go into: the tiles
+       say "48 of 48" and "EKM#4/spine", and neither means a thing until the
+       sweep has been introduced. -->
+  <div class="critkick eng"><i></i>The engine</div>
+  <h2>Three scales of the same site.</h2>
+  <p>The masterplan, the block, the detail. Each sweeps every option the site
+  allows at its own grain, and reports the trade-offs it found.</p>
+
   <div class="srow">
     <div class="scol"><div class="sn"><span id="big500">500</span></div>
       <div class="sl">masterplan</div>
@@ -957,6 +1186,97 @@ svg#world.cyc .asp{transition:opacity .55s}
       <span class="st">in development</span>
       <div class="tl3"><small>design trade-offs</small><ul><li>shading</li><li>glare &amp; view</li><li>buildability &amp; expression</li></ul></div></div>
   </div>
+  <!-- THREE ENGINES CONVERGING ON ONE SURFACE. The connector used to run the
+       other way, from the board down to the engines, which forced the bus
+       shape: one stem out, one bar, three drops, with a comment explaining
+       that the drops were not a pairing. Reversed, it is simply true — three
+       columns rise, meet, and enter one board — so the picture needs no
+       disclaimer.
+       THE BOARD IS BUILT LIKE THE ENGINE ABOVE IT: kicker, heading, line, then
+       a name at numeral size with a rule under it, then its three parts. The
+       engine reads 500 / 50 / 5 over masterplan / block / detail; this reads
+       Crit over geometry / text / rules, so the two blocks scan as siblings.
+       NOTE: the wordmark is the short form. The full name was used earlier
+       because "crit" is a common word in the profession and the mark has not
+       been cleared; at numeral size this is the most exposed use of it. -->
+  <div class="conv" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <div class="critkick eng"><i></i>The concept board</div>
+  <h2>Interact with geometry, text and rules.</h2>
+  <p>Sketch on the site, ask in plain words, pin what you keep. Explore, combine,
+  talk it through.</p>
+
+  <div class="critmark"><div class="sn">Crit</div></div>
+
+  <!-- EACH TILE IS A CROP OF THE REAL BOARD MID-INTERACTION, caught by
+       driving it: the route was dragged gate to gate, the question typed and
+       sent, the two pins recombined by the board itself. Nothing here is a
+       mock-up of a mock-up. If the board changes, these have to be retaken —
+       they are screenshots, and they go stale the way screenshots do. -->
+  <ul class="crops">
+    <li>
+      <div class="cw">
+        <div class="crop" role="img" aria-label="The site drawn as a circle with
+          its neighbours named around the rim, and a route traced by hand from
+          the north gate down to the south gate, with a pencil drawing it.">
+          <svg class="trace" viewBox="0 0 100 100" aria-hidden="true">
+            <path id="cr-route" d="M54.06 20.09 L54.59 20.85 L55.07 21.63 L55.56 22.41 L56.02 23.19 L56.44 23.96 L56.84 24.76 L57.24 25.58 L57.58 26.41 L57.91 27.25 L58.19 28.11 L58.46 28.97 L58.67 29.86 L58.86 30.74 L59.01 31.64 L59.11 32.55 L59.22 33.48 L59.28 34.40 L59.32 35.35 L59.37 36.28 L59.39 37.25 L59.41 38.19 L59.43 39.16 L59.43 40.13 L59.43 41.09 L59.43 42.09 L59.43 43.07 L59.41 44.08 L59.37 45.09 L59.30 46.11 L59.22 47.12 L59.11 48.15 L58.97 49.16 L58.80 50.17 L58.61 51.18 L58.38 52.19 L58.15 53.20 L57.87 54.21 L57.60 55.20 L57.30 56.21 L57.01 57.20 L56.71 58.19 L56.42 59.17 L56.13 60.19 L55.85 61.17 L55.58 62.16 L55.30 63.15 L55.03 64.14 L54.78 65.11 L54.52 66.10 L54.25 67.07 L53.98 68.02 L53.71 68.98 L53.43 69.91 L53.16 70.86 L52.86 71.78 L52.57 72.69 L52.27 73.59 L51.98 74.48 L51.70 75.36 L51.45 76.25 L51.20 77.11 L50.99 77.97 L50.80 78.83 L50.63 79.67 L50.48 80.52 L50.38 81.34 L50.31 82.16 L50.25 82.96 L50.23 83.74 L50.23 84.52 L50.23 85.27 L50.25 86.01" pathLength="1" stroke-opacity=".75"
+                  stroke-dasharray="1 2" stroke-dashoffset="0">
+              <animate class="cr-a" attributeName="stroke-dashoffset" begin="indefinite"
+                dur="6s" repeatCount="indefinite" values="1.02;1.02;0;0" keyTimes="0;.042;.458;1"
+                calcMode="spline" keySplines="0 0 1 1;.45 0 .35 1;0 0 1 1"/>
+              <animate class="cr-a" attributeName="opacity" begin="indefinite" dur="6s"
+                repeatCount="indefinite" values="1;1;0;0" keyTimes="0;.867;.933;1"/>
+            </path>
+          </svg>
+        </div>
+        <svg class="nib" viewBox="0 0 100 100" aria-hidden="true">
+          <g class="nibg" transform="translate(58.97 49.16)">
+            <g transform="rotate(-6) scale(.5) translate(-3.2 -20.8)">
+              <path class="pb" d="M3.2 20.8 4.5 16.6 16.7 4.4a2 2 0 0 1 2.9 0l1.1 1.1a2 2 0 0 1 0 2.9L8.5 20.6l-4.2 1.3a.9.9 0 0 1-1.1-1.1Z"/>
+              <path class="nl" d="M15.5 5.6 19.6 9.7"/>
+            </g>
+            <animateMotion class="cr-a" begin="indefinite" dur="6s" repeatCount="indefinite"
+              keyPoints="0;0;1;1" keyTimes="0;.042;.458;1" calcMode="spline" keySplines="0 0 1 1;.45 0 .35 1;0 0 1 1">
+              <mpath href="#cr-route"/>
+            </animateMotion>
+            <animate class="cr-a" attributeName="opacity" begin="indefinite" dur="6s"
+              repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;.042;.458;.508;1"/>
+          </g>
+        </svg>
+      </div>
+      <h4>Geometry</h4>
+      <p>Trace a route between two gates, or loop a carpark.</p>
+    </li>
+    <li>
+      <div class="cw"><div class="crop" role="img" aria-label="An ask bar where
+        the question which plans reach every amenity is typed, then answered with
+        the pattern it matched, The Full Serve, and the count: 48 of 48.">
+        <div class="typed" aria-hidden="true"></div>
+        <div class="answer" aria-hidden="true"></div>
+        <span class="caret" aria-hidden="true"></span>
+      </div></div>
+      <h4>Text</h4>
+      <p>Ask in plain words. It names the pattern it matched.</p>
+    </li>
+    <li>
+      <div class="cw">
+        <div class="crop" role="img" aria-label="A panel headed Mix your last two
+          pins, offering the two recombinations of the pinned plans, and a pointer
+          clicking Pin on each of them in turn."></div>
+        <span class="press p1" aria-hidden="true"></span>
+        <span class="press p2" aria-hidden="true"></span>
+        <span class="ripple r1" aria-hidden="true"></span>
+        <span class="ripple r2" aria-hidden="true"></span>
+        <svg class="ptr" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 2l14.5 10.6-6.6 1.2 3.7 7.7-2.9 1.4-3.7-7.8L3 20.6z"/>
+        </svg>
+      </div>
+      <h4>Rules</h4>
+      <p>Pin what you keep. It recombines them into new plans.</p>
+    </li>
+  </ul>
+
 </section>
 
 
@@ -1452,7 +1772,7 @@ onAll();
    so it is the argument that arrives either way.
 
    WHEN IT REACHES THE SCREEN, not on load. The `autoplay` attribute fires the
-   moment the page is ready, and a 52-second film begun in the hero is a third
+   moment the page is ready, and a 65-second film begun in the hero is a third
    over before anyone has scrolled to it.
 
    AND IT STOPS WHEN IT LEAVES, resuming where it was rather than restarting.
@@ -1654,6 +1974,31 @@ MLF.addEventListener("submit",e=>{
     .then(r=>done(!!r.ok||beacon()))
     .catch(()=>done(beacon()));
 });
+
+/* ---- THE THREE TILES MOVE WHEN THEY ARRIVE ----
+   Armed only when the reader has not asked for reduced motion; otherwise every
+   tile keeps its finished state and nothing here runs. Arming puts each tile
+   on its first frame (route undrawn, pencil lifted, bar empty, pointer off to
+   the side) while the row is still far below the fold, so the reader never
+   sees the finished state snap back. The row then starts once, on arrival,
+   and loops — the CSS tiles and the SMIL route share one start instant, which
+   is what keeps the stagger honest. */
+(()=>{const C=document.querySelector(".crops");if(!C)return;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  if(!("IntersectionObserver" in window))return;
+  const route=document.getElementById("cr-route"),nib=C.querySelector(".nibg");
+  if(!route||!nib)return;
+  C.classList.add("anim");
+  route.setAttribute("stroke-dashoffset","1.02");
+  // animateMotion ADDS to the element's own transform, so the resting
+  // position has to go or the pencil would ride the route twice over
+  nib.removeAttribute("transform");nib.setAttribute("opacity","0");
+  new IntersectionObserver((es,o)=>{
+    if(!es[es.length-1].isIntersecting)return;o.disconnect();
+    C.classList.add("play");
+    C.querySelectorAll(".cr-a").forEach(a=>{try{a.beginElement();}catch(e){}});
+  },{threshold:.35}).observe(C);
+})();
 
 
 /* ============================================================================

@@ -1,54 +1,53 @@
 /* ============================================================================
-   GROUNDWORK — GOOGLE APPS SCRIPT RECEIVER          v3, one tab
+   GROUNDWORK — GOOGLE APPS SCRIPT RECEIVER          v4, lean
    Extensions > Apps Script in your sheet, paste this over what is there,
    SAVE (the version is cut from the last save, not from what is on screen),
    then Deploy > Manage deployments > pencil > Version: New version > Deploy.
 
-   ONE TAB. Sessions and signups both append to `events`, told apart by the
-   `kind` column. A signup gets its own row rather than being written back into
-   the session's row, because the beacons fire arrive -> signup -> leave: at
-   signup time the only row for that visitor is the near-empty `arrive` one,
-   and the rule for reading this sheet is "take the LAST row per sid", which
-   would hand you the `leave` row with no address on it. Appending is also the
-   only shape that cannot race the `leave` beacon.
+   WHAT THIS VERSION DROPS. v3 carried 53 columns for a page that no longer
+   exists: pA..pE3 were the scroll's chapters, max_P and pause_cycles measured
+   a zoom, opt_* measured a tab strip, and t500/t50/t5 measured three scales
+   the reader walked through. All of that went when the film replaced the
+   scroll. What is left is the three things worth knowing — where the time
+   goes, who signs up, and who clicks the demo — in 26 columns.
+
+   THE COLUMNS MOVED, so the first write parks the existing `events` tab as
+   `events_old` and starts a clean one. Nothing is lost and nothing is
+   mislabelled; the old rows stay readable under their own header.
 
      mailing list  = filter kind = "signup", read `email`
-     sessions      = filter kind = "leave",  last row per sid
+     sessions      = filter kind = "leave",  last row per sid + started
 
    Check which code is live by opening the /exec URL in a browser. Saving the
-   script changes nothing until you redeploy, and a bare "ok" used to look the
-   same either way — which is the easiest way there is to lose every signup
-   while nothing appears to be broken.
+   script changes nothing until you redeploy.
    ========================================================================= */
 
-var VERSION = 'v3 (one tab: sessions + signups)';
+var VERSION = 'v4 (lean: section time, signups, demo)';
 
 var SHEET_NAME = 'events';
 
-/* THE PAGE'S OWN SECTION IDS, IN THE ORDER A READER MEETS THEM. Listed once
-   and used twice — for the column names and for reading the payload — so a
-   panel cannot have a column without a value or a value without a column.
-   The old header predated four of these: pP, pE1, pE2 and pE3 had no column
-   at all and only survived inside sections_raw, while a dead `detail_s` sat
-   in the sheet from a chapter that no longer exists. pP is the longest dwell
-   on the page, so that was not a small gap. Add a panel to the page, add its
-   id here. */
-var SECTIONS = ['hero', 'opening', 'scales', 'runlead',
-                'pA', 'pB', 'pC', 'pP', 'pD', 'ways', 'arch', 'pE1', 'pE2', 'pE3',
-                'close', 'other'];
+/* THE PAGE'S FIVE BLOCKS, IN THE ORDER A READER MEETS THEM. Listed once and
+   used twice — for the column names and for reading the payload — so a block
+   cannot have a column without a value or a value without a column. `other`
+   catches anything not covered by a named block, which makes the per-section
+   seconds sum exactly to active_s and turns a silent gap into a visible one.
+   Add a block to the page, add its id here. */
+var SECTIONS = ['hero', 'film', 'opening', 'scales', 'close', 'other'];
 
 var HEAD = [].concat(
   /* who and what. email and source sit third and fourth because on the day you
-     use this sheet you are looking for addresses, not for dpr. */
+     use this sheet you are looking for addresses, not for referrers. */
   ['received', 'sid', 'kind', 'email', 'source', 'started'],
-  ['device', 'vw', 'vh', 'dpr', 'touch'],
-  ['referrer', 'query', 'reduced_motion', 'dark'],
-  ['total_s', 'active_s', 't500_s', 't50_s', 't5_s'],
+  ['device', 'referrer'],
+  ['total_s', 'active_s'],
   SECTIONS.map(function (k) { return k + '_s'; }),
-  ['max_P', 'max_scroll_pct', 'scale_on_screen', 'pause_cycles'],
-  ['demo_header', 'demo_end', 'opt_frontage', 'opt_centre', 'opt_spine'],
-  ['ml_open_header', 'ml_open_end', 'ml_open_badge', 'ml_open_badge_top', 'ml_submit'],
-  ['errors', 'first_error', 'sections_raw']     // the blob goes last, it is wide
+  /* THE FILM IS THE PAGE NOW, and section time does not measure it. film_s is
+     how long the block sat mid-screen; film_watched_s is how much of the
+     sixty seconds actually played. A reader can hold the film on screen for a
+     minute having watched four seconds of it. */
+  ['film_watched_s', 'film_pct', 'film_loops', 'film_sound'],
+  ['demo_header', 'demo_end', 'ml_opens', 'ml_submit'],
+  ['errors', 'first_error']
 );
 
 var EMAIL_COL = HEAD.indexOf('email') + 1;      // 1-based, for getRange
@@ -80,22 +79,16 @@ function rowFrom(o) {
 }
 
 function beacon(sh, d) {
-  var s = d.sections || {}, c = d.clicks || {};
+  var s = d.sections || {}, c = d.clicks || {}, f = d.film || {};
   var o = {
     received: new Date(), sid: d.sid, kind: d.kind, started: d.started,
-    device: d.device, vw: d.vw, vh: d.vh, dpr: d.dpr, touch: d.touch,
-    referrer: d.ref, query: d.query, reduced_motion: d.reduced, dark: d.dark,
+    device: d.device, referrer: d.ref,
     total_s: d.total, active_s: d.active,
-    t500_s: d.t500, t50_s: d.t50, t5_s: d.t5,
-    max_P: d.maxP, max_scroll_pct: d.maxScroll, pause_cycles: d.cycles,
+    film_watched_s: f.watched || 0, film_pct: f.pct || 0,
+    film_loops: f.loops || 0, film_sound: f.sound || 0,
     demo_header: c.demo_header || 0, demo_end: c.demo_end || 0,
-    opt_frontage: c.opt_frontage || 0, opt_centre: c.opt_centre || 0,
-    opt_spine: c.opt_spine || 0,
-    ml_open_header: c.ml_open_header || 0, ml_open_end: c.ml_open_end || 0,
-    ml_open_badge: c.ml_open_badge || 0, ml_open_badge_top: c.ml_open_badge_top || 0,
-    ml_submit: c.ml_submit || 0,
-    errors: d.errs || 0, first_error: d.firstErr || '',
-    sections_raw: JSON.stringify(s)
+    ml_opens: c.ml_opens || 0, ml_submit: c.ml_submit || 0,
+    errors: d.errs || 0, first_error: d.firstErr || ''
   };
   SECTIONS.forEach(function (k) { o[k + '_s'] = s[k] || 0; });
   sh.appendRow(rowFrom(o));
@@ -104,9 +97,8 @@ function beacon(sh, d) {
 
 /* THE ADDRESS IS THE ONLY THING HERE THAT CANNOT BE COLLECTED AGAIN, so it is
    validated and de-duplicated before anything is written. The dedupe reads one
-   column of the whole tab, which is the price of keeping the list in with the
-   sessions rather than in a tab of its own — one read, fine into the thousands
-   of rows, and the thing to revisit first if this sheet ever gets big. */
+   column of the whole tab — fine into the thousands of rows, and the first
+   thing to revisit if this sheet ever gets big. */
 function signup(sh, d) {
   var email = String(d.email || '').trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return out('err bad address');
@@ -119,17 +111,14 @@ function signup(sh, d) {
       if (String(have[i][0]).trim().toLowerCase() === email) return out('ok dup');
     }
   }
+  var f = d.film || {};
   sh.appendRow(rowFrom({
     received: new Date(), sid: d.sid, kind: 'signup',
     email: email, source: d.source || '',
-    device: d.device, referrer: d.ref, query: d.query,
-    /* how far they had read when they asked — the one thing a signup row can
-       say that an address on its own cannot */
-    /* scale_on_screen gets a column of its own rather than riding in
-       sections_raw, which holds JSON on every other row. One column, one
-       meaning — otherwise nothing downstream can parse the column without
-       first asking what kind of row it is looking at. */
-    max_P: d.maxP, max_scroll_pct: d.maxScroll, scale_on_screen: d.scale || ''
+    device: d.device, referrer: d.ref,
+    /* how much of the film they had watched when they asked — the one thing a
+       signup row can say that an address on its own cannot */
+    film_watched_s: f.watched || 0, film_pct: f.pct || 0
   }));
   return out('ok');
 }
@@ -150,7 +139,7 @@ function sheet(name, head) {
      is widened in place. MOVING is not: rewriting the header over rows written
      under a different order relabels every one of them, silently and
      irreversibly. So the old tab is parked under its own name and a clean one
-     starts — no data lost, nothing mislabelled, nothing for you to remember. */
+     starts. Going from v3 to v4 moves them — expect `events_old`. */
   var moved = false;
   for (var i = 0; i < have.length; i++) {
     if (String(have[i]) !== String(head[i] === undefined ? '' : head[i])) { moved = true; break; }
