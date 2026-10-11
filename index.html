@@ -469,8 +469,12 @@ svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-
 .crops li:nth-child(1) h4{color:var(--ta)} .crops li:nth-child(1) h4::before{background:var(--ta)}
 .crops li:nth-child(2) h4{color:var(--ct)} .crops li:nth-child(2) h4::before{background:var(--ct)}
 .crops li:nth-child(3) h4{color:var(--gap)} .crops li:nth-child(3) h4::before{background:var(--gap)}
-.crops h4{font-size:12px}
-.crops p{margin:7px 0 0;font-size:15px;color:var(--t2)}
+/* NAMED LIKE THE SCALES. Geometry / Text / Rules are the names of the three ways in,
+   as masterplan / block / detail are the names of the three scales, so they take the
+   same tier: 15px semibold in ink, sentence case. The coloured dot keeps each one's
+   colour; the line under it is set apart by weight and colour, not by size. */
+.crops h4{font-size:15px;font-weight:600;letter-spacing:-.005em;text-transform:none;color:var(--t)!important}
+.crops p{margin:5px 0 0;font-size:14.5px;line-height:1.5;color:var(--t2)}
 /* ======================== THE THREE TILES, MOVING ========================
    Each still is the real board; what moves is drawn over it, on measurements
    taken from the board itself (anim-geom.json, from the capture script):
@@ -611,20 +615,19 @@ svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-
    stack full width — which makes each one BIGGER than on desktop, the one
    thing a phone column gives you back. */
 @media(max-width:760px){
-  /* THE NAME AND ITS LINE SIT ON THEIR OWN TILE, not under it. Stacked, a
-     caption under one crop sat closer to the next crop than to its own, and
-     read as that one's title. So the fade runs longer here (clear from 75%),
-     the label is pulled up into it by a share of the tile's own width (the
-     tile is square, so that is the same share of its height at every phone
-     size), and the tiles are spaced well apart. The pencil is masked with the
-     same fade so it never draws across the words. */
-  .crops{grid-template-columns:1fr;gap:52px;margin-top:28px}
-  .crops li{display:block;position:relative}
-  .cw{width:100%}
-  .crop,.nib{-webkit-mask-image:linear-gradient(to bottom,#000 0 50%,rgba(0,0,0,.28) 64%,transparent 75%);
-                     mask-image:linear-gradient(to bottom,#000 0 50%,rgba(0,0,0,.28) 64%,transparent 75%)}
-  .crops h4{margin-top:-22%;font-size:13px}
-  .crops p{margin:8px 0 0;font-size:16.5px;line-height:1.45;max-width:30ch}
+  /* HEADER FIRST, PICTURE SECOND — the way 500 / 50 / 5 stack above it. Each
+     interaction opens with a full-width rule, its name and its line, then the
+     crop. Put the other way round (picture, then caption), every caption sat
+     between two pictures and read as either one's; this way whatever peeks up
+     from the foot of the screen is the next rule and name, which says "a new
+     one starts here" instead of posing as part of this one. Type is sized to
+     the engine columns: the line at the column-label size, not larger. */
+  .crops{grid-template-columns:1fr;gap:44px;margin-top:30px}
+  .crops li{display:flex;flex-direction:column;border-top:1.5px solid var(--t);padding-top:12px}
+  .crops h4{order:0;margin:0}
+  .crops p{order:1;margin:5px 0 0;max-width:34ch}
+  .crops li:first-child{border-top:0;padding-top:0}   /* the Crit wordmark's rule is already its rule */
+  .cw{order:2;width:100%;margin-top:16px}
   .conv{grid-template-columns:1fr;height:22px;margin-top:38px}
   .conv::before{display:none}
   .conv::after{bottom:-16px;height:16px}
