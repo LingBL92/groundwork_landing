@@ -591,6 +591,9 @@ svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-
 .conv::after{content:"";position:absolute;left:50%;bottom:-20px;width:1px;height:20px;
   background:var(--bs)}
 .conv+.critkick{margin-top:34px}
+/* DESKTOP DROPS THE RISERS. Three grey lines converging read as wiring, not as a
+   relationship; the space between the two blocks does the separating instead. */
+@media(min-width:761px){.conv{display:none} .conv+.critkick{margin-top:96px}}
 /* the product name at numeral size, with the same 1.5px rule the engine
    columns carry under 500 / 50 / 5 — one rule, full width, because the board
    is one surface over all three ways in */
@@ -1203,8 +1206,8 @@ svg#world.cyc .asp{transition:opacity .55s}
 
   <div class="critkick eng"><i></i>The concept board</div>
   <h2>Interact with geometry, text and rules.</h2>
-  <p>Sketch on the site, ask in plain words, pin what you keep. Explore, combine,
-  talk it through.</p>
+  <p>One board on top of all three scales.<br>
+  Interact with suggestions from 500&nbsp;·&nbsp;50&nbsp;·&nbsp;5.</p>
 
   <div class="critmark"><div class="sn">Crit</div></div>
 
