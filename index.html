@@ -611,6 +611,13 @@ svg#world{width:min(94vw,860px);height:min(78svh,860px);display:block;transform-
 .critmark+.crops{margin-top:18px}
 .critkick.eng i{background:var(--t3)}
 
+/* TOGETHER: three names in the scale-name tier, each under a rule, like the crops' labels */
+.collab-k{margin-top:96px}
+.collab{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin:30px 0 0;padding:0;list-style:none}
+.collab li{border-top:1.5px solid var(--t);padding-top:12px}
+.collab .cn{font-size:15px;font-weight:600;letter-spacing:-.005em}
+.collab p{margin:5px 0 0;font-size:14.5px;line-height:1.5;color:var(--t2);max-width:30ch}
+@media(max-width:760px){.collab{grid-template-columns:1fr;gap:26px}.collab-k{margin-top:64px}}
 /* MOBILE: three crops side by side would be 100px each and illegible, so they
    stack full width — which makes each one BIGGER than on desktop, the one
    thing a phone column gives you back. */
@@ -1286,6 +1293,20 @@ svg#world.cyc .asp{transition:opacity .55s}
       <h4>Rules</h4>
       <p>Pin what you keep. It recombines them into new plans.</p>
     </li>
+  </ul>
+
+  <!-- TOGETHER. Crit grew a team layer on 14 Oct (share by link, combine with a cross-check,
+       a live board); this names it in the same shape as the three ways in above: a rule,
+       a name at the scale-name tier, one line. No captures yet: the live board has not
+       been photographed, and every other picture in this section is the real board.
+       The names are not <h4>: build.py counts the crop labels by that tag. -->
+  <div class="critkick eng collab-k"><i></i>Together</div>
+  <h2>Crit as a team.</h2>
+  <p>Share a board, combine, or work together live.</p>
+  <ul class="collab">
+    <li><div class="cn">Share</div><p>Send teammates your board or design preferences.</p></li>
+    <li><div class="cn">Combine</div><p>Compare and discuss design alternatives.</p></li>
+    <li><div class="cn">Live board</div><p>Work together on one board at once.</p></li>
   </ul>
 
 </section>
